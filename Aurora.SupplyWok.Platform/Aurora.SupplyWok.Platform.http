@@ -1,0 +1,6 @@
+@Aurora.SupplyWok.Platform_HostAddress = http://localhost:5109
+
+GET {{Aurora.SupplyWok.Platform_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
