@@ -1,4 +1,4 @@
-namespace Aurora.SupplyWok.Platform.shared.domain.Model.Entities;
+namespace Aurora.SupplyWok.Platform.Shared.Domain.Model.Entities;
 /// <summary>
 ///     Marks an entity as carrying audit timestamps managed by the persistence layer.
 /// </summary>
@@ -12,9 +12,9 @@ public class IAuditableEntity
     /// <summary>
     ///     Gets or sets the UTC timestamp when the entity was first persisted.
     /// </summary>
-    private DateTimeOffset? CreaetedAt { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
     /// <summary>
     ///     Gets or sets the UTC timestamp when the entity was last saved.
     /// </summary>
-    private DateTimeOffset? UpdatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
 }
