@@ -1,8 +1,8 @@
-﻿using Acme.Center.Platform.Shared.Domain.Model.Entities;
+﻿using Aurora.SupplyWok.Platform.Shared.Domain.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Acme.Center.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Interceptors;
+namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Interceptors;
 
 /// <summary>
 ///     EF Core interceptor that automatically populates audit timestamps on any entity

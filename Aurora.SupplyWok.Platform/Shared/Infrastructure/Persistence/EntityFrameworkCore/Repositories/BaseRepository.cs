@@ -1,8 +1,8 @@
-﻿using Acme.Center.Platform.Shared.Domain.Repositories;
-using Acme.Center.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
+﻿using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
+using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace Acme.Center.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 /// <summary>
 ///     Base repository for all repositories

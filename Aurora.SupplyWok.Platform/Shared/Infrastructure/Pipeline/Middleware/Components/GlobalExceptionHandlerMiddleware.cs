@@ -1,13 +1,13 @@
 ﻿using System.Net.Mime;
 using System.Text.Json;
-using Acme.Center.Platform.Resources.Errors;
-using Acme.Center.Platform.Resources.Shared;
+using Aurora.SupplyWok.Platform.Shared.Resources;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
 // For OperationCanceledException
 
-namespace Acme.Center.Platform.Shared.Infrastructure.Pipeline.Middleware.Components;
+namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Pipeline.Middleware.Components;
 
 /// <summary>
 ///     Global Exception Handling Middleware

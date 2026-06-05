@@ -1,4 +1,4 @@
-namespace Aurora.SupplyWok.Platform.shared.domain.Repositories;
+namespace Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
 
 
 

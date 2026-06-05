@@ -1,4 +1,4 @@
-﻿namespace Aurora.SupplyWok.Platform.Application.Model;
+﻿namespace Aurora.SupplyWok.Platform.Shared.Application.Model;
 
 /// <summary>
 ///     Generic Result class for Command Handlers in the Application Layer.

@@ -1,4 +1,4 @@
-namespace Aurora.SupplyWok.Platform.shared.domain.Model;
+namespace Aurora.SupplyWok.Platform.Shared.Domain.Model;
 /// <summary>
 ///     Represents a domain error.
 /// </summary>

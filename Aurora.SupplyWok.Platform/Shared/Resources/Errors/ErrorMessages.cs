@@ -1,4 +1,4 @@
-namespace Acme.Center.Platform.Resources.Errors;
+namespace Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 
 public class ErrorMessages
 {

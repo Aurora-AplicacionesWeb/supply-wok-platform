@@ -1,9 +1,9 @@
-using Acme.Center.Platform.Resources.Errors;
-using Acme.Center.Platform.Resources.Shared;
+using Aurora.SupplyWok.Platform.Shared.Resources;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
-namespace Acme.Center.Platform.Shared.Interfaces.Rest.ProblemDetails;
+namespace Aurora.SupplyWok.Platform.Shared.Interfaces.Rest.ProblemDetails;
 
 public class ProblemDetailsFactory(
     IStringLocalizer<ErrorMessages> errorLocalizer,

@@ -1,6 +1,6 @@
-﻿using Acme.Center.Platform.Shared.Infrastructure.Pipeline.Middleware.Components;
+﻿using Aurora.SupplyWok.Platform.Shared.Infrastructure.Pipeline.Middleware.Components;
 
-namespace Acme.Center.Platform.Shared.Infrastructure.Pipeline.Middleware.Extensions;
+namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Pipeline.Middleware.Extensions;
 
 /// <summary>
 ///     Middleware extensions
