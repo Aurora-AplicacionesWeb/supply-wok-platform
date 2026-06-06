@@ -32,9 +32,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Iot\Application\" />
         <Folder Include="Iot\Domain\Model\Entities\" />
         <Folder Include="Iot\Domain\Model\Events\" />
-        <Folder Include="Iot\Domain\Repositories\" />
+        <Folder Include="Iot\Infrastructure\" />
+        <Folder Include="Iot\Interfaces\" />
+        <Folder Include="Iot\Resources\" />
         <Folder Include="Shared\Application\"/>
         <Folder Include="Shared\Infrastructure\"/>
         <Folder Include="Shared\Interfaces\"/>
