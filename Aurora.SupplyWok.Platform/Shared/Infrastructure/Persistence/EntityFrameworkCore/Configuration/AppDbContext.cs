@@ -1,6 +1,7 @@
-﻿using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Interceptors;
 using Microsoft.EntityFrameworkCore;
+using Aurora.SupplyWok.Platform.Iot.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
 namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
@@ -19,7 +20,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.AddInterceptors(new AuditableEntityInterceptor());
         base.OnConfiguring(builder);
     }
-
+    
     /// <summary>
     ///     On creating the database model
     /// </summary>
@@ -33,7 +34,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
 
-        
+        // Iot Context
+        builder.ApplySensorsConfiguration();
 
         // General Naming Convention for the database objects
         builder.UseSnakeCaseNamingConvention();
