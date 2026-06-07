@@ -12,6 +12,12 @@ using Cortex.Mediator.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using ProblemDetailsFactory = Aurora.SupplyWok.Platform.Shared.Interfaces.Rest.ProblemDetails.ProblemDetailsFactory;
+using Aurora.SupplyWok.Platform.Iot.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Iot.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Iot.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Iot.Application.Internal.CommandServices;
+using Aurora.SupplyWok.Platform.Iot.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Iot.Application.Internal.QueryServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +89,11 @@ builder.Services.AddSwaggerGen(options =>
 
 // Shared Bounded Context
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Iot Bounded Context
+builder.Services.AddScoped<ISensorRepository, SensorRepository>();
+builder.Services.AddScoped<ISensorCommandService, SensorCommandService>();
+builder.Services.AddScoped<ISensorQueryService, SensorQueryService>();
 
 // Mediator Configuration
 
