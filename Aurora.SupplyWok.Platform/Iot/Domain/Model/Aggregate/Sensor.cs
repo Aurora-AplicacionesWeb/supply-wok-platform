@@ -1,4 +1,4 @@
-﻿using Aurora.SupplyWok.Platform.Iot.Domain.Model.Commands;
+using Aurora.SupplyWok.Platform.Iot.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model.ValueObjects;
 
 namespace Aurora.SupplyWok.Platform.Iot.Domain.Model.Aggregate;
@@ -44,4 +44,19 @@ public partial class Sensor
     public double LastValue { get; private set;}
     
     public ESensorType SensorType { get; private set;}
+
+    public void Update(string name, double minValue, double maxValue, bool enabled, double lastValue, ESensorType type)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Sensor name cannot be empty.", nameof(name));
+        if (minValue > maxValue)
+            throw new ArgumentException("Minimum value cannot be greater than maximum value.");
+
+        Name = name;
+        MinValue = minValue;
+        MaxValue = maxValue;
+        Enabled = enabled;
+        LastValue = lastValue;
+        SensorType = type;
+    }
 }
