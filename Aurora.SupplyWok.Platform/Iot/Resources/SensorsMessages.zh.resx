@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="SensorCreatedSuccessfully" xml:space="preserve">
+        <value>传感器创建成功。</value>
+    </data>
+</root>

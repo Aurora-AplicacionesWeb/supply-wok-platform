@@ -34,7 +34,6 @@
     <ItemGroup>
         <Folder Include="Iot\Domain\Model\Entities\" />
         <Folder Include="Iot\Domain\Model\Events\" />
-        <Folder Include="Iot\Resources\" />
         <Folder Include="Shared\Application\"/>
         <Folder Include="Shared\Infrastructure\"/>
         <Folder Include="Shared\Interfaces\"/>
