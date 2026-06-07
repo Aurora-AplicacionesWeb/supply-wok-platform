@@ -35,7 +35,6 @@
         <Folder Include="Iot\Application\" />
         <Folder Include="Iot\Domain\Model\Entities\" />
         <Folder Include="Iot\Domain\Model\Events\" />
-        <Folder Include="Iot\Infrastructure\" />
         <Folder Include="Iot\Interfaces\" />
         <Folder Include="Iot\Resources\" />
         <Folder Include="Shared\Application\"/>
