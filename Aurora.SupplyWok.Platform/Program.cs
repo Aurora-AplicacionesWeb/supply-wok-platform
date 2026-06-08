@@ -18,6 +18,12 @@ using Aurora.SupplyWok.Platform.Iot.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Iot.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Iot.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Iot.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Purchasing.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.CommandServices;
+using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Purchasing.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Purchasing.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,6 +100,13 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISensorRepository, SensorRepository>();
 builder.Services.AddScoped<ISensorCommandService, SensorCommandService>();
 builder.Services.AddScoped<ISensorQueryService, SensorQueryService>();
+
+// Purchasing Bounded Context
+builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<IPurchaseOrderCommandService, PurchaseOrderCommandService>();
+builder.Services.AddScoped<IPurchaseOrderQueryService, PurchaseOrderQueryService>();
+builder.Services.AddScoped<ISupplierQueryService, SupplierQueryService>();
 
 // Mediator Configuration
 

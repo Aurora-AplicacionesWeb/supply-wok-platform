@@ -2,6 +2,7 @@ using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFramewor
 using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Aurora.SupplyWok.Platform.Iot.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using Aurora.SupplyWok.Platform.Purchasing.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
 namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
@@ -36,6 +37,9 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         // Iot Context
         builder.ApplySensorsConfiguration();
+
+        // Purchasing Context
+        builder.ApplyPurchasingConfiguration();
 
         // General Naming Convention for the database objects
         builder.UseSnakeCaseNamingConvention();
