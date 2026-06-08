@@ -24,6 +24,12 @@ using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Purchasing.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Purchasing.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Operations.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Operations.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Operations.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Operations.Application.Internal.CommandServices;
+using Aurora.SupplyWok.Platform.Operations.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Operations.Application.Internal.QueryServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,6 +113,11 @@ builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<IPurchaseOrderCommandService, PurchaseOrderCommandService>();
 builder.Services.AddScoped<IPurchaseOrderQueryService, PurchaseOrderQueryService>();
 builder.Services.AddScoped<ISupplierQueryService, SupplierQueryService>();
+
+// Operations Bounded Context
+builder.Services.AddScoped<ITableRepository, TableRepository>();
+builder.Services.AddScoped<ITableCommandService, TableCommandService>();
+builder.Services.AddScoped<ITableQueryService, TableQueryService>();
 
 // Mediator Configuration
 

@@ -3,6 +3,7 @@ using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFramewor
 using Microsoft.EntityFrameworkCore;
 using Aurora.SupplyWok.Platform.Iot.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Aurora.SupplyWok.Platform.Purchasing.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using Aurora.SupplyWok.Platform.Operations.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
 namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
@@ -40,6 +41,9 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         // Purchasing Context
         builder.ApplyPurchasingConfiguration();
+
+        // Operations Context
+        builder.ApplyOperationsConfiguration();
 
         // General Naming Convention for the database objects
         builder.UseSnakeCaseNamingConvention();
