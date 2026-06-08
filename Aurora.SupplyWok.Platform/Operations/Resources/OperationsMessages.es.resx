@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="TableCreatedSuccessfully" xml:space="preserve">
+    <value>Mesa creada exitosamente.</value>
+  </data>
+  <data name="TableUpdatedSuccessfully" xml:space="preserve">
+    <value>Mesa actualizada exitosamente.</value>
+  </data>
+  <data name="TableDeletedSuccessfully" xml:space="preserve">
+    <value>Mesa eliminada exitosamente.</value>
+  </data>
+</root>
