@@ -1,5 +1,5 @@
-using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Commands;
+using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 
 namespace Aurora.SupplyWok.Platform.Purchasing.Application.CommandServices;

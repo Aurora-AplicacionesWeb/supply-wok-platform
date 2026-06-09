@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PurchaseOrderCreatedSuccessfully" xml:space="preserve">
+        <value>采购订单创建成功。</value>
+    </data>
+    <data name="PurchaseOrderStatusUpdatedSuccessfully" xml:space="preserve">
+        <value>采购订单状态更新成功。</value>
+    </data>
+    <data name="SupplierSlaCalculatedSuccessfully" xml:space="preserve">
+        <value>供应商 SLA 计算成功。</value>
+    </data>
+</root>

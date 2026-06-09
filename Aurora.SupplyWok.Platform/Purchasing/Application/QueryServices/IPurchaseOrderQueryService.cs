@@ -1,4 +1,4 @@
-using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
+using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Queries;
 
 namespace Aurora.SupplyWok.Platform.Purchasing.Application.QueryServices;
