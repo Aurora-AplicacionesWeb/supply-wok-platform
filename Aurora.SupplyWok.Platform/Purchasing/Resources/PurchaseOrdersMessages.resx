@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PurchaseOrderCreatedSuccessfully" xml:space="preserve">
+        <value>Purchase order created successfully.</value>
+    </data>
+    <data name="PurchaseOrderStatusUpdatedSuccessfully" xml:space="preserve">
+        <value>Purchase order status updated successfully.</value>
+    </data>
+    <data name="SupplierSlaCalculatedSuccessfully" xml:space="preserve">
+        <value>Supplier SLA calculated successfully.</value>
+    </data>
+</root>

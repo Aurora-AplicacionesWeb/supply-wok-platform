@@ -1,7 +1,7 @@
 using Aurora.SupplyWok.Platform.Purchasing.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model;
-using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Commands;
+using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;

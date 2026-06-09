@@ -19,11 +19,13 @@ using Aurora.SupplyWok.Platform.Iot.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Iot.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Iot.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Purchasing.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Purchasing.Application.Ad;
 using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Purchasing.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Purchasing.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Operations.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Operations.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using Aurora.SupplyWok.Platform.Operations.Application.CommandServices;
@@ -113,6 +115,8 @@ builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<IPurchaseOrderCommandService, PurchaseOrderCommandService>();
 builder.Services.AddScoped<IPurchaseOrderQueryService, PurchaseOrderQueryService>();
 builder.Services.AddScoped<ISupplierQueryService, SupplierQueryService>();
+builder.Services.AddScoped<IPurchaseOrderContextFacade, PurchaseOrderContextFacade>();
+builder.Services.AddScoped<ISupplierContextFacade, SupplierContextFacade>();
 
 // Operations Bounded Context
 builder.Services.AddScoped<ITableRepository, TableRepository>();

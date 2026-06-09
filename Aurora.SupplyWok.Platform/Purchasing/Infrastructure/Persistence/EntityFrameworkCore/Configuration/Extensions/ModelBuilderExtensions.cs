@@ -1,4 +1,5 @@
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
+using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +38,8 @@ public static class ModelBuilderExtensions
         builder.Entity<Supplier>().ToTable("Suppliers");
         builder.Entity<Supplier>().HasKey(supplier => supplier.Id);
         builder.Entity<Supplier>().Property(supplier => supplier.Id).ValueGeneratedNever();
+        builder.Entity<Supplier>().Property(supplier => supplier.Uuid).IsRequired();
+        builder.Entity<Supplier>().HasIndex(supplier => supplier.Uuid).IsUnique();
         builder.Entity<Supplier>().Property(supplier => supplier.Name).IsRequired().HasMaxLength(100);
         builder.Entity<Supplier>().Property(supplier => supplier.ContactName).IsRequired().HasMaxLength(100);
         builder.Entity<Supplier>().Property(supplier => supplier.Email).IsRequired().HasMaxLength(100);
@@ -56,6 +59,7 @@ public static class ModelBuilderExtensions
             new
             {
                 Id = 201,
+                Uuid = Guid.Parse("11111111-1111-1111-1111-111111111201"),
                 Name = "Golden Wok Produce",
                 ContactName = "Mariela Soto",
                 Email = "msoto@goldenwok.pe",
@@ -68,6 +72,7 @@ public static class ModelBuilderExtensions
             new
             {
                 Id = 202,
+                Uuid = Guid.Parse("11111111-1111-1111-1111-111111111202"),
                 Name = "Andes Cold Chain",
                 ContactName = "Luis Cardenas",
                 Email = "lcardenas@andescold.pe",
@@ -80,6 +85,7 @@ public static class ModelBuilderExtensions
             new
             {
                 Id = 203,
+                Uuid = Guid.Parse("11111111-1111-1111-1111-111111111203"),
                 Name = "Orient Pantry Co.",
                 ContactName = "Zhen Liu",
                 Email = "zliu@orientpantry.pe",
