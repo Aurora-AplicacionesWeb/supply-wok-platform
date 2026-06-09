@@ -9,7 +9,7 @@ public static class SupplierResourceFromEntityAssembler
     {
         ArgumentNullException.ThrowIfNull(supplier);
 
-        return new SupplierResource(supplier.Id, supplier.Name, supplier.ContactName, supplier.Email, supplier.Phone,
+        return new SupplierResource(supplier.Id, supplier.Uuid, supplier.Name, supplier.ContactName, supplier.Email, supplier.Phone,
             supplier.Category, supplier.LinkedDate, supplier.Sla, supplier.ResponseTime);
     }
 }

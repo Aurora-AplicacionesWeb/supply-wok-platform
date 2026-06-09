@@ -1,4 +1,4 @@
-using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
+using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Purchasing.Interfaces.Rest.Resources;
 
