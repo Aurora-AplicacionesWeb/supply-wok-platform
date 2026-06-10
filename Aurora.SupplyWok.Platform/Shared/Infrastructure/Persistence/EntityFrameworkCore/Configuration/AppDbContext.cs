@@ -38,6 +38,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         // Iot Context
         builder.ApplySensorsConfiguration();
+        builder.ApplyAlertsConfiguration();
 
         // Purchasing Context
         builder.ApplyPurchasingConfiguration();

@@ -18,6 +18,8 @@ using Aurora.SupplyWok.Platform.Iot.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Iot.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Iot.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Iot.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Iot.Application.Ad;
+using Aurora.SupplyWok.Platform.Iot.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Purchasing.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Purchasing.Application.Ad;
 using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.CommandServices;
@@ -108,6 +110,10 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ISensorRepository, SensorRepository>();
 builder.Services.AddScoped<ISensorCommandService, SensorCommandService>();
 builder.Services.AddScoped<ISensorQueryService, SensorQueryService>();
+builder.Services.AddScoped<IAlertRepository, AlertRepository>();
+builder.Services.AddScoped<IAlertCommandService, AlertCommandService>();
+builder.Services.AddScoped<IAlertQueryService, AlertQueryService>();
+builder.Services.AddScoped<IAlertsContextFacade, AlertsContextFacade>();
 
 // Purchasing Bounded Context
 builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();

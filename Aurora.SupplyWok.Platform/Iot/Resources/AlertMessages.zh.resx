@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="AlertCreatedSuccessfully" xml:space="preserve">
+        <value>警报创建成功。</value>
+    </data>
+    <data name="AlertAcknowledgedSuccessfully" xml:space="preserve">
+        <value>警报确认成功。</value>
+    </data>
+</root>

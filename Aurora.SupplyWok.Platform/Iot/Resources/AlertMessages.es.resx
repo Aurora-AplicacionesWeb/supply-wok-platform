@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="AlertCreatedSuccessfully" xml:space="preserve">
+        <value>Alerta creada exitosamente.</value>
+    </data>
+    <data name="AlertAcknowledgedSuccessfully" xml:space="preserve">
+        <value>Alerta reconocida exitosamente.</value>
+    </data>
+</root>
