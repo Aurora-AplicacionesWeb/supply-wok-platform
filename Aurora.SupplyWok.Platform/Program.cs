@@ -91,7 +91,7 @@ builder.Services.AddSwaggerGen(options =>
             Title = "Aurora.SupplyWok.Platform",
             Version = "v1",
             Description = "Supply Wok Platform API",
-            TermsOfService = new Uri(""),
+            TermsOfService = new Uri("https://www.aurorastartup.com/example/"),
             Contact = new OpenApiContact
             {
                 Name = "Aurora Startup",
