@@ -34,6 +34,10 @@ using Aurora.SupplyWok.Platform.Operations.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Operations.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Operations.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Operations.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Suppliers.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Suppliers.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Suppliers.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,7 +91,7 @@ builder.Services.AddSwaggerGen(options =>
             Title = "Aurora.SupplyWok.Platform",
             Version = "v1",
             Description = "Supply Wok Platform API",
-            TermsOfService = new Uri(""),
+            TermsOfService = new Uri("https://www.aurorastartup.com/example/"),
             Contact = new OpenApiContact
             {
                 Name = "Aurora Startup",
@@ -128,6 +132,10 @@ builder.Services.AddScoped<ISupplierContextFacade, SupplierContextFacade>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<ITableCommandService, TableCommandService>();
 builder.Services.AddScoped<ITableQueryService, TableQueryService>();
+
+// Supplier Bounded Context
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IClientQueryService, ClientQueryService>();
 
 // Mediator Configuration
 

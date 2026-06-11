@@ -41,6 +41,10 @@
         <Folder Include="Shared\Infrastructure\"/>
         <Folder Include="Shared\Interfaces\"/>
         <Folder Include="Shared\Resources\"/>
+        <Folder Include="Suppliers\Application\" />
+        <Folder Include="Suppliers\Infrastructure\" />
+        <Folder Include="Suppliers\Interfaces\" />
+        <Folder Include="Suppliers\Resources\" />
         
     </ItemGroup>
 
