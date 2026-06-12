@@ -3,7 +3,7 @@ using Aurora.SupplyWok.Platform.Iot.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Iot.Interfaces.Acl;
 
-namespace Aurora.SupplyWok.Platform.Iot.Application.Ad;
+namespace Aurora.SupplyWok.Platform.Iot.Application.Acl;
 
 /// <summary>
 /// Facade implementation for the Alert context

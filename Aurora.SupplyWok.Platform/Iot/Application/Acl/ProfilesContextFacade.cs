@@ -4,7 +4,7 @@ using Aurora.SupplyWok.Platform.Iot.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Iot.Interfaces.Acl;
 
-namespace Aurora.SupplyWok.Platform.Iot.Application.Ad;
+namespace Aurora.SupplyWok.Platform.Iot.Application.Acl;
 
 public class ProfilesContextFacade(
     ISensorCommandService sensorCommandService,
