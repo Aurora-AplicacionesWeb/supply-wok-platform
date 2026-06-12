@@ -32,6 +32,14 @@ public interface IPurchaseOrderContextFacade
         CancellationToken cancellationToken);
 
     /// <summary>
+    /// Gets all purchase orders owned by a supplier.
+    /// </summary>
+    /// <param name="supplierId">The supplier identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The supplier purchase orders.</returns>
+    Task<IEnumerable<PurchaseOrderAclResource>> GetPurchaseOrdersBySupplierId(int supplierId, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Updates the status of an existing purchase order.
     /// </summary>
     /// <param name="purchaseOrderId">The purchase order identifier.</param>

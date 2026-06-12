@@ -1,7 +1,7 @@
-using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates;
 
-namespace Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
+namespace Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories;
 
 public interface ISupplierRepository : IBaseRepository<Supplier>
 {

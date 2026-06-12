@@ -121,12 +121,10 @@ builder.Services.AddScoped<IAlertsContextFacade, AlertsContextFacade>();
 
 // Purchasing Bounded Context
 builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
-builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<IPurchaseOrderCommandService, PurchaseOrderCommandService>();
 builder.Services.AddScoped<IPurchaseOrderQueryService, PurchaseOrderQueryService>();
-builder.Services.AddScoped<ISupplierQueryService, SupplierQueryService>();
 builder.Services.AddScoped<IPurchaseOrderContextFacade, PurchaseOrderContextFacade>();
-builder.Services.AddScoped<ISupplierContextFacade, SupplierContextFacade>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Purchasing.Application.Ad.SupplierContextFacade>();
 
 // Operations Bounded Context
 builder.Services.AddScoped<ITableRepository, TableRepository>();
@@ -136,6 +134,10 @@ builder.Services.AddScoped<ITableQueryService, TableQueryService>();
 // Supplier Bounded Context
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IClientQueryService, ClientQueryService>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories.ISupplierRepository, Aurora.SupplyWok.Platform.Suppliers.Infrastructure.Persistence.EntityFrameworkCore.Repositories.SupplierRepository>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Application.QueryServices.ISupplierQueryService, Aurora.SupplyWok.Platform.Suppliers.Application.Internal.QueryServices.SupplierQueryService>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Ad.SupplierContextFacade>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Ad.SupplierOrdersContextFacade>();
 
 // Mediator Configuration
 

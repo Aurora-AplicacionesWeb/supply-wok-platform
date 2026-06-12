@@ -1,7 +1,7 @@
-namespace Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
+namespace Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates;
 
 /// <summary>
-/// Supplier aggregate required by purchase orders and SLA calculations.
+/// Supplier aggregate owned by the Suppliers bounded context.
 /// </summary>
 public partial class Supplier
 {

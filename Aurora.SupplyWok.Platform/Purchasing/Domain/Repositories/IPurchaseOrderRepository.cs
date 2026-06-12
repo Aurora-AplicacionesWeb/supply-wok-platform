@@ -16,6 +16,14 @@ public interface IPurchaseOrderRepository : IBaseRepository<PurchaseOrder>
     Task<IEnumerable<PurchaseOrder>> ListPurchaseOrdersAsync(CancellationToken cancellationToken);
 
     /// <summary>
+    /// Lists all purchase orders for a supplier including their line items.
+    /// </summary>
+    /// <param name="supplierId">The supplier identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The supplier purchase orders.</returns>
+    Task<IEnumerable<PurchaseOrder>> ListPurchaseOrdersBySupplierIdAsync(int supplierId, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Gets a purchase order by its unique identifier including its line items.
     /// </summary>
     /// <param name="id">The purchase order identifier.</param>
