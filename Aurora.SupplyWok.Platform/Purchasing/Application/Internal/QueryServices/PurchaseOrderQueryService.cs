@@ -12,6 +12,11 @@ public class PurchaseOrderQueryService(IPurchaseOrderRepository purchaseOrderRep
         return await purchaseOrderRepository.ListPurchaseOrdersAsync(cancellationToken);
     }
 
+    public async Task<IEnumerable<PurchaseOrder>> Handle(GetPurchaseOrdersBySupplierIdQuery query, CancellationToken cancellationToken)
+    {
+        return await purchaseOrderRepository.ListPurchaseOrdersBySupplierIdAsync(query.SupplierId, cancellationToken);
+    }
+
     public async Task<PurchaseOrder?> Handle(GetPurchaseOrderByIdQuery query, CancellationToken cancellationToken)
     {
         return await purchaseOrderRepository.GetPurchaseOrderByIdAsync(query.PurchaseOrderId, cancellationToken);

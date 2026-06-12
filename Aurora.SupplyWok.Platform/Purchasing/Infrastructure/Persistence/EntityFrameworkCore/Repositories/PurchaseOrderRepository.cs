@@ -15,6 +15,14 @@ public class PurchaseOrderRepository(AppDbContext context) : BaseRepository<Purc
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IEnumerable<PurchaseOrder>> ListPurchaseOrdersBySupplierIdAsync(int supplierId, CancellationToken cancellationToken)
+    {
+        return await Context.Set<PurchaseOrder>()
+            .Include(order => order.Items)
+            .Where(order => order.SupplierId == supplierId)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<PurchaseOrder?> GetPurchaseOrderByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await Context.Set<PurchaseOrder>()

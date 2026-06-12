@@ -1,3 +1,3 @@
 namespace Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Queries;
 
-public record GetAllSuppliersQuery;
+public record GetPurchaseOrdersBySupplierIdQuery(int SupplierId);

@@ -1,4 +1,4 @@
-namespace Aurora.SupplyWok.Platform.Purchasing.Interfaces.Rest.Resources;
+namespace Aurora.SupplyWok.Platform.Suppliers.Interfaces.Rest.Resources;
 
 public record SupplierResource(
     int Id,
