@@ -1,7 +1,7 @@
-using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
-using Aurora.SupplyWok.Platform.Purchasing.Interfaces.Rest.Resources;
+using Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates;
+using Aurora.SupplyWok.Platform.Suppliers.Interfaces.Rest.Resources;
 
-namespace Aurora.SupplyWok.Platform.Purchasing.Interfaces.Rest.Transform;
+namespace Aurora.SupplyWok.Platform.Suppliers.Interfaces.Rest.Transform;
 
 public static class SupplierResourceFromEntityAssembler
 {

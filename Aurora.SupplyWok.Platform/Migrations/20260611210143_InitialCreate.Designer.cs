@@ -168,7 +168,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     b.ToTable("tables", (string)null);
                 });
 
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate.Supplier", b =>
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates.Supplier", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int")

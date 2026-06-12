@@ -1,6 +1,6 @@
 using Aurora.SupplyWok.Platform.Shared.Domain.Model.Entities;
 
-namespace Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
+namespace Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates;
 
 /// <summary>
 /// Audit metadata for the <see cref="Supplier"/> aggregate.
