@@ -15,7 +15,7 @@ public class SupplyCommandService(ISupplyRepository supplyRepository, IUnitOfWor
     {
         try
         {
-            var supply = new Supply(command);
+            var supply = new Supply(command.Name, command.UnitOfMeasure, command.CurrentStock, command.MinimumStockLevel, command.Category);
             await supplyRepository.AddAsync(supply, cancellationToken);
             await unitOfWork.CompleteAsync(cancellationToken);
             return Result<Supply>.Success(supply);
@@ -46,7 +46,7 @@ public class SupplyCommandService(ISupplyRepository supplyRepository, IUnitOfWor
             if (supply is null)
                 return Result<Supply>.Failure(InventoryError.SupplyNotFound, nameof(InventoryError.SupplyNotFound));
 
-            supply.Update(command.Name, command.UnitOfMeasure, command.MinimumStockLevel, command.category);
+            supply.Update(command.Name, command.UnitOfMeasure, command.MinimumStockLevel, command.Category);
 
             supplyRepository.Update(supply);
             await unitOfWork.CompleteAsync(cancellationToken);

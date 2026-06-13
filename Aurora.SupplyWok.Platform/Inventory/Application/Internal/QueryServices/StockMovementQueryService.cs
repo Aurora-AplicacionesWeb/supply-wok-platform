@@ -5,22 +5,22 @@ using Aurora.SupplyWok.Platform.Inventory.Domain.Repositories;
 
 namespace Aurora.SupplyWok.Platform.Inventory.Application.Internal.QueryServices;
 
-public class StockMovementQueryService(IStockMovementRepository stockMovementRepository) : IStockMovementQueryService
+public class StockMovementQueryService(ISupplyRepository supplyRepository) : IStockMovementQueryService
 {
     public async Task<IEnumerable<StockMovement>> Handle(GetAllStockMovementsQuery query, CancellationToken cancellationToken)
     {
-        return await stockMovementRepository.ListAsync(cancellationToken);
+        return await supplyRepository.ListStockMovementsAsync(cancellationToken);
     }
 
     public async Task<StockMovement?> Handle(GetStockMovementByIdQuery query, CancellationToken cancellationToken)
     {
-        return await stockMovementRepository.GetStockMovementByIdAsync(query.StockMovementId, cancellationToken);
+        return await supplyRepository.GetStockMovementByIdAsync(query.StockMovementId, cancellationToken);
     }
 
     public async Task<IEnumerable<StockMovement>> Handle(
         GetStockMovementsBySupplyIdQuery query,
         CancellationToken cancellationToken)
     {
-        return await stockMovementRepository.ListBySupplyIdAsync(query.SupplyId, cancellationToken);
+        return await supplyRepository.ListStockMovementsBySupplyIdAsync(query.SupplyId, cancellationToken);
     }
 }

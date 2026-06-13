@@ -11,7 +11,6 @@ namespace Aurora.SupplyWok.Platform.Inventory.Application.Internal.CommandServic
 
 public class StockMovementCommandService(
     ISupplyRepository supplyRepository,
-    IStockMovementRepository stockMovementRepository,
     IUnitOfWork unitOfWork) : IStockMovementCommandService
 {
     public async Task<Result<StockMovement>> Handle(CreateStockMovementCommand command, CancellationToken cancellationToken)
@@ -33,7 +32,7 @@ public class StockMovementCommandService(
                 command.Reason);
 
             supplyRepository.Update(supply);
-            await stockMovementRepository.AddAsync(movement, cancellationToken);
+            await supplyRepository.AddStockMovementAsync(movement, cancellationToken);
             await unitOfWork.CompleteAsync(cancellationToken);
             return Result<StockMovement>.Success(movement);
         }
