@@ -1,5 +1,6 @@
 ﻿using Aurora.SupplyWok.Platform.Inventory.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Inventory.Domain.Model.ValueObjects;
+using Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities;
 
 namespace Aurora.SupplyWok.Platform.Inventory.Domain.Model.Aggregate;
 
@@ -19,15 +20,6 @@ public partial class Supply
     public Supply(string name, EUnitOfMeasure unitOfMeasure, int currentStock, int minimumStockLevel,
         string category) : this()
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Supply name cannot be empty.", nameof(name));
-        if (currentStock < 0)
-            throw new ArgumentException("Current stock cannot be negative.", nameof(currentStock));
-        if (minimumStockLevel < 0)
-            throw new ArgumentException("Minimum stock level cannot be negative.", nameof(minimumStockLevel));
-        if (string.IsNullOrWhiteSpace(category))
-            throw new ArgumentException("Supply category cannot be empty.", nameof(category));
-
         Name = name;
         UnitOfMeasure = unitOfMeasure;
         CurrentStock = currentStock;
@@ -36,7 +28,7 @@ public partial class Supply
     }
 
     public Supply(CreateSupplyCommand command) : this(command.Name, command.UnitOfMeasure, command.CurrentStock,
-        command.MinimumStockLevel, command.category)
+        command.MinimumStockLevel, command.Category)
     {
         
     }

@@ -8,5 +8,5 @@ namespace Aurora.SupplyWok.Platform.Inventory.Domain.Model.Commands;
 /// <param name="UnitOfMeasure"></param>
 /// <param name="CurrentStock"></param>
 /// <param name="MinimumStockLevel"></param>
-/// <param name="category"></param>
-public record CreateSupplyCommand(string Name, EUnitOfMeasure UnitOfMeasure, int CurrentStock, int MinimumStockLevel, string category);
+/// <param name="Category"></param>
+public record CreateSupplyCommand(string Name, EUnitOfMeasure UnitOfMeasure, int CurrentStock, int MinimumStockLevel, string Category);
