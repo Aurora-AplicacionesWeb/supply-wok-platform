@@ -32,17 +32,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Inventory\Application\CommandServices\" />
-        <Folder Include="Inventory\Application\Internal\CommandServices\" />
         <Folder Include="Inventory\Application\Internal\QueryServices\" />
-        <Folder Include="Inventory\Domain\Model\Aggregate\" />
-        <Folder Include="Inventory\Domain\Model\Commands\" />
         <Folder Include="Inventory\Domain\Model\Entities\" />
         <Folder Include="Inventory\Domain\Model\Errors\" />
         <Folder Include="Inventory\Domain\Model\Events\" />
-        <Folder Include="Inventory\Domain\Model\Queries\" />
-        <Folder Include="Inventory\Domain\Model\ValueObjects\" />
-        <Folder Include="Inventory\Domain\Repositories\" />
         <Folder Include="Inventory\Infrastructure\Persistence\EntityFrameworkCore\Configuration\Extensions\" />
         <Folder Include="Inventory\Infrastructure\Persistence\EntityFrameworkCore\Repositories\" />
         <Folder Include="Inventory\Interfaces\Acl\" />

@@ -38,6 +38,12 @@ using Aurora.SupplyWok.Platform.Suppliers.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Suppliers.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Suppliers.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Inventory.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Inventory.Application.Internal.CommandServices;
+using Aurora.SupplyWok.Platform.Inventory.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Inventory.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Inventory.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Inventory.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -136,6 +142,13 @@ builder.Services.AddScoped<ITableQueryService, TableQueryService>();
 // Supplier Bounded Context
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IClientQueryService, ClientQueryService>();
+
+// Inventory Bounded Context
+builder.Services.AddScoped<ISupplyRepository, SupplyRepository>();
+builder.Services.AddScoped<ISupplyCommandService, SupplyCommandService>();
+builder.Services.AddScoped<ISupplyQueryServices, SupplyQueryServices>();
+builder.Services.AddScoped<IStockMovementCommandService, StockMovementCommandService>();
+builder.Services.AddScoped<IStockMovementQueryService, StockMovementQueryService>();
 
 // Mediator Configuration
 
