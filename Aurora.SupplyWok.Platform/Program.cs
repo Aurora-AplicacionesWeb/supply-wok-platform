@@ -38,7 +38,7 @@ using Aurora.SupplyWok.Platform.Suppliers.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Suppliers.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Suppliers.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
-using Aurora.SupplyWok.Platform.Inventory.Application.Ad;
+using Aurora.SupplyWok.Platform.Inventory.Application.Acl;
 using Aurora.SupplyWok.Platform.Inventory.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Inventory.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Inventory.Application.Internal.QueryServices;

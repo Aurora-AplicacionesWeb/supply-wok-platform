@@ -2,7 +2,7 @@ using Aurora.SupplyWok.Platform.Inventory.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Inventory.Domain.Model.Queries;
 using Aurora.SupplyWok.Platform.Inventory.Interfaces.Acl;
 
-namespace Aurora.SupplyWok.Platform.Inventory.Application.Ad;
+namespace Aurora.SupplyWok.Platform.Inventory.Application.Acl;
 
 public class InventoryContextFacade(ISupplyQueryServices supplyQueryServices) : IInventoryContextFacade
 {
