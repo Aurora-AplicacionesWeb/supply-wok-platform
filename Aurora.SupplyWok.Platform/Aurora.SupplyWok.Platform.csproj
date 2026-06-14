@@ -32,6 +32,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Inventory\Application\Internal\QueryServices\" />
+        <Folder Include="Inventory\Domain\Model\Entities\" />
+        <Folder Include="Inventory\Domain\Model\Errors\" />
+        <Folder Include="Inventory\Domain\Model\Events\" />
+        <Folder Include="Inventory\Infrastructure\Persistence\EntityFrameworkCore\Configuration\Extensions\" />
+        <Folder Include="Inventory\Infrastructure\Persistence\EntityFrameworkCore\Repositories\" />
+        <Folder Include="Inventory\Interfaces\Acl\" />
+        <Folder Include="Inventory\Interfaces\Rest\Resources\" />
+        <Folder Include="Inventory\Interfaces\Rest\Transform\" />
+        <Folder Include="Inventory\Resources\" />
         <Folder Include="Iot\Domain\Model\Entities\" />
         <Folder Include="Iot\Domain\Model\Events\" />
         <Folder Include="Operations\Domain\Model\Entities\" />
