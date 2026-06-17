@@ -1,7 +1,7 @@
 using Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl;
 
-namespace Aurora.SupplyWok.Platform.Suppliers.Application.Ad;
+namespace Aurora.SupplyWok.Platform.Suppliers.Application.Acl;
 
 /// <summary>
 /// Application facade for supplier data exposed through the ACL.

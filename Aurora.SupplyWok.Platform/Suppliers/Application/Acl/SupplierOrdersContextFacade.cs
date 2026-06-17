@@ -1,7 +1,7 @@
 using Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl;
 
-namespace Aurora.SupplyWok.Platform.Suppliers.Application.Ad;
+namespace Aurora.SupplyWok.Platform.Suppliers.Application.Acl;
 
 /// <summary>
 /// Supplier-facing facade that retrieves purchase order data through the Purchasing ACL.

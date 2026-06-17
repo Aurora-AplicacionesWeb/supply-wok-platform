@@ -21,7 +21,7 @@ using Aurora.SupplyWok.Platform.Iot.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Iot.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Iot.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Purchasing.Application.CommandServices;
-using Aurora.SupplyWok.Platform.Purchasing.Application.Ad;
+using Aurora.SupplyWok.Platform.Purchasing.Application.Acl;
 using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Purchasing.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Purchasing.Application.QueryServices;
@@ -124,7 +124,7 @@ builder.Services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
 builder.Services.AddScoped<IPurchaseOrderCommandService, PurchaseOrderCommandService>();
 builder.Services.AddScoped<IPurchaseOrderQueryService, PurchaseOrderQueryService>();
 builder.Services.AddScoped<IPurchaseOrderContextFacade, PurchaseOrderContextFacade>();
-builder.Services.AddScoped<Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Purchasing.Application.Ad.SupplierContextFacade>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Purchasing.Application.Acl.SupplierContextFacade>();
 
 // Operations Bounded Context
 builder.Services.AddScoped<ITableRepository, TableRepository>();
@@ -136,8 +136,8 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IClientQueryService, ClientQueryService>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories.ISupplierRepository, Aurora.SupplyWok.Platform.Suppliers.Infrastructure.Persistence.EntityFrameworkCore.Repositories.SupplierRepository>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Application.QueryServices.ISupplierQueryService, Aurora.SupplyWok.Platform.Suppliers.Application.Internal.QueryServices.SupplierQueryService>();
-builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Ad.SupplierContextFacade>();
-builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Ad.SupplierOrdersContextFacade>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Acl.SupplierContextFacade>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Acl.SupplierOrdersContextFacade>();
 
 // Mediator Configuration
 

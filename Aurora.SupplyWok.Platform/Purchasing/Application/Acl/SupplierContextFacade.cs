@@ -3,7 +3,7 @@ using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Aggregate;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Queries;
 using Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl;
 
-namespace Aurora.SupplyWok.Platform.Purchasing.Application.Ad;
+namespace Aurora.SupplyWok.Platform.Purchasing.Application.Acl;
 
 /// <summary>
 /// Application facade for supplier operations exposed through the ACL.
