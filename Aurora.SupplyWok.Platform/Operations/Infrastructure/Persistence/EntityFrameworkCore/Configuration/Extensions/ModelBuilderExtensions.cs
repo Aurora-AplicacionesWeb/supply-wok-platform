@@ -10,6 +10,7 @@ public static class ModelBuilderExtensions
     {
         // Operations Context
         
+        // Tables
         builder.Entity<Table>().ToTable("Tables");
         builder.Entity<Table>().HasKey(t => t.Id);
         builder.Entity<Table>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
@@ -30,7 +31,7 @@ public static class ModelBuilderExtensions
         builder.Entity<Dish>().Property(d => d.Price).IsRequired();
         builder.Entity<Dish>().Property(d => d.Active).IsRequired().HasDefaultValue(true);
         builder.Entity<Dish>().Property(d => d.Outstanding).IsRequired().HasDefaultValue(true);
-
+        // Foreign Keys
         builder.Entity<Dish>()
             .HasOne(d => d.DishCategory)
             .WithMany()
@@ -44,5 +45,36 @@ public static class ModelBuilderExtensions
         builder.Entity<DishCategory>().Property(dc => dc.Name).IsRequired().HasMaxLength(80);
         builder.Entity<DishCategory>().Property(dc => dc.Order).IsRequired();
         builder.Entity<DishCategory>().Property(dc => dc.Active).IsRequired().HasDefaultValue(true);
+
+        // KitchenOrders
+        builder.Entity<KitchenOrder>().ToTable("KitchenOrders");
+        builder.Entity<KitchenOrder>().HasKey(ko => ko.Id);
+        builder.Entity<KitchenOrder>().Property(ko => ko.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<KitchenOrder>().Property(ko => ko.Number).IsRequired().HasMaxLength(50);
+        builder.Entity<KitchenOrder>().Property(ko => ko.TableId).IsRequired();
+        builder.Entity<KitchenOrder>().Property(ko => ko.TypeService).IsRequired().HasConversion<string>();
+        builder.Entity<KitchenOrder>().Property(ko => ko.Status).IsRequired().HasConversion<string>().HasMaxLength(30);
+        builder.Entity<KitchenOrder>().Property(ko => ko.Observations).HasMaxLength(500);
+        builder.Entity<KitchenOrder>().Property(ko => ko.DateCreated).IsRequired();
+        builder.Entity<KitchenOrder>().Property(ko => ko.HourReady);
+        builder.Entity<KitchenOrder>().Property(ko => ko.HourDelivered);
+        builder.Entity<KitchenOrder>().Property(ko => ko.PreparationTime).HasDefaultValue(0);
+        builder.Entity<KitchenOrder>().Ignore(ko => ko.TotalPrice);
+        // Foreign Keys
+        builder.Entity<KitchenOrder>()
+            .HasMany(ko => ko.Items)
+            .WithOne()
+            .HasForeignKey(ki => ki.KitchenOrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // KitchenOrderItems
+        builder.Entity<KitchenOrderItem>().ToTable("KitchenOrderItems");
+        builder.Entity<KitchenOrderItem>().HasKey(ki => ki.Id);
+        builder.Entity<KitchenOrderItem>().Property(ki => ki.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<KitchenOrderItem>().Property(ki => ki.DishId).IsRequired();
+        builder.Entity<KitchenOrderItem>().Property(ki => ki.DishName).IsRequired().HasMaxLength(100);
+        builder.Entity<KitchenOrderItem>().Property(ki => ki.Quantity).IsRequired();
+        builder.Entity<KitchenOrderItem>().Property(ki => ki.UnitPrice).IsRequired();
+        builder.Entity<KitchenOrderItem>().Ignore(ki => ki.SubTotal);
     }
 }
