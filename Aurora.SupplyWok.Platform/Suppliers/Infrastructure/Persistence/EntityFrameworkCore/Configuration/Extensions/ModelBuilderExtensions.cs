@@ -35,6 +35,41 @@ public static class ModelBuilderExtensions
         builder.Entity<Supplier>().Property(supplier => supplier.Sla).IsRequired().HasMaxLength(20);
         builder.Entity<Supplier>().Property(supplier => supplier.ResponseTime).IsRequired().HasMaxLength(20);
 
+        builder.Entity<SupplierClient>().ToTable("SupplierClients");
+        builder.Entity<SupplierClient>().HasKey(supplierClient => supplierClient.Id);
+        builder.Entity<SupplierClient>().Property(supplierClient => supplierClient.Id).ValueGeneratedOnAdd();
+        builder.Entity<SupplierClient>().Property(supplierClient => supplierClient.SupplierId).IsRequired();
+        builder.Entity<SupplierClient>().Property(supplierClient => supplierClient.ClientId).IsRequired();
+        builder.Entity<SupplierClient>()
+            .HasIndex(supplierClient => new { supplierClient.SupplierId, supplierClient.ClientId })
+            .IsUnique();
+        builder.Entity<SupplierClient>()
+            .HasOne<Supplier>()
+            .WithMany()
+            .HasForeignKey(supplierClient => supplierClient.SupplierId)
+            .OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<SupplierClient>()
+            .HasOne<Client>()
+            .WithMany()
+            .HasForeignKey(supplierClient => supplierClient.ClientId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<CatalogItem>().ToTable("CatalogItems");
+        builder.Entity<CatalogItem>().HasKey(catalogItem => catalogItem.Id);
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Id).ValueGeneratedOnAdd();
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.SupplierId).IsRequired();
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Category).IsRequired().HasMaxLength(80);
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Price).IsRequired().HasPrecision(18, 2);
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Unit).IsRequired().HasConversion<string>();
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.DeliveryConditions).IsRequired().HasMaxLength(250);
+        builder.Entity<CatalogItem>().HasIndex(catalogItem => catalogItem.SupplierId);
+        builder.Entity<CatalogItem>()
+            .HasOne<Supplier>()
+            .WithMany()
+            .HasForeignKey(catalogItem => catalogItem.SupplierId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         SeedSuppliers(builder);
     }
 

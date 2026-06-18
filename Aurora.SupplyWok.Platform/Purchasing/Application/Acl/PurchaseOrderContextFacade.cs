@@ -5,7 +5,7 @@ using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Queries;
 using Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl;
 
-namespace Aurora.SupplyWok.Platform.Purchasing.Application.Ad;
+namespace Aurora.SupplyWok.Platform.Purchasing.Application.Acl;
 
 /// <summary>
 /// Application facade for purchase order operations exposed through the ACL.

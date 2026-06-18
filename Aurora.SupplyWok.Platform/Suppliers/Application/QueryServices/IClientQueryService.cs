@@ -9,10 +9,10 @@ namespace Aurora.SupplyWok.Platform.Suppliers.Application.QueryServices;
 public interface IClientQueryService
 {
     /// <summary>
-    ///     Handles the query that retrieves all clients.
+    ///     Handles the query that retrieves all clients linked to a supplier.
     /// </summary>
     /// <param name="query">The client query.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The clients available to the supplier workspace.</returns>
-    Task<IEnumerable<Client>> Handle(GetAllClientsQuery query, CancellationToken cancellationToken);
+    /// <returns>The clients linked to the requested supplier.</returns>
+    Task<IEnumerable<Client>> Handle(GetAllClientsBySupplierIdQuery query, CancellationToken cancellationToken);
 }
