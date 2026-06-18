@@ -6,22 +6,6 @@ namespace Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates;
 public partial class Supplier
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Supplier"/> aggregate.
-    /// </summary>
-    public Supplier()
-    {
-        Uuid = Guid.Empty;
-        Name = string.Empty;
-        ContactName = string.Empty;
-        Email = string.Empty;
-        Phone = string.Empty;
-        Category = string.Empty;
-        LinkedDate = string.Empty;
-        Sla = string.Empty;
-        ResponseTime = string.Empty;
-    }
-
-    /// <summary>
     /// Gets the numeric supplier identifier used by the current frontend contract.
     /// </summary>
     public int Id { get; private set; }
