@@ -150,6 +150,8 @@ builder.Services.AddScoped<ICatalogItemQueryService, CatalogItemQueryService>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Domain.Repositories.ISupplierRepository, Aurora.SupplyWok.Platform.Suppliers.Infrastructure.Persistence.EntityFrameworkCore.Repositories.SupplierRepository>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Application.QueryServices.ISupplierQueryService, Aurora.SupplyWok.Platform.Suppliers.Application.Internal.QueryServices.SupplierQueryService>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Acl.SupplierContextFacade>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierClientsContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Acl.SupplierClientsContextFacade>();
+builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierCatalogContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Acl.SupplierCatalogContextFacade>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Suppliers.Application.Acl.SupplierOrdersContextFacade>();
 
 // Inventory Bounded Context
