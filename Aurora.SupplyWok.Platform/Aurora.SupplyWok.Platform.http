@@ -4,3 +4,26 @@ GET {{Aurora.SupplyWok.Platform_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET {{Aurora.SupplyWok.Platform_HostAddress}}/api/v1/suppliers/201/clients
+Accept: application/json
+
+###
+
+POST {{Aurora.SupplyWok.Platform_HostAddress}}/api/v1/suppliers/201/catalog-items
+Content-Type: application/json
+
+{
+  "name": "Cebolla china",
+  "category": "Vegetables",
+  "price": 2.9,
+  "unit": "kg",
+  "deliveryConditions": "Next-day before 11:00"
+}
+
+###
+
+GET {{Aurora.SupplyWok.Platform_HostAddress}}/api/v1/suppliers/201/catalog-items
+Accept: application/json
+
+###

@@ -1,23 +1,13 @@
 namespace Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates;
 
 /// <summary>
-///     Client aggregate root for the supplier workspace.
+///     Client aggregate owned by the Suppliers bounded context.
 /// </summary>
 /// <remarks>
 ///     In this bounded context, a client represents a restaurant known by the supplier.
 /// </remarks>
 public partial class Client
 {
-    /// <summary>
-    ///     Initializes a new empty client instance.
-    /// </summary>
-    public Client()
-    {
-        Name = string.Empty;
-        District = string.Empty;
-        Status = string.Empty;
-    }
-
     /// <summary>
     ///     Initializes a new client instance with business data.
     /// </summary>
