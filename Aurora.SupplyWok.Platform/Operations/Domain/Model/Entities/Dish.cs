@@ -12,7 +12,7 @@ public class Dish
         Price = 0.0;
         Active = true;
         Outstanding = true;
-        DishCategoryId = new DishCategory().Id;
+        DishCategoryId = 0;
     }
 
     public Dish(string code, string name, int quantity, string description, double price, bool active, bool outstanding, int dishCategoryId) : this()
@@ -36,4 +36,5 @@ public class Dish
     public bool Active { get; private set; }
     public bool Outstanding { get; private set; }
     public int DishCategoryId { get; private set; }
+    public DishCategory? DishCategory { get; private set; }
 }
