@@ -5,6 +5,7 @@ using Aurora.SupplyWok.Platform.Iot.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Iot.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Inventory.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
@@ -19,6 +20,7 @@ namespace Aurora.SupplyWok.Platform.Iot.Application.Internal.CommandServices;
 public class AlertCommandService(
     IAlertRepository alertRepository,
     ISensorRepository sensorRepository,
+    IInventoryContextFacade inventoryContextFacade,
     IUnitOfWork unitOfWork,
     IStringLocalizer<ErrorMessages> localizer) : IAlertCommandService
 {
@@ -61,6 +63,56 @@ public class AlertCommandService(
         catch (Exception ex)
         {
             return Result<Alert>.Failure(AlertsError.InternalServerError,
+                ex.Message);
+        }
+    }
+
+    // <inheritdoc />
+    public async Task<Result<Alert?>> Handle(CreateAlertRestaurantFromInventoryCommand command,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var sensor = await sensorRepository.GetSensorByIdAsync(command.SensorId, cancellationToken);
+            if (sensor == null)
+            {
+                return Result<Alert?>.Failure(AlertsError.SensorNotFound,
+                    string.Format(_localizer[nameof(AlertsError.SensorNotFound)] ?? "Sensor with ID {0} not found.",
+                        command.SensorId));
+            }
+
+            var inventoryStock = await inventoryContextFacade.GetTotalSupplyStockAsync(cancellationToken);
+            if (Math.Abs(inventoryStock - sensor.LastValue) < double.Epsilon)
+                return Result<Alert?>.Success(null);
+
+            var detail =
+                $"Inventory stock ({inventoryStock}) differs from sensor last value ({sensor.LastValue}).";
+
+            var alert = new AlertRestaurant(
+                EAlertSeverity.Medium,
+                detail,
+                DateTimeOffset.UtcNow,
+                EAlertStatus.Pending,
+                command.SensorId
+            );
+
+            await alertRepository.AddAsync(alert, cancellationToken);
+            await unitOfWork.CompleteAsync(cancellationToken);
+            return Result<Alert?>.Success(alert);
+        }
+        catch (OperationCanceledException)
+        {
+            return Result<Alert?>.Failure(AlertsError.OperationCancelled,
+                _localizer[nameof(AlertsError.OperationCancelled)] ?? "Operation was cancelled.");
+        }
+        catch (DbUpdateException)
+        {
+            return Result<Alert?>.Failure(AlertsError.DatabaseError,
+                _localizer[nameof(AlertsError.DatabaseError)] ?? "Database error occurred.");
+        }
+        catch (Exception ex)
+        {
+            return Result<Alert?>.Failure(AlertsError.InternalServerError,
                 ex.Message);
         }
     }

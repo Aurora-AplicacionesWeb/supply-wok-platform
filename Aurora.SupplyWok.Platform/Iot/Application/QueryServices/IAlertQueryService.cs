@@ -17,6 +17,22 @@ public interface IAlertQueryService
     Task<IEnumerable<Alert>> Handle(GetAllAlertsQuery query, CancellationToken cancellationToken);
 
     /// <summary>
+    /// Handles retrieving all restaurant alerts.
+    /// </summary>
+    /// <param name="query">The query object</param>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>A collection of restaurant alerts</returns>
+    Task<IEnumerable<Alert>> Handle(GetAllRestaurantAlertsQuery query, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Handles retrieving all supplier alerts.
+    /// </summary>
+    /// <param name="query">The query object</param>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>A collection of supplier alerts</returns>
+    Task<IEnumerable<Alert>> Handle(GetAllSupplierAlertsQuery query, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Handles retrieving an alert by its identifier.
     /// </summary>
     /// <param name="query">The query object</param>

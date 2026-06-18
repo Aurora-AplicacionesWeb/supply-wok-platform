@@ -51,6 +51,10 @@ using Aurora.SupplyWok.Platform.Inventory.Interfaces.Acl;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()))
     .AddDataAnnotationsLocalization();
@@ -81,9 +85,6 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
     options.UseMySQL(connectionString)
         .UseLoggerFactory(serviceProvider.GetRequiredService<ILoggerFactory>())
         .EnableDetailedErrors();
-
-    if (builder.Environment.IsDevelopment())
-        options.EnableSensitiveDataLogging();
 });
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");

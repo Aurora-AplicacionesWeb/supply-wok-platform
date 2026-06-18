@@ -15,4 +15,18 @@ public interface IAlertRepository : IBaseRepository<Alert>
     /// <param name="cancellationToken">The cancellation token</param>
     /// <returns>The <see cref="Alert"/> if found, otherwise null</returns>
     Task<Alert?> GetAlertByIdAsync(int id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Lists all restaurant alerts.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>The restaurant alert collection</returns>
+    Task<IEnumerable<Alert>> ListRestaurantAlertsAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Lists all supplier alerts.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token</param>
+    /// <returns>The supplier alert collection</returns>
+    Task<IEnumerable<Alert>> ListSupplierAlertsAsync(CancellationToken cancellationToken);
 }

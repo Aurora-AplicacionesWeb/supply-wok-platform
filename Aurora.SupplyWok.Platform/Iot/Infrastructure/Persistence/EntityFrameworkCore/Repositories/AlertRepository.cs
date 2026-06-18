@@ -15,9 +15,28 @@ public class AlertRepository(AppDbContext context) : BaseRepository<Alert>(conte
 {
     public async Task<Alert?> GetAlertByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await Context.Set<Alert>()
-            .Include(a => ((AlertRestaurant)a).Sensor)
-            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+        var restaurantAlert = await Context.Set<AlertRestaurant>()
+            .Include(a => a.Sensor)
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+
+        if (restaurantAlert != null)
+            return restaurantAlert;
+
+        return await Context.Set<AlertSupplier>()
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Alert>> ListRestaurantAlertsAsync(CancellationToken cancellationToken)
+    {
+        return await Context.Set<AlertRestaurant>()
+            .Include(a => a.Sensor)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Alert>> ListSupplierAlertsAsync(CancellationToken cancellationToken)
+    {
+        return await Context.Set<AlertSupplier>()
+            .ToListAsync(cancellationToken);
     }
 
     public new async Task<Alert?> FindByIdAsync(int id, CancellationToken cancellationToken = default)
@@ -27,8 +46,16 @@ public class AlertRepository(AppDbContext context) : BaseRepository<Alert>(conte
 
     public new async Task<IEnumerable<Alert>> ListAsync(CancellationToken cancellationToken = default)
     {
-        return await Context.Set<Alert>()
-            .Include(a => ((AlertRestaurant)a).Sensor)
+        var restaurantAlerts = await Context.Set<AlertRestaurant>()
+            .Include(a => a.Sensor)
             .ToListAsync(cancellationToken);
+
+        var supplierAlerts = await Context.Set<AlertSupplier>()
+            .ToListAsync(cancellationToken);
+
+        return restaurantAlerts
+            .Cast<Alert>()
+            .Concat(supplierAlerts)
+            .OrderBy(a => a.Id);
     }
 }
