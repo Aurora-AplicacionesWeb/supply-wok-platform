@@ -10,5 +10,7 @@ public record AlertRestaurantResource(
     DateTimeOffset Date,
     string Status,
     string AlertType,
+    int SensorId,
+    string SensorName,
     SensorResource Sensor
 ) : AlertResource(Id, Severity, Detail, Date, Status, AlertType);
