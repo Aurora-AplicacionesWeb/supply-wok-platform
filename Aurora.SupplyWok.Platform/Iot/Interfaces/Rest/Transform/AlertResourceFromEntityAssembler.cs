@@ -45,6 +45,8 @@ public static class AlertResourceFromEntityAssembler
                 alert.Date,
                 status,
                 "restaurant",
+                sensorResource.Id,
+                sensorResource.Name,
                 sensorResource
             );
         }

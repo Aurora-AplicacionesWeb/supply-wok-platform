@@ -19,6 +19,32 @@ public static class ModelBuilderExtensions
         builder.Entity<Sensor>().Property(s => s.Enabled).IsRequired();
         builder.Entity<Sensor>().Property(s => s.LastValue).IsRequired();
         builder.Entity<Sensor>().Property(s => s.SensorType).IsRequired().HasConversion<string>();
+
+        builder.Entity<Sensor>().HasData(
+            new
+            {
+                Id = 301,
+                Name = "Main Inventory Weight Sensor",
+                MinValue = 0d,
+                MaxValue = 10000d,
+                Enabled = true,
+                LastValue = 850d,
+                SensorType = Domain.Model.ValueObjects.ESensorType.Weight,
+                CreatedAt = new DateTimeOffset(2026, 6, 1, 0, 0, 0, TimeSpan.Zero),
+                UpdatedAt = (DateTimeOffset?)null
+            },
+            new
+            {
+                Id = 302,
+                Name = "Cold Storage Temperature Sensor",
+                MinValue = -10d,
+                MaxValue = 8d,
+                Enabled = true,
+                LastValue = 4d,
+                SensorType = Domain.Model.ValueObjects.ESensorType.Temperature,
+                CreatedAt = new DateTimeOffset(2026, 6, 1, 0, 0, 0, TimeSpan.Zero),
+                UpdatedAt = (DateTimeOffset?)null
+            });
     }
 
     public static void ApplyAlertsConfiguration(this ModelBuilder builder)
@@ -44,5 +70,40 @@ public static class ModelBuilderExtensions
             .WithMany()
             .HasForeignKey(ar => ar.SensorId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<AlertRestaurant>().HasData(
+            new
+            {
+                Id = 301,
+                Severity = Domain.Model.ValueObjects.EAlertSeverity.Medium,
+                Detail = "Inventory stock differs from main inventory weight sensor.",
+                Date = new DateTimeOffset(2026, 6, 1, 8, 0, 0, TimeSpan.Zero),
+                Status = Domain.Model.ValueObjects.EAlertStatus.Pending,
+                SensorId = 301,
+                CreatedAt = new DateTimeOffset(2026, 6, 1, 8, 0, 0, TimeSpan.Zero),
+                UpdatedAt = (DateTimeOffset?)null
+            },
+            new
+            {
+                Id = 302,
+                Severity = Domain.Model.ValueObjects.EAlertSeverity.High,
+                Detail = "Cold storage temperature is outside the expected range.",
+                Date = new DateTimeOffset(2026, 6, 1, 9, 0, 0, TimeSpan.Zero),
+                Status = Domain.Model.ValueObjects.EAlertStatus.Pending,
+                SensorId = 302,
+                CreatedAt = new DateTimeOffset(2026, 6, 1, 9, 0, 0, TimeSpan.Zero),
+                UpdatedAt = (DateTimeOffset?)null
+            });
+
+        builder.Entity<AlertSupplier>().HasData(new
+        {
+            Id = 303,
+            Severity = Domain.Model.ValueObjects.EAlertSeverity.Low,
+            Detail = "Supplier delivery status should be reviewed.",
+            Date = new DateTimeOffset(2026, 6, 1, 10, 0, 0, TimeSpan.Zero),
+            Status = Domain.Model.ValueObjects.EAlertStatus.Pending,
+            CreatedAt = new DateTimeOffset(2026, 6, 1, 10, 0, 0, TimeSpan.Zero),
+            UpdatedAt = (DateTimeOffset?)null
+        });
     }
-}
+}
