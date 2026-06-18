@@ -4,6 +4,8 @@ public enum OperationsError
 {
     None,
     TableNotFound,
+    DishNotFound,
+    DishCategoryNotFound,
     OperationCancelled,
     DatabaseError,
     InternalServerError

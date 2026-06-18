@@ -141,6 +141,10 @@ builder.Services.AddScoped<Aurora.SupplyWok.Platform.Purchasing.Interfaces.Acl.I
 builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<ITableCommandService, TableCommandService>();
 builder.Services.AddScoped<ITableQueryService, TableQueryService>();
+builder.Services.AddScoped<IDishRepository, DishRepository>();
+builder.Services.AddScoped<IDishCategoryRepository, DishCategoryRepository>();
+builder.Services.AddScoped<IDishQueryService, DishQueryService>();
+builder.Services.AddScoped<IDishCategoryQueryService, DishCategoryQueryService>();
 
 // Supplier Bounded Context
 builder.Services.AddScoped<IClientRepository, ClientRepository>();

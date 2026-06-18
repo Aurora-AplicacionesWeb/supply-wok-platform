@@ -250,6 +250,93 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     b.ToTable("tables", (string)null);
                 });
 
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Entities.Dish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true)
+                        .HasColumnName("active");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("description");
+
+                    b.Property<int>("DishCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("dish_category_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<bool>("Outstanding")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true)
+                        .HasColumnName("outstanding");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double")
+                        .HasColumnName("price");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_dishes");
+
+                    b.HasIndex("DishCategoryId")
+                        .HasDatabaseName("i_x_dishes_dish_category_id");
+
+                    b.ToTable("dishes", (string)null);
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Entities.DishCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true)
+                        .HasColumnName("active");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("name");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int")
+                        .HasColumnName("order");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_dish_categories");
+
+                    b.ToTable("dish_categories", (string)null);
+                });
+
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities.PurchaseOrder", b =>
                 {
                     b.Property<int>("Id")
@@ -693,6 +780,123 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     b.ToTable("supplier_clients", (string)null);
                 });
 
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Suppliers.Domain.Model.Aggregates.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("category");
+
+                    b.Property<string>("ContactName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("contact_name");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("LinkedDate")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("linked_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("phone");
+
+                    b.Property<string>("ResponseTime")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("response_time");
+
+                    b.Property<string>("Sla")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("sla");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<Guid>("Uuid")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("uuid");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_suppliers");
+
+                    b.HasIndex("Uuid")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_suppliers_uuid");
+
+                    b.ToTable("suppliers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 201,
+                            Category = "Grains and pantry",
+                            ContactName = "Mariela Soto",
+                            Email = "msoto@goldenwok.pe",
+                            LinkedDate = "2026-04-21",
+                            Name = "Golden Wok Produce",
+                            Phone = "+51 999 111 222",
+                            ResponseTime = "1.6 H",
+                            Sla = "98% SLA",
+                            Uuid = new Guid("11111111-1111-1111-1111-111111111201")
+                        },
+                        new
+                        {
+                            Id = 202,
+                            Category = "Cold products",
+                            ContactName = "Luis Cardenas",
+                            Email = "lcardenas@andescold.pe",
+                            LinkedDate = "2026-04-20",
+                            Name = "Andes Cold Chain",
+                            Phone = "+51 999 333 444",
+                            ResponseTime = "2.1 H",
+                            Sla = "95% SLA",
+                            Uuid = new Guid("11111111-1111-1111-1111-111111111202")
+                        },
+                        new
+                        {
+                            Id = 203,
+                            Category = "Asian sauces and oils",
+                            ContactName = "Zhen Liu",
+                            Email = "zliu@orientpantry.pe",
+                            LinkedDate = "2026-04-19",
+                            Name = "Orient Pantry Co.",
+                            Phone = "+51 999 555 666",
+                            ResponseTime = "2.9 H",
+                            Sla = "91% SLA",
+                            Uuid = new Guid("11111111-1111-1111-1111-111111111203")
+                        });
+                });
+
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Iot.Domain.Model.Entities.AlertRestaurant", b =>
                 {
                     b.HasBaseType("Aurora.SupplyWok.Platform.Iot.Domain.Model.Aggregate.Alert");
@@ -728,6 +932,30 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .HasConstraintName("f_k_stock_movements_supplies_supply_id");
 
                     b.Navigation("Supply");
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.StockMovement", b =>
+                {
+                    b.HasOne("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Aggregate.Supply", "Supply")
+                        .WithMany()
+                        .HasForeignKey("SupplyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_stock_movements_supplies_supply_id");
+
+                    b.Navigation("Supply");
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Entities.Dish", b =>
+                {
+                    b.HasOne("Aurora.SupplyWok.Platform.Operations.Domain.Model.Entities.DishCategory", "DishCategory")
+                        .WithMany()
+                        .HasForeignKey("DishCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("f_k_dishes__dish_categories_dish_category_id");
+
+                    b.Navigation("DishCategory");
                 });
 
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities.PurchaseOrderItem", b =>
