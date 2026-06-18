@@ -18,6 +18,18 @@ public class AlertQueryService(IAlertRepository alertRepository) : IAlertQuerySe
     }
 
     // <inheritdoc />
+    public async Task<IEnumerable<Alert>> Handle(GetAllRestaurantAlertsQuery query, CancellationToken cancellationToken)
+    {
+        return await alertRepository.ListRestaurantAlertsAsync(cancellationToken);
+    }
+
+    // <inheritdoc />
+    public async Task<IEnumerable<Alert>> Handle(GetAllSupplierAlertsQuery query, CancellationToken cancellationToken)
+    {
+        return await alertRepository.ListSupplierAlertsAsync(cancellationToken);
+    }
+
+    // <inheritdoc />
     public async Task<Alert?> Handle(GetAlertByIdQuery query, CancellationToken cancellationToken)
     {
         return await alertRepository.GetAlertByIdAsync(query.AlertId, cancellationToken);
