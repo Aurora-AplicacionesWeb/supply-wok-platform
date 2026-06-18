@@ -9,4 +9,19 @@
   <data name="TableDeletedSuccessfully" xml:space="preserve">
     <value>Mesa eliminada exitosamente.</value>
   </data>
+  <data name="KitchenOrderCreatedSuccessfully" xml:space="preserve">
+    <value>Pedido de cocina creado exitosamente.</value>
+  </data>
+  <data name="KitchenOrderUpdatedSuccessfully" xml:space="preserve">
+    <value>Pedido de cocina actualizado exitosamente.</value>
+  </data>
+  <data name="KitchenOrderDeletedSuccessfully" xml:space="preserve">
+    <value>Pedido de cocina eliminado exitosamente.</value>
+  </data>
+  <data name="DishAddedToKitchenOrderSuccessfully" xml:space="preserve">
+    <value>Plato agregado al pedido de cocina exitosamente.</value>
+  </data>
+  <data name="KitchenOrderStatusUpdatedSuccessfully" xml:space="preserve">
+    <value>Estado del pedido de cocina actualizado exitosamente.</value>
+  </data>
 </root>

@@ -145,6 +145,9 @@ builder.Services.AddScoped<IDishRepository, DishRepository>();
 builder.Services.AddScoped<IDishCategoryRepository, DishCategoryRepository>();
 builder.Services.AddScoped<IDishQueryService, DishQueryService>();
 builder.Services.AddScoped<IDishCategoryQueryService, DishCategoryQueryService>();
+builder.Services.AddScoped<IKitchenOrderRepository, KitchenOrderRepository>();
+builder.Services.AddScoped<IKitchenOrderCommandService, KitchenOrderCommandService>();
+builder.Services.AddScoped<IKitchenOrderQueryService, KitchenOrderQueryService>();
 
 // Supplier Bounded Context
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
