@@ -46,6 +46,10 @@
         <Folder Include="Iot\Domain\Model\Events\" />
         <Folder Include="Operations\Domain\Model\Errors\" />
         <Folder Include="Operations\Resources\" />
+        <Folder Include="Profiles\Application\" />
+        <Folder Include="Profiles\Infrastructure\" />
+        <Folder Include="Profiles\Interfaces\" />
+        <Folder Include="Profiles\Resources\" />
         <Folder Include="Shared\Application\"/>
         <Folder Include="Shared\Infrastructure\"/>
         <Folder Include="Shared\Interfaces\"/>
