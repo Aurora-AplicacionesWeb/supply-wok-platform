@@ -25,7 +25,9 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     district = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
-                    status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,6 +52,30 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "kitchen_orders",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    number = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    table_id = table.Column<int>(type: "int", nullable: false),
+                    type_service = table.Column<string>(type: "longtext", unicode: false, nullable: false),
+                    status = table.Column<string>(type: "longtext", unicode: false, maxLength: 30, nullable: false),
+                    observations = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
+                    date_created = table.Column<DateOnly>(type: "date", nullable: false),
+                    hour_ready = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    hour_delivered = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    preparation_time = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_kitchen_orders", x => x.id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "purchase_orders",
                 columns: table => new
                 {
@@ -61,8 +87,8 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     restaurant_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     order_date = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
                     estimated_date = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
-                    priority = table.Column<string>(type: "longtext", nullable: false),
-                    status = table.Column<string>(type: "longtext", nullable: false),
+                    priority = table.Column<string>(type: "longtext", unicode: false, nullable: false),
+                    status = table.Column<string>(type: "longtext", unicode: false, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
@@ -83,7 +109,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     max_value = table.Column<double>(type: "double", nullable: false),
                     enabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     last_value = table.Column<double>(type: "double", nullable: false),
-                    sensor_type = table.Column<string>(type: "longtext", nullable: false),
+                    sensor_type = table.Column<string>(type: "longtext", unicode: false, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
@@ -123,7 +149,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    unit_of_measure = table.Column<string>(type: "longtext", nullable: false),
+                    unit_of_measure = table.Column<string>(type: "longtext", unicode: false, nullable: false),
                     current_stock = table.Column<int>(type: "int", nullable: false),
                     minimum_stock_level = table.Column<int>(type: "int", nullable: false),
                     category = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
@@ -145,7 +171,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     number = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     capacity = table.Column<int>(type: "int", nullable: false),
                     location = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    state = table.Column<string>(type: "longtext", nullable: false),
+                    state = table.Column<string>(type: "longtext", unicode: false, nullable: false),
                     active = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: true),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
@@ -184,6 +210,30 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "kitchen_order_items",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    kitchen_order_id = table.Column<int>(type: "int", nullable: false),
+                    dish_id = table.Column<int>(type: "int", nullable: false),
+                    dish_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    unit_price = table.Column<double>(type: "double", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_kitchen_order_items", x => x.id);
+                    table.ForeignKey(
+                        name: "f_k_kitchen_order_items_kitchen_orders_kitchen_order_id",
+                        column: x => x.kitchen_order_id,
+                        principalTable: "kitchen_orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "purchase_order_items",
                 columns: table => new
                 {
@@ -214,10 +264,10 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    severity = table.Column<string>(type: "longtext", nullable: false),
+                    severity = table.Column<string>(type: "longtext", unicode: false, nullable: false),
                     detail = table.Column<string>(type: "longtext", nullable: false),
                     date = table.Column<DateTimeOffset>(type: "datetime", nullable: false),
-                    status = table.Column<string>(type: "longtext", nullable: false),
+                    status = table.Column<string>(type: "longtext", unicode: false, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     alert_type = table.Column<string>(type: "varchar(13)", maxLength: 13, nullable: false),
@@ -236,28 +286,113 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "stock_movements",
+                name: "catalog_items",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    supplier_id = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    category = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
+                    price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    unit = table.Column<string>(type: "longtext", unicode: false, nullable: false),
+                    delivery_conditions = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_catalog_items", x => x.id);
+                    table.ForeignKey(
+                        name: "f_k_catalog_items__suppliers_supplier_id",
+                        column: x => x.supplier_id,
+                        principalTable: "suppliers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "supplier_clients",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    supplier_id = table.Column<int>(type: "int", nullable: false),
+                    client_id = table.Column<int>(type: "int", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_supplier_clients", x => x.id);
+                    table.ForeignKey(
+                        name: "f_k_supplier_clients_clients_client_id",
+                        column: x => x.client_id,
+                        principalTable: "clients",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "f_k_supplier_clients_suppliers_supplier_id",
+                        column: x => x.supplier_id,
+                        principalTable: "suppliers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "inventory_transactions",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     supply_id = table.Column<int>(type: "int", nullable: false),
-                    type = table.Column<string>(type: "longtext", nullable: false),
+                    type = table.Column<string>(type: "longtext", unicode: false, nullable: false),
                     amount = table.Column<int>(type: "int", nullable: false),
-                    date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    transaction_date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     reason = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_stock_movements", x => x.id);
+                    table.PrimaryKey("p_k_inventory_transactions", x => x.id);
                     table.ForeignKey(
-                        name: "f_k_stock_movements_supplies_supply_id",
+                        name: "f_k__inventory_transactions__supplies",
                         column: x => x.supply_id,
                         principalTable: "supplies",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "inventory_operations",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    inventory_transaction_id = table.Column<int>(type: "int", nullable: false),
+                    type = table.Column<string>(type: "longtext", unicode: false, nullable: false),
+                    amount = table.Column<int>(type: "int", nullable: false),
+                    operation_date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    notes = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_inventory_operations", x => x.id);
+                    table.ForeignKey(
+                        name: "f_k__inventory_operations__inventory_transactions",
+                        column: x => x.inventory_transaction_id,
+                        principalTable: "inventory_transactions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "alerts",
+                columns: new[] { "id", "alert_type", "created_at", "date", "detail", "severity", "status", "updated_at" },
+                values: new object[] { 303, "Supplier", new DateTimeOffset(new DateTime(2026, 6, 1, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2026, 6, 1, 10, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Supplier delivery status should be reviewed.", "Low", "Pending", null });
 
             migrationBuilder.InsertData(
                 table: "purchase_orders",
@@ -270,6 +405,15 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "sensors",
+                columns: new[] { "id", "created_at", "enabled", "last_value", "max_value", "min_value", "name", "sensor_type", "updated_at" },
+                values: new object[,]
+                {
+                    { 301, new DateTimeOffset(new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), true, 850.0, 10000.0, 0.0, "Main Inventory Weight Sensor", "Weight", null },
+                    { 302, new DateTimeOffset(new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), true, 4.0, 8.0, -10.0, "Cold Storage Temperature Sensor", "Temperature", null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "suppliers",
                 columns: new[] { "id", "category", "contact_name", "created_at", "email", "linked_date", "name", "phone", "response_time", "sla", "updated_at", "uuid" },
                 values: new object[,]
@@ -277,6 +421,15 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     { 201, "Grains and pantry", "Mariela Soto", null, "msoto@goldenwok.pe", "2026-04-21", "Golden Wok Produce", "+51 999 111 222", "1.6 H", "98% SLA", null, new Guid("11111111-1111-1111-1111-111111111201") },
                     { 202, "Cold products", "Luis Cardenas", null, "lcardenas@andescold.pe", "2026-04-20", "Andes Cold Chain", "+51 999 333 444", "2.1 H", "95% SLA", null, new Guid("11111111-1111-1111-1111-111111111202") },
                     { 203, "Asian sauces and oils", "Zhen Liu", null, "zliu@orientpantry.pe", "2026-04-19", "Orient Pantry Co.", "+51 999 555 666", "2.9 H", "91% SLA", null, new Guid("11111111-1111-1111-1111-111111111203") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "alerts",
+                columns: new[] { "id", "alert_type", "created_at", "date", "detail", "sensor_id", "severity", "status", "updated_at" },
+                values: new object[,]
+                {
+                    { 301, "Restaurant", new DateTimeOffset(new DateTime(2026, 6, 1, 8, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2026, 6, 1, 8, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Inventory stock differs from main inventory weight sensor.", 301, "Medium", "Pending", null },
+                    { 302, "Restaurant", new DateTimeOffset(new DateTime(2026, 6, 1, 9, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2026, 6, 1, 9, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Cold storage temperature is outside the expected range.", 302, "High", "Pending", null }
                 });
 
             migrationBuilder.InsertData(
@@ -296,9 +449,29 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 column: "sensor_id");
 
             migrationBuilder.CreateIndex(
+                name: "i_x_catalog_items_supplier_id",
+                table: "catalog_items",
+                column: "supplier_id");
+
+            migrationBuilder.CreateIndex(
                 name: "i_x_dishes_dish_category_id",
                 table: "dishes",
                 column: "dish_category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_inventory_operations_inventory_transaction_id",
+                table: "inventory_operations",
+                column: "inventory_transaction_id");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_inventory_transactions_supply_id",
+                table: "inventory_transactions",
+                column: "supply_id");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_kitchen_order_items_kitchen_order_id",
+                table: "kitchen_order_items",
+                column: "kitchen_order_id");
 
             migrationBuilder.CreateIndex(
                 name: "i_x_purchase_order_items_purchase_order_id",
@@ -312,9 +485,15 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "i_x_stock_movements_supply_id",
-                table: "stock_movements",
-                column: "supply_id");
+                name: "i_x_supplier_clients_client_id",
+                table: "supplier_clients",
+                column: "client_id");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_supplier_clients_supplier_id_client_id",
+                table: "supplier_clients",
+                columns: new[] { "supplier_id", "client_id" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "i_x_suppliers_uuid",
@@ -330,19 +509,22 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 name: "alerts");
 
             migrationBuilder.DropTable(
-                name: "clients");
+                name: "catalog_items");
 
             migrationBuilder.DropTable(
                 name: "dishes");
 
             migrationBuilder.DropTable(
+                name: "inventory_operations");
+
+            migrationBuilder.DropTable(
+                name: "kitchen_order_items");
+
+            migrationBuilder.DropTable(
                 name: "purchase_order_items");
 
             migrationBuilder.DropTable(
-                name: "stock_movements");
-
-            migrationBuilder.DropTable(
-                name: "suppliers");
+                name: "supplier_clients");
 
             migrationBuilder.DropTable(
                 name: "tables");
@@ -354,7 +536,19 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 name: "dish_categories");
 
             migrationBuilder.DropTable(
+                name: "inventory_transactions");
+
+            migrationBuilder.DropTable(
+                name: "kitchen_orders");
+
+            migrationBuilder.DropTable(
                 name: "purchase_orders");
+
+            migrationBuilder.DropTable(
+                name: "clients");
+
+            migrationBuilder.DropTable(
+                name: "suppliers");
 
             migrationBuilder.DropTable(
                 name: "supplies");
