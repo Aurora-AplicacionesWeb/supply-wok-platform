@@ -87,7 +87,9 @@ public static class ModelBuilderExtensions
                 Category = "Grains and pantry",
                 LinkedDate = "2026-04-21",
                 Sla = "98% SLA",
-                ResponseTime = "1.6 H"
+                ResponseTime = "1.6 H",
+                CreatedAt = (DateTimeOffset?)null,
+                UpdatedAt = (DateTimeOffset?)null
             },
             new
             {
@@ -100,7 +102,9 @@ public static class ModelBuilderExtensions
                 Category = "Cold products",
                 LinkedDate = "2026-04-20",
                 Sla = "95% SLA",
-                ResponseTime = "2.1 H"
+                ResponseTime = "2.1 H",
+                CreatedAt = (DateTimeOffset?)null,
+                UpdatedAt = (DateTimeOffset?)null
             },
             new
             {
@@ -113,7 +117,9 @@ public static class ModelBuilderExtensions
                 Category = "Asian sauces and oils",
                 LinkedDate = "2026-04-19",
                 Sla = "91% SLA",
-                ResponseTime = "2.9 H"
+                ResponseTime = "2.9 H",
+                CreatedAt = (DateTimeOffset?)null,
+                UpdatedAt = (DateTimeOffset?)null
             });
     }
 }
