@@ -1,6 +1,5 @@
 ﻿using Aurora.SupplyWok.Platform.Inventory.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Inventory.Domain.Model.ValueObjects;
-using Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities;
 
 namespace Aurora.SupplyWok.Platform.Inventory.Domain.Model.Aggregate;
 
@@ -68,21 +67,6 @@ public partial class Supply
             throw new InvalidOperationException("Current stock cannot be negative.");
 
         CurrentStock -= amount;
-    }
-
-    public void ApplyMovement(EMovementType type, int amount)
-    {
-        switch (type)
-        {
-            case EMovementType.Entry:
-                IncreaseStock(amount);
-                break;
-            case EMovementType.Exit:
-                DecreaseStock(amount);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(type), type, "Unsupported movement type.");
-        }
     }
 
     private static void ValidateMovementAmount(int amount)

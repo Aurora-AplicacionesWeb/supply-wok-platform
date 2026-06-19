@@ -18,7 +18,7 @@ public static class ModelBuilderExtensions
         builder.Entity<Sensor>().Property(s => s.MaxValue).IsRequired();
         builder.Entity<Sensor>().Property(s => s.Enabled).IsRequired();
         builder.Entity<Sensor>().Property(s => s.LastValue).IsRequired();
-        builder.Entity<Sensor>().Property(s => s.SensorType).IsRequired().HasConversion<string>();
+        builder.Entity<Sensor>().Property(s => s.SensorType).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
 
         builder.Entity<Sensor>().HasData(
             new
@@ -55,9 +55,9 @@ public static class ModelBuilderExtensions
         builder.Entity<Alert>().HasKey(a => a.Id);
         builder.Entity<Alert>().Property(a => a.Id).ValueGeneratedOnAdd();
         builder.Entity<Alert>().Property(a => a.Detail).IsRequired();
-        builder.Entity<Alert>().Property(a => a.Severity).IsRequired().HasConversion<string>();
+        builder.Entity<Alert>().Property(a => a.Severity).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
         builder.Entity<Alert>().Property(a => a.Date).IsRequired();
-        builder.Entity<Alert>().Property(a => a.Status).IsRequired().HasConversion<string>();
+        builder.Entity<Alert>().Property(a => a.Status).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
 
         builder.Entity<Alert>()
             .HasDiscriminator<string>("AlertType")

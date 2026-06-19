@@ -8,8 +8,7 @@ public class InventoryContextFacade(ISupplyQueryServices supplyQueryServices) : 
 {
     public async Task<int> GetTotalSupplyStockAsync(CancellationToken cancellationToken)
     {
-        var getTotalSupplyStockQuery = new GetTotalSupplyStockQuery();
-        var result = await getTotalSupplyStockQuery.Handle(supplyQueryServices, cancellationToken);
-        return result;
+        var query = new GetTotalSupplyStockQuery();
+        return await supplyQueryServices.Handle(query, cancellationToken);
     }
 }

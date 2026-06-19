@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="SupplyCreatedSuccessfully" xml:space="preserve">
+    <value>供应品创建成功。</value>
+  </data>
+  <data name="SupplyUpdatedSuccessfully" xml:space="preserve">
+    <value>供应品更新成功。</value>
+  </data>
+  <data name="SupplyDeletedSuccessfully" xml:space="preserve">
+    <value>供应品删除成功。</value>
+  </data>
+  <data name="InventoryTransactionCreatedSuccessfully" xml:space="preserve">
+    <value>库存交易创建成功。</value>
+  </data>
+</root>

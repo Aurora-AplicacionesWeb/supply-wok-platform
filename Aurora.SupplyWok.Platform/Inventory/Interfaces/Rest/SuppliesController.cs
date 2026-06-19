@@ -1,11 +1,13 @@
 using System.Net.Mime;
 using Aurora.SupplyWok.Platform.Inventory.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Inventory.Application.QueryServices;
-using Aurora.SupplyWok.Platform.Inventory.Domain.Model;
 using Aurora.SupplyWok.Platform.Inventory.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Inventory.Domain.Model.Queries;
 using Aurora.SupplyWok.Platform.Inventory.Interfaces.Rest.Resources;
+using Aurora.SupplyWok.Platform.Inventory.Resources;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Aurora.SupplyWok.Platform.Inventory.Interfaces.Rest;
@@ -16,8 +18,12 @@ namespace Aurora.SupplyWok.Platform.Inventory.Interfaces.Rest;
 [SwaggerTag("Available Supply Endpoints.")]
 public class SuppliesController(
     ISupplyCommandService supplyCommandService,
-    ISupplyQueryServices supplyQueryServices) : ControllerBase
+    ISupplyQueryServices supplyQueryServices,
+    IStringLocalizer<InventoryMessages> inventoryMessagesLocalizer,
+    IStringLocalizer<ErrorMessages> errorLocalizer) : ControllerBase
 {
+    private readonly IStringLocalizer<InventoryMessages> _inventoryMessagesLocalizer = inventoryMessagesLocalizer;
+    private readonly IStringLocalizer<ErrorMessages> _errorLocalizer = errorLocalizer;
     [HttpPost]
     [SwaggerOperation("Create Supply", "Creates a new supply item.", OperationId = "CreateSupply")]
     [SwaggerResponse(201, "The supply was created successfully.", typeof(SupplyResource))]
@@ -93,11 +99,8 @@ public class SuppliesController(
         return NoContent();
     }
 
-    private IActionResult ToFailureResponse(Enum? error, string message)
+    private static IActionResult ToFailureResponse(Enum? error, string message)
     {
-        if (error is InventoryError.SupplyNotFound)
-            return NotFound(message);
-
-        return BadRequest(message);
+        return Transform.InventoryActionResultAssembler.ToFailureResponse(error, message);
     }
 }
