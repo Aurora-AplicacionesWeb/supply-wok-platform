@@ -52,6 +52,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.Property<string>("UnitOfMeasure")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("unit_of_measure");
 
@@ -65,7 +66,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     b.ToTable("supplies", (string)null);
                 });
 
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.StockMovement", b =>
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.InventoryOperation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,9 +77,45 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .HasColumnType("int")
                         .HasColumnName("amount");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<int>("InventoryTransactionId")
+                        .HasColumnType("int")
+                        .HasColumnName("inventory_transaction_id");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<DateTime>("OperationDate")
                         .HasColumnType("datetime(6)")
-                        .HasColumnName("date");
+                        .HasColumnName("operation_date");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("longtext")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_inventory_operations");
+
+                    b.HasIndex("InventoryTransactionId")
+                        .HasDatabaseName("i_x_inventory_operations_inventory_transaction_id");
+
+                    b.ToTable("inventory_operations", (string)null);
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.InventoryTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int")
+                        .HasColumnName("amount");
 
                     b.Property<string>("Reason")
                         .IsRequired()
@@ -90,18 +127,23 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .HasColumnType("int")
                         .HasColumnName("supply_id");
 
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("transaction_date");
+
                     b.Property<string>("Type")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("type");
 
                     b.HasKey("Id")
-                        .HasName("p_k_stock_movements");
+                        .HasName("p_k_inventory_transactions");
 
                     b.HasIndex("SupplyId")
-                        .HasDatabaseName("i_x_stock_movements_supply_id");
+                        .HasDatabaseName("i_x_inventory_transactions_supply_id");
 
-                    b.ToTable("stock_movements", (string)null);
+                    b.ToTable("inventory_transactions", (string)null);
                 });
 
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Iot.Domain.Model.Aggregate.Alert", b =>
@@ -132,11 +174,13 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.Property<string>("Severity")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("severity");
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("status");
 
@@ -189,6 +233,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.Property<string>("SensorType")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("sensor_type");
 
@@ -226,6 +271,74 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Aggregate.KitchenOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateOnly>("DateCreated")
+                        .HasColumnType("date")
+                        .HasColumnName("date_created");
+
+                    b.Property<DateTime?>("HourDelivered")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("hour_delivered");
+
+                    b.Property<DateTime?>("HourReady")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("hour_ready");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("number");
+
+                    b.Property<string>("Observations")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("observations");
+
+                    b.Property<int>("PreparationTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("preparation_time");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("int")
+                        .HasColumnName("table_id");
+
+                    b.Property<string>("TypeService")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("longtext")
+                        .HasColumnName("type_service");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_kitchen_orders");
+
+                    b.ToTable("kitchen_orders", (string)null);
+                });
+
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Aggregate.Table", b =>
                 {
                     b.Property<int>("Id")
@@ -261,6 +374,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.Property<string>("State")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("state");
 
@@ -361,6 +475,118 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     b.ToTable("dish_categories", (string)null);
                 });
 
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Entities.KitchenOrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<int>("DishId")
+                        .HasColumnType("int")
+                        .HasColumnName("dish_id");
+
+                    b.Property<string>("DishName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("dish_name");
+
+                    b.Property<int>("KitchenOrderId")
+                        .HasColumnType("int")
+                        .HasColumnName("kitchen_order_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("double")
+                        .HasColumnName("unit_price");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_kitchen_order_items");
+
+                    b.HasIndex("KitchenOrderId")
+                        .HasDatabaseName("i_x_kitchen_order_items_kitchen_order_id");
+
+                    b.ToTable("kitchen_order_items", (string)null);
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Profiles.Domain.Model.Aggregates.RestaurantProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("BusinessName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("business_name");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("status");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_restaurant_profiles");
+
+                    b.ToTable("restaurant_profiles", (string)null);
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Profiles.Domain.Model.Aggregates.SupplierProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("BusinessName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("business_name");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("status");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_supplier_profiles");
+
+                    b.ToTable("supplier_profiles", (string)null);
+                });
+
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities.PurchaseOrder", b =>
                 {
                     b.Property<int>("Id")
@@ -392,6 +618,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.Property<string>("Priority")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("priority");
 
@@ -403,6 +630,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("status");
 
@@ -596,6 +824,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.Property<string>("Unit")
                         .IsRequired()
+                        .IsUnicode(false)
                         .HasColumnType("longtext")
                         .HasColumnName("unit");
 
@@ -862,14 +1091,26 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.StockMovement", b =>
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.InventoryOperation", b =>
+                {
+                    b.HasOne("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.InventoryTransaction", "InventoryTransaction")
+                        .WithMany("Operations")
+                        .HasForeignKey("InventoryTransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k__inventory_operations__inventory_transactions");
+
+                    b.Navigation("InventoryTransaction");
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.InventoryTransaction", b =>
                 {
                     b.HasOne("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Aggregate.Supply", "Supply")
                         .WithMany()
                         .HasForeignKey("SupplyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("f_k_stock_movements_supplies_supply_id");
+                        .HasConstraintName("f_k__inventory_transactions__supplies");
 
                     b.Navigation("Supply");
                 });
@@ -884,6 +1125,220 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .HasConstraintName("f_k_dishes__dish_categories_dish_category_id");
 
                     b.Navigation("DishCategory");
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Entities.KitchenOrderItem", b =>
+                {
+                    b.HasOne("Aurora.SupplyWok.Platform.Operations.Domain.Model.Aggregate.KitchenOrder", null)
+                        .WithMany("Items")
+                        .HasForeignKey("KitchenOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_kitchen_order_items_kitchen_orders_kitchen_order_id");
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Profiles.Domain.Model.Aggregates.RestaurantProfile", b =>
+                {
+                    b.OwnsOne("Aurora.SupplyWok.Platform.Profiles.Domain.Model.ValueObjects.StreetAddress", "Address", b1 =>
+                        {
+                            b1.Property<int>("RestaurantProfileId")
+                                .HasColumnType("int")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("city");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("country");
+
+                            b1.Property<string>("District")
+                                .IsRequired()
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("district");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(120)
+                                .HasColumnType("varchar(120)")
+                                .HasColumnName("street");
+
+                            b1.HasKey("RestaurantProfileId")
+                                .HasName("p_k_restaurant_profiles");
+
+                            b1.ToTable("restaurant_profiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RestaurantProfileId")
+                                .HasConstraintName("f_k_restaurant_profiles_restaurant_profiles_id");
+                        });
+
+                    b.OwnsOne("Aurora.SupplyWok.Platform.Profiles.Domain.Model.ValueObjects.EmailAddress", "ContactEmail", b1 =>
+                        {
+                            b1.Property<int>("RestaurantProfileId")
+                                .HasColumnType("int")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("contact_email");
+
+                            b1.HasKey("RestaurantProfileId")
+                                .HasName("p_k_restaurant_profiles");
+
+                            b1.ToTable("restaurant_profiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RestaurantProfileId")
+                                .HasConstraintName("f_k_restaurant_profiles_restaurant_profiles_id");
+                        });
+
+                    b.OwnsOne("Aurora.SupplyWok.Platform.Profiles.Domain.Model.ValueObjects.PersonName", "ContactName", b1 =>
+                        {
+                            b1.Property<int>("RestaurantProfileId")
+                                .HasColumnType("int")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(60)
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("contact_first_name");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(60)
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("contact_last_name");
+
+                            b1.HasKey("RestaurantProfileId")
+                                .HasName("p_k_restaurant_profiles");
+
+                            b1.ToTable("restaurant_profiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RestaurantProfileId")
+                                .HasConstraintName("f_k_restaurant_profiles_restaurant_profiles_id");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("ContactEmail")
+                        .IsRequired();
+
+                    b.Navigation("ContactName")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Profiles.Domain.Model.Aggregates.SupplierProfile", b =>
+                {
+                    b.OwnsOne("Aurora.SupplyWok.Platform.Profiles.Domain.Model.ValueObjects.StreetAddress", "Address", b1 =>
+                        {
+                            b1.Property<int>("SupplierProfileId")
+                                .HasColumnType("int")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("city");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("country");
+
+                            b1.Property<string>("District")
+                                .IsRequired()
+                                .HasMaxLength(80)
+                                .HasColumnType("varchar(80)")
+                                .HasColumnName("district");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(120)
+                                .HasColumnType("varchar(120)")
+                                .HasColumnName("street");
+
+                            b1.HasKey("SupplierProfileId")
+                                .HasName("p_k_supplier_profiles");
+
+                            b1.ToTable("supplier_profiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SupplierProfileId")
+                                .HasConstraintName("f_k_supplier_profiles_supplier_profiles_id");
+                        });
+
+                    b.OwnsOne("Aurora.SupplyWok.Platform.Profiles.Domain.Model.ValueObjects.EmailAddress", "ContactEmail", b1 =>
+                        {
+                            b1.Property<int>("SupplierProfileId")
+                                .HasColumnType("int")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)")
+                                .HasColumnName("contact_email");
+
+                            b1.HasKey("SupplierProfileId")
+                                .HasName("p_k_supplier_profiles");
+
+                            b1.ToTable("supplier_profiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SupplierProfileId")
+                                .HasConstraintName("f_k_supplier_profiles_supplier_profiles_id");
+                        });
+
+                    b.OwnsOne("Aurora.SupplyWok.Platform.Profiles.Domain.Model.ValueObjects.PersonName", "ContactName", b1 =>
+                        {
+                            b1.Property<int>("SupplierProfileId")
+                                .HasColumnType("int")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(60)
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("contact_first_name");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(60)
+                                .HasColumnType("varchar(60)")
+                                .HasColumnName("contact_last_name");
+
+                            b1.HasKey("SupplierProfileId")
+                                .HasName("p_k_supplier_profiles");
+
+                            b1.ToTable("supplier_profiles");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SupplierProfileId")
+                                .HasConstraintName("f_k_supplier_profiles_supplier_profiles_id");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("ContactEmail")
+                        .IsRequired();
+
+                    b.Navigation("ContactName")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities.PurchaseOrderItem", b =>
@@ -933,6 +1388,16 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .HasConstraintName("f_k_alerts_sensors_sensor_id");
 
                     b.Navigation("Sensor");
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Inventory.Domain.Model.Entities.InventoryTransaction", b =>
+                {
+                    b.Navigation("Operations");
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Operations.Domain.Model.Aggregate.KitchenOrder", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities.PurchaseOrder", b =>

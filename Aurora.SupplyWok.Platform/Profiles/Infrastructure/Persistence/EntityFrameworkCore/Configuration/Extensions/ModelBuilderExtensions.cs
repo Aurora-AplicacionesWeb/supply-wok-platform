@@ -29,12 +29,14 @@ public static class ModelBuilderExtensions
 
         builder.Entity<RestaurantProfile>().OwnsOne(profile => profile.ContactName, contactName =>
         {
+            contactName.Property("RestaurantProfileId").HasColumnName("Id");
             contactName.Property(name => name.FirstName).HasColumnName("ContactFirstName").IsRequired().HasMaxLength(60);
             contactName.Property(name => name.LastName).HasColumnName("ContactLastName").IsRequired().HasMaxLength(60);
         });
 
         builder.Entity<RestaurantProfile>().OwnsOne(profile => profile.Address, address =>
         {
+            address.Property("RestaurantProfileId").HasColumnName("Id");
             address.Property(a => a.Street).HasColumnName("Street").IsRequired().HasMaxLength(120);
             address.Property(a => a.District).HasColumnName("District").IsRequired().HasMaxLength(80);
             address.Property(a => a.City).HasColumnName("City").IsRequired().HasMaxLength(80);
@@ -43,6 +45,7 @@ public static class ModelBuilderExtensions
 
         builder.Entity<RestaurantProfile>().OwnsOne(profile => profile.ContactEmail, email =>
         {
+            email.Property("RestaurantProfileId").HasColumnName("Id");
             email.Property(e => e.Address).HasColumnName("ContactEmail").IsRequired().HasMaxLength(150);
         });
 
@@ -56,12 +59,14 @@ public static class ModelBuilderExtensions
 
         builder.Entity<SupplierProfile>().OwnsOne(profile => profile.ContactName, contactName =>
         {
+            contactName.Property("SupplierProfileId").HasColumnName("Id");
             contactName.Property(name => name.FirstName).HasColumnName("ContactFirstName").IsRequired().HasMaxLength(60);
             contactName.Property(name => name.LastName).HasColumnName("ContactLastName").IsRequired().HasMaxLength(60);
         });
 
         builder.Entity<SupplierProfile>().OwnsOne(profile => profile.Address, address =>
         {
+            address.Property("SupplierProfileId").HasColumnName("Id");
             address.Property(a => a.Street).HasColumnName("Street").IsRequired().HasMaxLength(120);
             address.Property(a => a.District).HasColumnName("District").IsRequired().HasMaxLength(80);
             address.Property(a => a.City).HasColumnName("City").IsRequired().HasMaxLength(80);
@@ -70,6 +75,7 @@ public static class ModelBuilderExtensions
 
         builder.Entity<SupplierProfile>().OwnsOne(profile => profile.ContactEmail, email =>
         {
+            email.Property("SupplierProfileId").HasColumnName("Id");
             email.Property(e => e.Address).HasColumnName("ContactEmail").IsRequired().HasMaxLength(150);
         });
     }

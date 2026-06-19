@@ -4,9 +4,10 @@ public enum InventoryError
 {
     None,
     SupplyNotFound,
-    StockMovementNotFound,
+    InventoryTransactionNotFound,
     InvalidData,
     InsufficientStock,
+    TransferNotSupported,
     OperationCancelled,
     DatabaseError,
     InternalServerError   

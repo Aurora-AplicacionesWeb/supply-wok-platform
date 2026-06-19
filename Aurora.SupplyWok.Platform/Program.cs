@@ -57,6 +57,7 @@ using Aurora.SupplyWok.Platform.Profiles.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Profiles.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
 using ProfilesContextFacade = Aurora.SupplyWok.Platform.Profiles.Application.Acl.ProfilesContextFacade;
+using Aurora.SupplyWok.Platform.Inventory.Resources;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,6 +101,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 
 builder.Services.AddSingleton<IStringLocalizer<ErrorMessages>, StringLocalizer<ErrorMessages>>();
 builder.Services.AddSingleton<IStringLocalizer<CommonMessages>, StringLocalizer<CommonMessages>>();
+builder.Services.AddSingleton<IStringLocalizer<InventoryMessages>, StringLocalizer<InventoryMessages>>();
 builder.Services.AddSingleton<ProblemDetailsFactory>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -175,8 +177,9 @@ builder.Services.AddScoped<Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl.IS
 builder.Services.AddScoped<ISupplyRepository, SupplyRepository>();
 builder.Services.AddScoped<ISupplyCommandService, SupplyCommandService>();
 builder.Services.AddScoped<ISupplyQueryServices, SupplyQueryServices>();
-builder.Services.AddScoped<IStockMovementCommandService, StockMovementCommandService>();
-builder.Services.AddScoped<IStockMovementQueryService, StockMovementQueryService>();
+builder.Services.AddScoped<IInventoryTransactionRepository, InventoryTransactionRepository>();
+builder.Services.AddScoped<IInventoryTransactionCommandService, InventoryTransactionCommandService>();
+builder.Services.AddScoped<IInventoryTransactionQueryService, InventoryTransactionQueryService>();
 builder.Services.AddScoped<IInventoryContextFacade, InventoryContextFacade>();
 
 // Profiles Bounded Context

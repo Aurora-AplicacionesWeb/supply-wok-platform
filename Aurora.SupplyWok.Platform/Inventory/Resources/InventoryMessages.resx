@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="SupplyCreatedSuccessfully" xml:space="preserve">
+    <value>Supply created successfully.</value>
+  </data>
+  <data name="SupplyUpdatedSuccessfully" xml:space="preserve">
+    <value>Supply updated successfully.</value>
+  </data>
+  <data name="SupplyDeletedSuccessfully" xml:space="preserve">
+    <value>Supply deleted successfully.</value>
+  </data>
+  <data name="InventoryTransactionCreatedSuccessfully" xml:space="preserve">
+    <value>Inventory transaction created successfully.</value>
+  </data>
+</root>

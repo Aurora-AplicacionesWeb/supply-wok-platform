@@ -5,9 +5,9 @@ using Aurora.SupplyWok.Platform.Shared.Application.Model;
 namespace Aurora.SupplyWok.Platform.Inventory.Application.CommandServices;
 
 /// <summary>
-/// Stock movement command service interface.
+/// Inventory transaction command service interface.
 /// </summary>
-public interface IStockMovementCommandService
+public interface IInventoryTransactionCommandService
 {
-    Task<Result<StockMovement>> Handle(CreateStockMovementCommand command, CancellationToken cancellationToken);
+    Task<Result<InventoryTransaction>> Handle(CreateInventoryTransactionCommand command, CancellationToken cancellationToken);
 }
