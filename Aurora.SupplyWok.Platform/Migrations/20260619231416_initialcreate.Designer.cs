@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aurora.SupplyWok.Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260619183714_AddProfilesModule")]
-    partial class AddProfilesModule
+    [Migration("20260619231416_initialcreate")]
+    partial class initialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
