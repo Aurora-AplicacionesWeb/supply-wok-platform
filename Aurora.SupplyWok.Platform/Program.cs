@@ -48,6 +48,15 @@ using Aurora.SupplyWok.Platform.Inventory.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Inventory.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Inventory.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using Aurora.SupplyWok.Platform.Inventory.Interfaces.Acl;
+using Aurora.SupplyWok.Platform.Profiles.Application.Acl;
+using Aurora.SupplyWok.Platform.Profiles.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Profiles.Application.Internal.CommandServices;
+using Aurora.SupplyWok.Platform.Profiles.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Profiles.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Profiles.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Profiles.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
+using ProfilesContextFacade = Aurora.SupplyWok.Platform.Profiles.Application.Acl.ProfilesContextFacade;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -169,6 +178,15 @@ builder.Services.AddScoped<ISupplyQueryServices, SupplyQueryServices>();
 builder.Services.AddScoped<IStockMovementCommandService, StockMovementCommandService>();
 builder.Services.AddScoped<IStockMovementQueryService, StockMovementQueryService>();
 builder.Services.AddScoped<IInventoryContextFacade, InventoryContextFacade>();
+
+// Profiles Bounded Context
+builder.Services.AddScoped<IRestaurantProfileRepository, RestaurantProfileRepository>();
+builder.Services.AddScoped<ISupplierProfileRepository, SupplierProfileRepository>();
+builder.Services.AddScoped<IRestaurantProfileCommandService, RestaurantProfileCommandService>();
+builder.Services.AddScoped<ISupplierProfileCommandService, SupplierProfileCommandService>();
+builder.Services.AddScoped<IRestaurantProfileQueryService, RestaurantProfileQueryService>();
+builder.Services.AddScoped<ISupplierProfileQueryService, SupplierProfileQueryService>();
+builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
 // Mediator Configuration
 
