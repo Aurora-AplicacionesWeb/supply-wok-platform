@@ -4,6 +4,6 @@ namespace Aurora.SupplyWok.Platform.Profiles.Domain.Model.Queries;
 ///     Get restaurant profile by linked Iam user id query
 /// </summary>
 /// <param name="UserId">
-///     The Iam user id to search for
+///     The Iam user id linked to the restaurant profile to retrieve
 /// </param>
 public record GetRestaurantProfileByUserIdQuery(int UserId);
