@@ -61,7 +61,7 @@ public static class ModelBuilderExtensions
         builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Name).IsRequired().HasMaxLength(100);
         builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Category).IsRequired().HasMaxLength(80);
         builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Price).IsRequired().HasPrecision(18, 2);
-        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Unit).IsRequired().HasConversion<string>();
+        builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.Unit).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
         builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.DeliveryConditions).IsRequired().HasMaxLength(250);
         builder.Entity<CatalogItem>().HasIndex(catalogItem => catalogItem.SupplierId);
         builder.Entity<CatalogItem>()

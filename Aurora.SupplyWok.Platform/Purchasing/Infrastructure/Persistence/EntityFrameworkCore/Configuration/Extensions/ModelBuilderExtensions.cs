@@ -18,8 +18,8 @@ public static class ModelBuilderExtensions
         builder.Entity<PurchaseOrder>().Property(order => order.RestaurantName).IsRequired().HasMaxLength(100);
         builder.Entity<PurchaseOrder>().Property(order => order.OrderDate).IsRequired().HasMaxLength(10);
         builder.Entity<PurchaseOrder>().Property(order => order.EstimatedDate).HasMaxLength(10);
-        builder.Entity<PurchaseOrder>().Property(order => order.Priority).IsRequired().HasConversion<string>();
-        builder.Entity<PurchaseOrder>().Property(order => order.Status).IsRequired().HasConversion<string>();
+        builder.Entity<PurchaseOrder>().Property(order => order.Priority).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
+        builder.Entity<PurchaseOrder>().Property(order => order.Status).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
         builder.Entity<PurchaseOrder>()
             .HasMany(order => order.Items)
             .WithOne()

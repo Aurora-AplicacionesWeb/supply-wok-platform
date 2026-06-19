@@ -17,7 +17,7 @@ public static class ModelBuilderExtensions
         builder.Entity<Table>().Property(t => t.Number).IsRequired().HasMaxLength(50);
         builder.Entity<Table>().Property(t => t.Capacity).IsRequired();
         builder.Entity<Table>().Property(t => t.Location).IsRequired().HasMaxLength(50);
-        builder.Entity<Table>().Property(t => t.State).IsRequired().HasConversion<string>();
+        builder.Entity<Table>().Property(t => t.State).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
         builder.Entity<Table>().Property(t => t.Active).IsRequired().HasDefaultValue(true);
 
         // Dishes
@@ -52,8 +52,8 @@ public static class ModelBuilderExtensions
         builder.Entity<KitchenOrder>().Property(ko => ko.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<KitchenOrder>().Property(ko => ko.Number).IsRequired().HasMaxLength(50);
         builder.Entity<KitchenOrder>().Property(ko => ko.TableId).IsRequired();
-        builder.Entity<KitchenOrder>().Property(ko => ko.TypeService).IsRequired().HasConversion<string>();
-        builder.Entity<KitchenOrder>().Property(ko => ko.Status).IsRequired().HasConversion<string>().HasMaxLength(30);
+        builder.Entity<KitchenOrder>().Property(ko => ko.TypeService).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false);
+        builder.Entity<KitchenOrder>().Property(ko => ko.Status).IsRequired().HasConversion<string>().HasColumnType("longtext").IsUnicode(false).HasMaxLength(30);
         builder.Entity<KitchenOrder>().Property(ko => ko.Observations).HasMaxLength(500);
         builder.Entity<KitchenOrder>().Property(ko => ko.DateCreated).IsRequired();
         builder.Entity<KitchenOrder>().Property(ko => ko.HourReady);
