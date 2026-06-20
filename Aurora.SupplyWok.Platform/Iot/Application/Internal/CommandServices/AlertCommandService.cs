@@ -42,7 +42,10 @@ public class AlertCommandService(
             DateTimeOffset.UtcNow,
             EAlertStatus.Pending,
             command.SensorId
-        );
+        )
+        {
+            Sensor = sensor
+        };
 
         try
         {
@@ -94,7 +97,10 @@ public class AlertCommandService(
                 DateTimeOffset.UtcNow,
                 EAlertStatus.Pending,
                 command.SensorId
-            );
+            )
+            {
+                Sensor = sensor
+            };
 
             await alertRepository.AddAsync(alert, cancellationToken);
             await unitOfWork.CompleteAsync(cancellationToken);

@@ -17,5 +17,5 @@ public class AlertRestaurant : Alert
 
     public int SensorId { get; private set; }
     
-    public Sensor Sensor { get; private set; } = null!;
+    public Sensor Sensor { get; internal set; } = null!;
 }

@@ -7,6 +7,7 @@ using Aurora.SupplyWok.Platform.Operations.Infrastructure.Persistence.EntityFram
 using Aurora.SupplyWok.Platform.Suppliers.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Aurora.SupplyWok.Platform.Inventory.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Aurora.SupplyWok.Platform.Profiles.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using Aurora.SupplyWok.Platform.Analytics.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
 namespace Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
@@ -57,6 +58,9 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         // Profiles Context
         builder.ApplyProfilesConfiguration();
+
+        // Analytics Context
+        builder.ApplyAnalyticsConfiguration();
 
         // General Naming Convention for the database objects
         builder.UseSnakeCaseNamingConvention();
