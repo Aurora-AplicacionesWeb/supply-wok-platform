@@ -6,4 +6,5 @@ namespace Aurora.SupplyWok.Platform.Operations.Domain.Repositories;
 public interface IKitchenOrderRepository : IBaseRepository<KitchenOrder>
 {
     Task<KitchenOrder?> FindByIdWithItemsAsync(int id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<KitchenOrder>> ListWithItemsAsync(CancellationToken cancellationToken = default);
 }

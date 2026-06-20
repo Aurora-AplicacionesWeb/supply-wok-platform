@@ -15,4 +15,11 @@ public class KitchenOrderRepository(AppDbContext context)
             .Include(ko => ko.Items)
             .FirstOrDefaultAsync(ko => ko.Id == id, cancellationToken);
     }
+
+    public async Task<IEnumerable<KitchenOrder>> ListWithItemsAsync(CancellationToken cancellationToken = default)
+    {
+        return await Context.Set<KitchenOrder>()
+            .Include(ko => ko.Items)
+            .ToListAsync(cancellationToken);
+    }
 }

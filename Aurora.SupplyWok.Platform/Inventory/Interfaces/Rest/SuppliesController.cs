@@ -8,6 +8,7 @@ using Aurora.SupplyWok.Platform.Inventory.Resources;
 using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Aurora.SupplyWok.Platform.Inventory.Interfaces.Rest;
@@ -20,10 +21,12 @@ public class SuppliesController(
     ISupplyCommandService supplyCommandService,
     ISupplyQueryServices supplyQueryServices,
     IStringLocalizer<InventoryMessages> inventoryMessagesLocalizer,
-    IStringLocalizer<ErrorMessages> errorLocalizer) : ControllerBase
+    IStringLocalizer<ErrorMessages> errorLocalizer,
+    ILogger<SuppliesController> logger) : ControllerBase
 {
     private readonly IStringLocalizer<InventoryMessages> _inventoryMessagesLocalizer = inventoryMessagesLocalizer;
     private readonly IStringLocalizer<ErrorMessages> _errorLocalizer = errorLocalizer;
+    private readonly ILogger<SuppliesController> _logger = logger;
     [HttpPost]
     [SwaggerOperation("Create Supply", "Creates a new supply item.", OperationId = "CreateSupply")]
     [SwaggerResponse(201, "The supply was created successfully.", typeof(SupplyResource))]
@@ -44,10 +47,18 @@ public class SuppliesController(
     [SwaggerResponse(200, "Supplies retrieved successfully.", typeof(IEnumerable<SupplyResource>))]
     public async Task<IActionResult> GetAllSupplies(CancellationToken cancellationToken)
     {
-        var query = new GetAllSuppliesQuery();
-        var supplies = await supplyQueryServices.Handle(query, cancellationToken);
-        var resources = supplies.Select(Transform.SupplyResourceFromEntityAssembler.ToResourceFromEntity);
-        return Ok(resources);
+        try
+        {
+            var query = new GetAllSuppliesQuery();
+            var supplies = await supplyQueryServices.Handle(query, cancellationToken);
+            var resources = supplies.Select(Transform.SupplyResourceFromEntityAssembler.ToResourceFromEntity);
+            return Ok(resources);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving all supplies");
+            throw;
+        }
     }
 
     [HttpGet("total-stock")]
