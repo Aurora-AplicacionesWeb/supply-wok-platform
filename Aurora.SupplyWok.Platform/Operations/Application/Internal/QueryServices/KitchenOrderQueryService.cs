@@ -9,7 +9,7 @@ public class KitchenOrderQueryService(IKitchenOrderRepository kitchenOrderReposi
 {
     public async Task<IEnumerable<KitchenOrder>> Handle(GetAllKitchenOrdersQuery query, CancellationToken cancellationToken)
     {
-        return await kitchenOrderRepository.ListAsync(cancellationToken);
+        return await kitchenOrderRepository.ListWithItemsAsync(cancellationToken);
     }
 
     public async Task<KitchenOrder?> Handle(GetKitchenOrderByIdQuery query, CancellationToken cancellationToken)

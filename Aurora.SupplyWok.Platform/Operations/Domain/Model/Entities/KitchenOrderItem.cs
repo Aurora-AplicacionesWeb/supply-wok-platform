@@ -15,8 +15,8 @@ public class KitchenOrderItem
         UnitPrice = unitPrice;
     }
 
-    public int Id { get; }
-    public int KitchenOrderId { get; }
+    public int Id { get; private set; }
+    public int KitchenOrderId { get; private set; }
     public int DishId { get; private set; }
     public string DishName { get; private set; }
     public int Quantity { get; private set; }
