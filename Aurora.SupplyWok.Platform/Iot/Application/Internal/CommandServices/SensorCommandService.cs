@@ -1,7 +1,9 @@
 using Aurora.SupplyWok.Platform.Iot.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model.Aggregate;
+using Aurora.SupplyWok.Platform.Iot.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Iot.Domain.Model.Commands;
+using Aurora.SupplyWok.Platform.Iot.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Iot.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
@@ -18,6 +20,7 @@ namespace Aurora.SupplyWok.Platform.Iot.Application.Internal.CommandServices;
 /// <param name="unitOfWork">Unit of work</param>
 /// <param name="localizer">Error message localizer</param>
 public class SensorCommandService(ISensorRepository sensorRepository,
+    IAlertRepository alertRepository,
     IUnitOfWork unitOfWork, IStringLocalizer<ErrorMessages> localizer):
     ISensorCommandService
 {
@@ -63,6 +66,22 @@ public class SensorCommandService(ISensorRepository sensorRepository,
             }
 
             sensor.Update(command.Name, command.MinValue, command.MaxValue, command.Enabled, command.LastValue, command.Type);
+            
+            if (sensor.LastValue < sensor.MinValue || sensor.LastValue > sensor.MaxValue)
+            {
+                var detail = $"Sensor '{sensor.Name}' value ({sensor.LastValue}) is out of allowed range [{sensor.MinValue}, {sensor.MaxValue}].";
+                var alert = new AlertRestaurant(
+                    EAlertSeverity.High,
+                    detail,
+                    DateTimeOffset.UtcNow,
+                    EAlertStatus.Pending,
+                    sensor.Id
+                )
+                {
+                    Sensor = sensor
+                };
+                await alertRepository.AddAsync(alert, cancellationToken);
+            }
             
             sensorRepository.Update(sensor);
             await unitOfWork.CompleteAsync(cancellationToken);
