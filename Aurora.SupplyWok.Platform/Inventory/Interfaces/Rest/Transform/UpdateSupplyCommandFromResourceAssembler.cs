@@ -10,10 +10,13 @@ public static class UpdateSupplyCommandFromResourceAssembler
     {
         ArgumentNullException.ThrowIfNull(resource);
 
+        if (!Enum.TryParse<EUnitOfMeasure>(resource.UnitOfMeasure, ignoreCase: true, out var unitOfMeasure))
+            throw new ArgumentException($"Invalid UnitOfMeasure value: '{resource.UnitOfMeasure}'. Valid values are: {string.Join(", ", Enum.GetNames<EUnitOfMeasure>())}");
+
         return new UpdateSupplyCommand(
             id,
             resource.Name,
-            Enum.Parse<EUnitOfMeasure>(resource.UnitOfMeasure),
+            unitOfMeasure,
             resource.MinimumStockLevel,
             resource.Category);
     }
