@@ -26,17 +26,7 @@ public static class AlertResourceFromEntityAssembler
 
         if (alert is AlertRestaurant alertRestaurant)
         {
-            var sensorResource = alertRestaurant.Sensor != null 
-                ? SensorResourceFromEntityAssembler.ToResourceFromEntity(alertRestaurant.Sensor)
-                : new SensorResource(
-                    alertRestaurant.SensorId, 
-                    "Unknown Sensor", 
-                    0, 
-                    0, 
-                    false, 
-                    0, 
-                    Domain.Model.ValueObjects.ESensorType.Temperature
-                );
+            var sensorName = alertRestaurant.Sensor?.Name ?? "Unknown Sensor";
 
             return new AlertRestaurantResource(
                 alert.Id,
@@ -45,9 +35,8 @@ public static class AlertResourceFromEntityAssembler
                 alert.Date,
                 status,
                 "restaurant",
-                sensorResource.Id,
-                sensorResource.Name,
-                sensorResource
+                alertRestaurant.SensorId,
+                sensorName
             );
         }
         else if (alert is AlertSupplier alertSupplier)

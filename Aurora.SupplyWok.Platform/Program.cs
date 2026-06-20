@@ -58,6 +58,10 @@ using Aurora.SupplyWok.Platform.Profiles.Infrastructure.Persistence.EntityFramew
 using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
 using ProfilesContextFacade = Aurora.SupplyWok.Platform.Profiles.Application.Acl.ProfilesContextFacade;
 using Aurora.SupplyWok.Platform.Inventory.Resources;
+using Aurora.SupplyWok.Platform.Analytics.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Analytics.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Analytics.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Analytics.Application.Internal.QueryServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -191,6 +195,12 @@ builder.Services.AddScoped<IRestaurantProfileQueryService, RestaurantProfileQuer
 builder.Services.AddScoped<ISupplierProfileQueryService, SupplierProfileQueryService>();
 builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
+// Analytics Bounded Context
+builder.Services.AddScoped<IRestaurantAnalyticsRepository, RestaurantAnalyticsRepository>();
+builder.Services.AddScoped<ISupplierAnalyticsRepository, SupplierAnalyticsRepository>();
+builder.Services.AddScoped<IRestaurantAnalyticsQueryService, RestaurantAnalyticsQueryService>();
+builder.Services.AddScoped<ISupplierAnalyticsQueryService, SupplierAnalyticsQueryService>();
+
 // Mediator Configuration
 
 // Add Mediator Injection Configuration
@@ -222,11 +232,10 @@ var localizationOptions = new RequestLocalizationOptions()
 
 app.UseRequestLocalization(localizationOptions);
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 // Apply CORS Policy
 app.UseCors("AllowAllPolicy");
