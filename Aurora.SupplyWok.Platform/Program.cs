@@ -62,6 +62,19 @@ using Aurora.SupplyWok.Platform.Analytics.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Analytics.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using Aurora.SupplyWok.Platform.Analytics.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Analytics.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Iam.Application.Acl;
+using Aurora.SupplyWok.Platform.Iam.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Iam.Application.Internal.CommandServices;
+using Aurora.SupplyWok.Platform.Iam.Application.Internal.OutboundServices;
+using Aurora.SupplyWok.Platform.Iam.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Iam.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Iam.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Iam.Infrastructure.Hashing.BCrypt.Services;
+using Aurora.SupplyWok.Platform.Iam.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Iam.Infrastructure.Tokens.Jwt.Configuration;
+using Aurora.SupplyWok.Platform.Iam.Infrastructure.Tokens.Jwt.Services;
+using Aurora.SupplyWok.Platform.Iam.Infrastructure.Pipeline.Middleware.Extensions;
+using Aurora.SupplyWok.Platform.Iam.Interfaces.Acl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -139,6 +152,15 @@ builder.Services.AddSwaggerGen(options =>
 
 // Shared Bounded Context
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Iam Bounded Context
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
 
 // Iot Bounded Context
 builder.Services.AddScoped<ISensorRepository, SensorRepository>();
@@ -245,6 +267,8 @@ app.UseSwaggerUI();
 app.UseCors("AllowAllPolicy");
 
 app.UseHttpsRedirection();
+
+// app.UseRequestAuthorization();
 
 app.UseAuthorization();
 

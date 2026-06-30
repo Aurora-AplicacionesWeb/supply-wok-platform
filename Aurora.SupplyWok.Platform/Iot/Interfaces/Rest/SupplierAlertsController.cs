@@ -27,12 +27,12 @@ public class SupplierAlertsController(
     /// <returns>The supplier alerts.</returns>
     [HttpGet]
     [SwaggerOperation("Get All Supplier Alerts", "Gets all available supplier alerts.", OperationId = "GetAllSupplierAlerts")]
-    [SwaggerResponse(200, "Supplier alerts retrieved successfully.", typeof(IEnumerable<AlertResource>))]
+    [SwaggerResponse(200, "Supplier alerts retrieved successfully.", typeof(IEnumerable<AlertSupplierResource>))]
     public async Task<IActionResult> GetAllSupplierAlerts(CancellationToken cancellationToken)
     {
         var query = new GetAllSupplierAlertsQuery();
         var alerts = await alertQueryService.Handle(query, cancellationToken);
-        var resources = alerts.Select(Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity);
+        var resources = alerts.Select(a => (AlertSupplierResource)Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(a));
         return Ok(resources);
     }
 
@@ -44,7 +44,7 @@ public class SupplierAlertsController(
     /// <returns>The supplier alert.</returns>
     [HttpGet("{alertId:int}")]
     [SwaggerOperation("Get Supplier Alert by Id", "Gets a supplier alert by its unique identifier.", OperationId = "GetSupplierAlertById")]
-    [SwaggerResponse(200, "The alert was found and returned.", typeof(AlertResource))]
+    [SwaggerResponse(200, "The alert was found and returned.", typeof(AlertSupplierResource))]
     [SwaggerResponse(404, "The alert was not found.")]
     public async Task<IActionResult> GetSupplierAlertById(int alertId, CancellationToken cancellationToken)
     {
@@ -54,7 +54,7 @@ public class SupplierAlertsController(
         if (alert == null || alert is not Domain.Model.Entities.AlertSupplier)
             return NotFound();
 
-        return Ok(Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(alert));
+        return Ok((AlertSupplierResource)Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(alert));
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public class SupplierAlertsController(
     /// <returns>The acknowledged supplier alert.</returns>
     [HttpPost("{alertId:int}/acknowledge")]
     [SwaggerOperation("Acknowledge Supplier Alert", "Acknowledges a supplier alert by setting its status to Acknowledged.", OperationId = "AcknowledgeSupplierAlert")]
-    [SwaggerResponse(200, "The alert was acknowledged successfully.", typeof(AlertResource))]
+    [SwaggerResponse(200, "The alert was acknowledged successfully.", typeof(AlertSupplierResource))]
     [SwaggerResponse(400, "Invalid request.")]
     public async Task<IActionResult> AcknowledgeSupplierAlert(int alertId, CancellationToken cancellationToken)
     {
@@ -81,6 +81,6 @@ public class SupplierAlertsController(
         if (!result.IsSuccess)
             return BadRequest(result.Message);
 
-        return Ok(Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(result.Value!));
+        return Ok((AlertSupplierResource)Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(result.Value!));
     }
 }
