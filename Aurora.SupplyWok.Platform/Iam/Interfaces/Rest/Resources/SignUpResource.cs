@@ -1,3 +1,3 @@
-﻿namespace Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Resources;
+namespace Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Resources;
 
-public record SignUpResource(string Username, string Password);
+public record SignUpResource(string Email, string Password);

@@ -1,4 +1,4 @@
-﻿using Aurora.SupplyWok.Platform.Iam.Domain.Model.Commands;
+using Aurora.SupplyWok.Platform.Iam.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Resources;
 
 
@@ -24,6 +24,6 @@ public static class SignUpCommandFromResourceAssembler
         if (resource == null)
             throw new ArgumentNullException(nameof(resource),
                 "SignUpResource cannot be null when converting to command.");
-        return new SignUpCommand(resource.Username, resource.Password);
+        return new SignUpCommand(resource.Email, resource.Password);
     }
 }

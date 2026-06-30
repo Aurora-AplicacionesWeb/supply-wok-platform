@@ -1,4 +1,4 @@
-﻿using Aurora.SupplyWok.Platform.Iam.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Iam.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Iam.Application.Internal.OutboundServices;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
@@ -6,6 +6,7 @@ using Aurora.SupplyWok.Platform.Iam.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Iam.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
@@ -40,7 +41,7 @@ public class UserCommandService(
     public async Task<Result<(User user, string token)>> Handle(SignInCommand command,
         CancellationToken cancellationToken)
     {
-        var user = await userRepository.FindByUsernameAsync(command.Username, cancellationToken);
+        var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
 
         if (user == null || !hashingService.VerifyPassword(command.Password, user.PasswordHash))
             return Result<(User user, string token)>.Failure(IamError.InvalidCredentials,
@@ -61,12 +62,12 @@ public class UserCommandService(
      */
     public async Task<Result> Handle(SignUpCommand command, CancellationToken cancellationToken)
     {
-        if (await userRepository.ExistsByUsernameAsync(command.Username, cancellationToken))
-            return Result.Failure(IamError.UsernameAlreadyTaken,
-                _localizer[nameof(IamError.UsernameAlreadyTaken), command.Username]);
+        if (await userRepository.ExistsByEmailAsync(command.Email, cancellationToken))
+            return Result.Failure(IamError.EmailAlreadyTaken,
+                _localizer[nameof(IamError.EmailAlreadyTaken), command.Email]);
 
         var hashedPassword = hashingService.HashPassword(command.Password);
-        var user = new User(command.Username, hashedPassword);
+        var user = new User(command.Email, hashedPassword);
         try
         {
             await userRepository.AddAsync(user, cancellationToken);

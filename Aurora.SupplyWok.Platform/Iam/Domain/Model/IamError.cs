@@ -1,10 +1,10 @@
-﻿namespace Aurora.SupplyWok.Platform.Iam.Domain.Model;
+namespace Aurora.SupplyWok.Platform.Iam.Domain.Model;
 
 public enum IamError
 {
     None,
     UserNotFound,
-    UsernameAlreadyTaken,
+    EmailAlreadyTaken,
     InvalidCredentials,
     OperationCancelled,
     DatabaseError,

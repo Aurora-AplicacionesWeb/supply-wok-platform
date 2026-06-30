@@ -1,10 +1,10 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Aurora.SupplyWok.Platform.Iam.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Resources;
 using Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Transform;
 using Aurora.SupplyWok.Platform.Iam.Resources;
-using Aurora.SupplyWok.Platform.Resources.Errors;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Aurora.SupplyWok.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -31,7 +31,7 @@ public class AuthenticationController(
      * <summary>
      *     Sign in endpoint. It allows authenticating a user
      * </summary>
-     * <param name="signInResource">The sign-in resource containing username and password.</param>
+     * <param name="signInResource">The sign-in resource containing email and password.</param>
      * <param name="cancellationToken">The cancellation token.</param>
      * <returns>The authenticated user resource, including a JWT token</returns>
      */
@@ -42,7 +42,7 @@ public class AuthenticationController(
         Description = "Sign in a user",
         OperationId = "SignIn")]
     [SwaggerResponse(StatusCodes.Status200OK, "The user was authenticated", typeof(AuthenticatedUserResource))]
-    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid username or password")]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid email or password")]
     public async Task<IActionResult> SignIn([FromBody] SignInResource signInResource,
         CancellationToken cancellationToken)
     {
@@ -64,7 +64,7 @@ public class AuthenticationController(
      * <summary>
      *     Sign up endpoint. It allows creating a new user
      * </summary>
-     * <param name="signUpResource">The sign-up resource containing username and password.</param>
+     * <param name="signUpResource">The sign-up resource containing email and password.</param>
      * <param name="cancellationToken">The cancellation token.</param>
      * <returns>A confirmation message on successful creation.</returns>
      */

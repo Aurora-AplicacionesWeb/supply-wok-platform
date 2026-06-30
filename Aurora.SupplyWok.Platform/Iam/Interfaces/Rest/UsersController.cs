@@ -1,10 +1,10 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Aurora.SupplyWok.Platform.Iam.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model.Queries;
 using Aurora.SupplyWok.Platform.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Resources;
 using Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Transform;
-using Aurora.SupplyWok.Platform.Resources.Errors;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Aurora.SupplyWok.Platform.Shared.Interfaces.Rest.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;

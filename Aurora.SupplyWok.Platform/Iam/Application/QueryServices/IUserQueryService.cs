@@ -1,4 +1,4 @@
-﻿using Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
+using Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model.Queries;
 
 namespace Aurora.SupplyWok.Platform.Iam.Application.QueryServices;
@@ -35,11 +35,11 @@ public interface IUserQueryService
 
     /**
      * <summary>
-     *     Handle get user by username query
+     *     Handle get user by email query
      * </summary>
-     * <param name="query">The get user by username query</param>
+     * <param name="query">The get user by email query</param>
      * <param name="cancellationToken">The cancellation token</param>
      * <returns>The user if found, null otherwise</returns>
      */
-    Task<User?> Handle(GetUserByUsernameQuery query, CancellationToken cancellationToken);
+    Task<User?> Handle(GetUserByEmailQuery query, CancellationToken cancellationToken);
 }

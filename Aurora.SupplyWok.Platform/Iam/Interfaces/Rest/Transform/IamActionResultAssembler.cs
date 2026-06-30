@@ -1,7 +1,8 @@
-﻿using Aurora.SupplyWok.Platform.Iam.Domain.Model;
+using Aurora.SupplyWok.Platform.Iam.Domain.Model;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Interfaces.Rest.ProblemDetails;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -15,7 +16,7 @@ public static class IamActionResultAssembler
         return error switch
         {
             IamError.InvalidCredentials => StatusCodes.Status400BadRequest,
-            IamError.UsernameAlreadyTaken => StatusCodes.Status409Conflict,
+            IamError.EmailAlreadyTaken => StatusCodes.Status409Conflict,
             IamError.OperationCancelled => StatusCodes.Status409Conflict,
             IamError.DatabaseError => StatusCodes.Status500InternalServerError,
             IamError.InternalServerError => StatusCodes.Status500InternalServerError,

@@ -1,4 +1,4 @@
-﻿using Aurora.SupplyWok.Platform.Iam.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Iam.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model.Queries;
 using Aurora.SupplyWok.Platform.Iam.Domain.Repositories;
@@ -43,14 +43,14 @@ public class UserQueryService(IUserRepository userRepository) : IUserQueryServic
 
     /**
      * <summary>
-     *     Handle get user by username query
+     *     Handle get user by email query
      * </summary>
-     * <param name="query">The query object containing the username to search</param>
+     * <param name="query">The query object containing the email to search</param>
      * <param name="cancellationToken">The cancellation token</param>
      * <returns>The user</returns>
      */
-    public async Task<User?> Handle(GetUserByUsernameQuery query, CancellationToken cancellationToken)
+    public async Task<User?> Handle(GetUserByEmailQuery query, CancellationToken cancellationToken)
     {
-        return await userRepository.FindByUsernameAsync(query.Username, cancellationToken);
+        return await userRepository.FindByEmailAsync(query.Email, cancellationToken);
     }
 }
