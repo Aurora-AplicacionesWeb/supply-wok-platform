@@ -33,7 +33,6 @@
 
     <ItemGroup>
         <Folder Include="Iam\Application\" />
-        <Folder Include="Iam\Infrastructure\" />
         <Folder Include="Iam\Interfaces\" />
         <Folder Include="Iam\Resources\" />
         <Folder Include="Inventory\Application\Internal\QueryServices\" />
