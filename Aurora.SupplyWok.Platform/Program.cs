@@ -268,7 +268,7 @@ app.UseCors("AllowAllPolicy");
 
 app.UseHttpsRedirection();
 
-app.UseRequestAuthorization();
+// app.UseRequestAuthorization();
 
 app.UseAuthorization();
 
