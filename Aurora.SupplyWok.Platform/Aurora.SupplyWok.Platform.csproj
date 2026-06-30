@@ -32,7 +32,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Iam\Resources\" />
         <Folder Include="Inventory\Application\Internal\QueryServices\" />
         <Folder Include="Inventory\Domain\Model\Entities\" />
         <Folder Include="Inventory\Domain\Model\Errors\" />
