@@ -60,4 +60,12 @@ public interface IProfilesContextFacade
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The id of the supplier profile if found, otherwise 0.</returns>
     Task<int> FetchSupplierProfileIdByUserId(int userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Fetch the business name of a supplier profile by its id
+    /// </summary>
+    /// <param name="supplierProfileId">The supplier profile identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The business name of the supplier profile if found; otherwise null.</returns>
+    Task<string?> FetchSupplierProfileNameById(int supplierProfileId, CancellationToken cancellationToken);
 }
