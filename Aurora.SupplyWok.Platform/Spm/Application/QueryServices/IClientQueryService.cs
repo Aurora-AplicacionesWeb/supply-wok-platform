@@ -14,5 +14,5 @@ public interface IClientQueryService
     /// <param name="query">The client query.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The clients linked to the requested supplier.</returns>
-    Task<IEnumerable<Client>> Handle(GetAllClientsBySupplierIdQuery query, CancellationToken cancellationToken);
+    Task<IEnumerable<RestaurantReference>> Handle(GetAllClientsBySupplierIdQuery query, CancellationToken cancellationToken);
 }

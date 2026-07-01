@@ -3,7 +3,7 @@ namespace Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates;
 /// <summary>
 /// Supplier aggregate owned by the Suppliers bounded context.
 /// </summary>
-public partial class Supplier
+public partial class SupplierReference
 {
     /// <summary>
     /// Gets the numeric supplier identifier used by the current frontend contract.

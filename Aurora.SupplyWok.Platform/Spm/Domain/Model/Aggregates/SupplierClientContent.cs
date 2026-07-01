@@ -1,14 +1,14 @@
 namespace Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates;
 
 /// <summary>
-/// Partial content class for the <see cref="SupplierClient"/> aggregate.
+/// Partial content class for the <see cref="SupplierRestaurant"/> aggregate.
 /// </summary>
-public partial class SupplierClient
+public partial class SupplierRestaurant
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SupplierClient"/> aggregate with default values.
+    /// Initializes a new instance of the <see cref="SupplierRestaurant"/> aggregate with default values.
     /// </summary>
-    public SupplierClient()
+    public SupplierRestaurant()
     {
     }
 }

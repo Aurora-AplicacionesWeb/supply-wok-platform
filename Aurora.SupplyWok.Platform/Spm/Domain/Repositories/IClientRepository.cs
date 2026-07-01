@@ -6,7 +6,7 @@ namespace Aurora.SupplyWok.Platform.Spm.Domain.Repositories;
 /// <summary>
 ///     Repository contract for supplier clients.
 /// </summary>
-public interface IClientRepository : IBaseRepository<Client>
+public interface IClientRepository : IBaseRepository<RestaurantReference>
 {
     /// <summary>
     ///     Lists all clients linked to the given supplier.
@@ -14,5 +14,5 @@ public interface IClientRepository : IBaseRepository<Client>
     /// <param name="supplierId">The supplier identifier.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The clients linked to the supplier.</returns>
-    Task<IEnumerable<Client>> ListBySupplierIdAsync(int supplierId, CancellationToken cancellationToken);
+    Task<IEnumerable<RestaurantReference>> ListBySupplierIdAsync(int supplierId, CancellationToken cancellationToken);
 }

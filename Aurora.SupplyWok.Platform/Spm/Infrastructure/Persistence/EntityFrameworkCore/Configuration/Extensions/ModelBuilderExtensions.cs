@@ -14,42 +14,42 @@ public static class ModelBuilderExtensions
     /// <param name="builder">The EF model builder.</param>
     public static void ApplySupplierConfiguration(this ModelBuilder builder)
     {
-        builder.Entity<Client>().ToTable("Clients");
-        builder.Entity<Client>().HasKey(client => client.Id);
-        builder.Entity<Client>().Property(client => client.Id).ValueGeneratedOnAdd();
-        builder.Entity<Client>().Property(client => client.Name).IsRequired().HasMaxLength(100);
-        builder.Entity<Client>().Property(client => client.District).IsRequired().HasMaxLength(80);
-        builder.Entity<Client>().Property(client => client.Status).IsRequired().HasMaxLength(20);
+        builder.Entity<RestaurantReference>().ToTable("Clients");
+        builder.Entity<RestaurantReference>().HasKey(client => client.Id);
+        builder.Entity<RestaurantReference>().Property(client => client.Id).ValueGeneratedOnAdd();
+        builder.Entity<RestaurantReference>().Property(client => client.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<RestaurantReference>().Property(client => client.District).IsRequired().HasMaxLength(80);
+        builder.Entity<RestaurantReference>().Property(client => client.Status).IsRequired().HasMaxLength(20);
 
-        builder.Entity<Supplier>().ToTable("Suppliers");
-        builder.Entity<Supplier>().HasKey(supplier => supplier.Id);
-        builder.Entity<Supplier>().Property(supplier => supplier.Id).ValueGeneratedNever();
-        builder.Entity<Supplier>().Property(supplier => supplier.Uuid).IsRequired();
-        builder.Entity<Supplier>().HasIndex(supplier => supplier.Uuid).IsUnique();
-        builder.Entity<Supplier>().Property(supplier => supplier.Name).IsRequired().HasMaxLength(100);
-        builder.Entity<Supplier>().Property(supplier => supplier.ContactName).IsRequired().HasMaxLength(100);
-        builder.Entity<Supplier>().Property(supplier => supplier.Email).IsRequired().HasMaxLength(100);
-        builder.Entity<Supplier>().Property(supplier => supplier.Phone).IsRequired().HasMaxLength(30);
-        builder.Entity<Supplier>().Property(supplier => supplier.Category).IsRequired().HasMaxLength(80);
-        builder.Entity<Supplier>().Property(supplier => supplier.LinkedDate).IsRequired().HasMaxLength(10);
-        builder.Entity<Supplier>().Property(supplier => supplier.Sla).IsRequired().HasMaxLength(20);
-        builder.Entity<Supplier>().Property(supplier => supplier.ResponseTime).IsRequired().HasMaxLength(20);
+        builder.Entity<SupplierReference>().ToTable("Suppliers");
+        builder.Entity<SupplierReference>().HasKey(supplier => supplier.Id);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.Id).ValueGeneratedNever();
+        builder.Entity<SupplierReference>().Property(supplier => supplier.Uuid).IsRequired();
+        builder.Entity<SupplierReference>().HasIndex(supplier => supplier.Uuid).IsUnique();
+        builder.Entity<SupplierReference>().Property(supplier => supplier.Name).IsRequired().HasMaxLength(100);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.ContactName).IsRequired().HasMaxLength(100);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.Email).IsRequired().HasMaxLength(100);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.Phone).IsRequired().HasMaxLength(30);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.Category).IsRequired().HasMaxLength(80);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.LinkedDate).IsRequired().HasMaxLength(10);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.Sla).IsRequired().HasMaxLength(20);
+        builder.Entity<SupplierReference>().Property(supplier => supplier.ResponseTime).IsRequired().HasMaxLength(20);
 
-        builder.Entity<SupplierClient>().ToTable("SupplierClients");
-        builder.Entity<SupplierClient>().HasKey(supplierClient => supplierClient.Id);
-        builder.Entity<SupplierClient>().Property(supplierClient => supplierClient.Id).ValueGeneratedOnAdd();
-        builder.Entity<SupplierClient>().Property(supplierClient => supplierClient.SupplierId).IsRequired();
-        builder.Entity<SupplierClient>().Property(supplierClient => supplierClient.ClientId).IsRequired();
-        builder.Entity<SupplierClient>()
+        builder.Entity<SupplierRestaurant>().ToTable("SupplierClients");
+        builder.Entity<SupplierRestaurant>().HasKey(supplierClient => supplierClient.Id);
+        builder.Entity<SupplierRestaurant>().Property(supplierClient => supplierClient.Id).ValueGeneratedOnAdd();
+        builder.Entity<SupplierRestaurant>().Property(supplierClient => supplierClient.SupplierId).IsRequired();
+        builder.Entity<SupplierRestaurant>().Property(supplierClient => supplierClient.ClientId).IsRequired();
+        builder.Entity<SupplierRestaurant>()
             .HasIndex(supplierClient => new { supplierClient.SupplierId, supplierClient.ClientId })
             .IsUnique();
-        builder.Entity<SupplierClient>()
-            .HasOne<Supplier>()
+        builder.Entity<SupplierRestaurant>()
+            .HasOne<SupplierReference>()
             .WithMany()
             .HasForeignKey(supplierClient => supplierClient.SupplierId)
             .OnDelete(DeleteBehavior.Cascade);
-        builder.Entity<SupplierClient>()
-            .HasOne<Client>()
+        builder.Entity<SupplierRestaurant>()
+            .HasOne<RestaurantReference>()
             .WithMany()
             .HasForeignKey(supplierClient => supplierClient.ClientId)
             .OnDelete(DeleteBehavior.Cascade);
@@ -65,7 +65,7 @@ public static class ModelBuilderExtensions
         builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.DeliveryConditions).IsRequired().HasMaxLength(250);
         builder.Entity<CatalogItem>().HasIndex(catalogItem => catalogItem.SupplierId);
         builder.Entity<CatalogItem>()
-            .HasOne<Supplier>()
+            .HasOne<SupplierReference>()
             .WithMany()
             .HasForeignKey(catalogItem => catalogItem.SupplierId)
             .OnDelete(DeleteBehavior.Cascade);
@@ -75,7 +75,7 @@ public static class ModelBuilderExtensions
 
     private static void SeedSuppliers(ModelBuilder builder)
     {
-        builder.Entity<Supplier>().HasData(
+        builder.Entity<SupplierReference>().HasData(
             new
             {
                 Id = 201,

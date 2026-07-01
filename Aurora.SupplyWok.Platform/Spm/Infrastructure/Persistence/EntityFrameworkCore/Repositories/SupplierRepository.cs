@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aurora.SupplyWok.Platform.Spm.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
-public class SupplierRepository(AppDbContext context) : BaseRepository<Supplier>(context), ISupplierRepository
+public class SupplierRepository(AppDbContext context) : BaseRepository<SupplierReference>(context), ISupplierRepository
 {
     public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await Context.Set<Supplier>().AnyAsync(supplier => supplier.Id == id, cancellationToken);
+        return await Context.Set<SupplierReference>().AnyAsync(supplier => supplier.Id == id, cancellationToken);
     }
 }

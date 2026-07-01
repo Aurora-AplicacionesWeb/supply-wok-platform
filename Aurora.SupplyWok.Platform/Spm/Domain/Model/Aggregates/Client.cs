@@ -6,7 +6,7 @@ namespace Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates;
 /// <remarks>
 ///     In this bounded context, a client represents a restaurant known by the supplier.
 /// </remarks>
-public partial class Client
+public partial class RestaurantReference
 {
     /// <summary>
     ///     Initializes a new client instance with business data.
@@ -14,7 +14,7 @@ public partial class Client
     /// <param name="name">The restaurant display name.</param>
     /// <param name="district">The district where the restaurant operates.</param>
     /// <param name="status">The current supplier-side status for the client.</param>
-    public Client(
+    public RestaurantReference(
         string name,
         string district,
         string status) : this()

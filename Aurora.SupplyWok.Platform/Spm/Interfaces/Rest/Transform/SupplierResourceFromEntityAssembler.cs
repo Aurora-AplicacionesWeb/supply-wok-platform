@@ -5,7 +5,7 @@ namespace Aurora.SupplyWok.Platform.Spm.Interfaces.Rest.Transform;
 
 public static class SupplierResourceFromEntityAssembler
 {
-    public static SupplierResource ToResourceFromEntity(Supplier supplier)
+    public static SupplierResource ToResourceFromEntity(SupplierReference supplier)
     {
         ArgumentNullException.ThrowIfNull(supplier);
 

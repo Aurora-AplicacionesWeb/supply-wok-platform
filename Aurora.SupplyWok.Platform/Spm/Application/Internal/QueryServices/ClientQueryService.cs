@@ -11,7 +11,7 @@ namespace Aurora.SupplyWok.Platform.Spm.Application.Internal.QueryServices;
 public class ClientQueryService(IClientRepository clientRepository) : IClientQueryService
 {
     /// <inheritdoc />
-    public async Task<IEnumerable<Client>> Handle(GetAllClientsBySupplierIdQuery query, CancellationToken cancellationToken)
+    public async Task<IEnumerable<RestaurantReference>> Handle(GetAllClientsBySupplierIdQuery query, CancellationToken cancellationToken)
     {
         return await clientRepository.ListBySupplierIdAsync(query.SupplierId, cancellationToken);
     }

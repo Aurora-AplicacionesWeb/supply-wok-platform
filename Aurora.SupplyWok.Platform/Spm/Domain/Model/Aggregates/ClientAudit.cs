@@ -3,9 +3,9 @@ using Aurora.SupplyWok.Platform.Shared.Domain.Model.Entities;
 namespace Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates;
 
 /// <summary>
-///     Audit metadata for the <see cref="Client"/> aggregate.
+///     Audit metadata for the <see cref="RestaurantReference"/> aggregate.
 /// </summary>
-public partial class Client : IAuditableEntity
+public partial class RestaurantReference : IAuditableEntity
 {
     /// <inheritdoc />
     public DateTimeOffset? CreatedAt { get; set; }

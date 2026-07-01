@@ -6,14 +6,14 @@ namespace Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates;
 /// <remarks>
 ///     This aggregate represents the explicit relationship between a supplier and a client.
 /// </remarks>
-public partial class SupplierClient
+public partial class SupplierRestaurant
 {
     /// <summary>
     ///     Initializes a new supplier-client link instance with business data.
     /// </summary>
     /// <param name="supplierId">The supplier identifier.</param>
     /// <param name="clientId">The client identifier.</param>
-    public SupplierClient(int supplierId, int clientId)
+    public SupplierRestaurant(int supplierId, int clientId)
     {
         SupplierId = supplierId;
         ClientId = clientId;

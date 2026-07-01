@@ -13,7 +13,7 @@ public static class ClientResourceFromEntityAssembler
     /// </summary>
     /// <param name="client">The client aggregate.</param>
     /// <returns>The client resource.</returns>
-    public static ClientResource ToResourceFromEntity(Client client)
+    public static ClientResource ToResourceFromEntity(RestaurantReference client)
     {
         ArgumentNullException.ThrowIfNull(client);
 

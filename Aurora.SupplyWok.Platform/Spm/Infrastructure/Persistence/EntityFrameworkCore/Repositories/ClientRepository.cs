@@ -9,14 +9,14 @@ namespace Aurora.SupplyWok.Platform.Spm.Infrastructure.Persistence.EntityFramewo
 /// <summary>
 ///     Entity Framework repository for supplier clients.
 /// </summary>
-public class ClientRepository(AppDbContext context) : BaseRepository<Client>(context), IClientRepository
+public class ClientRepository(AppDbContext context) : BaseRepository<RestaurantReference>(context), IClientRepository
 {
     /// <inheritdoc />
-    public async Task<IEnumerable<Client>> ListBySupplierIdAsync(int supplierId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<RestaurantReference>> ListBySupplierIdAsync(int supplierId, CancellationToken cancellationToken)
     {
         return await (
-            from client in Context.Set<Client>()
-            join supplierClient in Context.Set<SupplierClient>()
+            from client in Context.Set<RestaurantReference>()
+            join supplierClient in Context.Set<SupplierRestaurant>()
                 on client.Id equals supplierClient.ClientId
             where supplierClient.SupplierId == supplierId
             select client)

@@ -7,7 +7,7 @@ namespace Aurora.SupplyWok.Platform.Spm.Application.Internal.QueryServices;
 
 public class SupplierQueryService(ISupplierRepository supplierRepository) : ISupplierQueryService
 {
-    public async Task<IEnumerable<Supplier>> Handle(GetAllSuppliersQuery query, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SupplierReference>> Handle(GetAllSuppliersQuery query, CancellationToken cancellationToken)
     {
         return await supplierRepository.ListAsync(cancellationToken);
     }

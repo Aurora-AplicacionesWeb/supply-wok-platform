@@ -5,5 +5,5 @@ namespace Aurora.SupplyWok.Platform.Spm.Application.QueryServices;
 
 public interface ISupplierQueryService
 {
-    Task<IEnumerable<Supplier>> Handle(GetAllSuppliersQuery query, CancellationToken cancellationToken);
+    Task<IEnumerable<SupplierReference>> Handle(GetAllSuppliersQuery query, CancellationToken cancellationToken);
 }
