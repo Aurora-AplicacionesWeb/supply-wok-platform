@@ -6,7 +6,7 @@ using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
-using Aurora.SupplyWok.Platform.Suppliers.Interfaces.Acl;
+using Aurora.SupplyWok.Platform.Spm.Interfaces.Acl;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aurora.SupplyWok.Platform.Purchasing.Application.Internal.CommandServices;
