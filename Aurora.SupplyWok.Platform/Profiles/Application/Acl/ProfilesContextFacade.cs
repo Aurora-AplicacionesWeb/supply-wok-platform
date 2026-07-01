@@ -109,6 +109,14 @@ public class ProfilesContextFacade(
         return supplierProfile?.Id ?? 0;
     }
 
+    /// <inheritdoc />
+    public async Task<string?> FetchSupplierProfileNameById(int supplierProfileId, CancellationToken cancellationToken)
+    {
+        var query = new GetSupplierProfileByIdQuery(supplierProfileId);
+        var supplierProfile = await supplierProfileQueryService.Handle(query, cancellationToken);
+        return supplierProfile?.BusinessName;
+    }
+
     public async Task<SupplierProfileAclResource?> GetSupplierProfileById(int supplierProfileId,
         CancellationToken cancellationToken)
     {

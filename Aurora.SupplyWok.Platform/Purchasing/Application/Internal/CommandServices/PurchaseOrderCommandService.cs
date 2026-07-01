@@ -21,9 +21,10 @@ public class PurchaseOrderCommandService(
         try
         {
             var supplierIdentity = await profilesContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
+            var supplierName = await profilesContextFacade.FetchSupplierProfileNameById(command.SupplierId, cancellationToken);
             var validation = await ValidateOrderData(command.Code, command.RestaurantName, null,
                 command.SupplierId, command.OrderDate, command.EstimatedDate, command.Priority, command.Status ?? "Pending",
-                command.Items, supplierIdentity, cancellationToken);
+                command.Items, supplierName, cancellationToken);
             if (validation is not null) return Result<PurchaseOrder>.Failure(validation.Value.Error, validation.Value.Message);
 
             var priority = ParsePriority(command.Priority);
@@ -31,7 +32,7 @@ public class PurchaseOrderCommandService(
             if (status != EPurchaseOrderStatus.Pending)
                 return Result<PurchaseOrder>.Failure(PurchaseOrdersError.InvalidData, "New purchase orders must start as Pending.");
 
-            var order = new PurchaseOrder(command.Code.Trim(), command.SupplierId, supplierIdentity!.Name.Trim(),
+            var order = new PurchaseOrder(command.Code.Trim(), command.SupplierId, supplierName!.Trim(),
                 command.RestaurantName.Trim(), command.OrderDate.Trim(), command.EstimatedDate?.Trim(), priority, status,
                 ToItems(command.Items));
 
@@ -62,16 +63,17 @@ public class PurchaseOrderCommandService(
                 return Result<PurchaseOrder>.Failure(PurchaseOrdersError.PurchaseOrderNotFound, nameof(PurchaseOrdersError.PurchaseOrderNotFound));
 
             var supplierIdentity = await profilesContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
+            var supplierName = await profilesContextFacade.FetchSupplierProfileNameById(command.SupplierId, cancellationToken);
             var validation = await ValidateOrderData(command.Code, command.RestaurantName,
                 command.Id, command.SupplierId, command.OrderDate, command.EstimatedDate, command.Priority, command.Status,
-                command.Items, supplierIdentity, cancellationToken);
+                command.Items, supplierName, cancellationToken);
             if (validation is not null) return Result<PurchaseOrder>.Failure(validation.Value.Error, validation.Value.Message);
 
             var nextStatus = ParseStatus(command.Status);
             if (!order.CanTransitionTo(nextStatus))
                 return Result<PurchaseOrder>.Failure(PurchaseOrdersError.InvalidStatusTransition, nameof(PurchaseOrdersError.InvalidStatusTransition));
 
-            order.Update(command.Code.Trim(), command.SupplierId, supplierIdentity!.Name.Trim(), command.RestaurantName.Trim(),
+            order.Update(command.Code.Trim(), command.SupplierId, supplierName!.Trim(), command.RestaurantName.Trim(),
                 command.OrderDate.Trim(), command.EstimatedDate?.Trim(), ParsePriority(command.Priority), nextStatus,
                 ToItems(command.Items));
 
@@ -162,7 +164,7 @@ public class PurchaseOrderCommandService(
         string priority,
         string status,
         IEnumerable<CreatePurchaseOrderItemCommand> items,
-        SupplierIdentityAclResource? supplierIdentity,
+        string? supplierName,
         CancellationToken cancellationToken)
     {
         var itemList = items.ToList();
@@ -179,7 +181,7 @@ public class PurchaseOrderCommandService(
         if (!TryParsePriority(priority, out _)) return (PurchaseOrdersError.InvalidData, "Invalid purchase order priority.");
         if (!TryParseStatus(status, out _)) return (PurchaseOrdersError.InvalidData, "Invalid purchase order status.");
         if (itemList.Count == 0) return (PurchaseOrdersError.InvalidData, "At least one purchase order item is required.");
-        if (supplierIdentity is null)
+        if (supplierName is null)
             return (PurchaseOrdersError.SupplierNotFound, nameof(PurchaseOrdersError.SupplierNotFound));
         if (await purchaseOrderRepository.ExistsByCodeAsync(code.Trim(), excludedId, cancellationToken))
             return (PurchaseOrdersError.DuplicateCode, nameof(PurchaseOrdersError.DuplicateCode));
