@@ -4,23 +4,23 @@ using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
-using Aurora.SupplyWok.Platform.Spm.Interfaces.Acl;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aurora.SupplyWok.Platform.Purchasing.Application.Internal.CommandServices;
 
 public class PurchaseOrderCommandService(
     IPurchaseOrderRepository purchaseOrderRepository,
-    ISupplierContextFacade supplierContextFacade,
+    IProfilesContextFacade profilesContextFacade,
     IUnitOfWork unitOfWork) : IPurchaseOrderCommandService
 {
     public async Task<Result<PurchaseOrder>> Handle(CreatePurchaseOrderCommand command, CancellationToken cancellationToken)
     {
         try
         {
-            var supplierIdentity = await supplierContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
+            var supplierIdentity = await profilesContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
             var validation = await ValidateOrderData(command.Code, command.RestaurantName, null,
                 command.SupplierId, command.OrderDate, command.EstimatedDate, command.Priority, command.Status ?? "Pending",
                 command.Items, supplierIdentity, cancellationToken);
@@ -61,7 +61,7 @@ public class PurchaseOrderCommandService(
             if (order is null)
                 return Result<PurchaseOrder>.Failure(PurchaseOrdersError.PurchaseOrderNotFound, nameof(PurchaseOrdersError.PurchaseOrderNotFound));
 
-            var supplierIdentity = await supplierContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
+            var supplierIdentity = await profilesContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
             var validation = await ValidateOrderData(command.Code, command.RestaurantName,
                 command.Id, command.SupplierId, command.OrderDate, command.EstimatedDate, command.Priority, command.Status,
                 command.Items, supplierIdentity, cancellationToken);

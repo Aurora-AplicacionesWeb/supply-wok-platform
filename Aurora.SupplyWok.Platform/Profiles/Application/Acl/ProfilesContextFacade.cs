@@ -1,6 +1,7 @@
 using Aurora.SupplyWok.Platform.Profiles.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Profiles.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Profiles.Domain.Model.Commands;
+using Aurora.SupplyWok.Platform.Profiles.Domain.Model.Aggregates;
 using Aurora.SupplyWok.Platform.Profiles.Domain.Model.Queries;
 using Aurora.SupplyWok.Platform.Profiles.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
@@ -65,7 +66,8 @@ public class ProfilesContextFacade(
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The id of the created supplier profile, or 0 if the operation failed.</returns>
     public async Task<int> CreateSupplierProfile(string businessName, string firstName, string lastName,
-        string street, string district, string city, string country, string contactEmail, int? userId,
+        string street, string district, string city, string country, string contactEmail, string phone, string category,
+        int? userId,
         CancellationToken cancellationToken)
     {
         var command = new CreateSupplierProfileCommand(
@@ -73,6 +75,8 @@ public class ProfilesContextFacade(
             new PersonName(firstName, lastName),
             new StreetAddress(street, district, city, country),
             new EmailAddress(contactEmail),
+            phone,
+            category,
             userId);
 
         var result = await supplierProfileCommandService.Handle(command, cancellationToken);
@@ -103,5 +107,71 @@ public class ProfilesContextFacade(
         var query = new GetSupplierProfileByUserIdQuery(userId);
         var supplierProfile = await supplierProfileQueryService.Handle(query, cancellationToken);
         return supplierProfile?.Id ?? 0;
+    }
+
+    public async Task<SupplierProfileAclResource?> GetSupplierProfileById(int supplierProfileId,
+        CancellationToken cancellationToken)
+    {
+        var profile = await supplierProfileQueryService.Handle(new GetSupplierProfileByIdQuery(supplierProfileId),
+            cancellationToken);
+        return profile is null ? null : ToAclResource(profile);
+    }
+
+    public async Task<RestaurantProfileAclResource?> GetRestaurantProfileById(int restaurantProfileId,
+        CancellationToken cancellationToken)
+    {
+        var profile = await restaurantProfileQueryService.Handle(new GetRestaurantProfileByIdQuery(restaurantProfileId),
+            cancellationToken);
+        return profile is null ? null : ToAclResource(profile);
+    }
+
+    public async Task<IEnumerable<SupplierProfileAclResource>> GetSupplierProfilesByIds(
+        IEnumerable<int> supplierProfileIds,
+        CancellationToken cancellationToken)
+    {
+        var ids = supplierProfileIds.Distinct().ToHashSet();
+        if (ids.Count == 0) return [];
+
+        var profiles = await supplierProfileQueryService.Handle(new GetAllSupplierProfilesQuery(), cancellationToken);
+        return profiles.Where(profile => ids.Contains(profile.Id)).Select(ToAclResource);
+    }
+
+    public async Task<IEnumerable<RestaurantProfileAclResource>> GetRestaurantProfilesByIds(
+        IEnumerable<int> restaurantProfileIds,
+        CancellationToken cancellationToken)
+    {
+        var ids = restaurantProfileIds.Distinct().ToHashSet();
+        if (ids.Count == 0) return [];
+
+        var profiles = await restaurantProfileQueryService.Handle(new GetAllRestaurantProfilesQuery(), cancellationToken);
+        return profiles.Where(profile => ids.Contains(profile.Id)).Select(ToAclResource);
+    }
+
+    public async Task<SupplierIdentityAclResource?> GetSupplierIdentityById(int supplierProfileId,
+        CancellationToken cancellationToken)
+    {
+        var supplierProfile = await GetSupplierProfileById(supplierProfileId, cancellationToken);
+        return supplierProfile is null ? null : new SupplierIdentityAclResource(supplierProfile.Id, supplierProfile.BusinessName);
+    }
+
+    private static SupplierProfileAclResource ToAclResource(SupplierProfile profile)
+    {
+        return new SupplierProfileAclResource(
+            profile.Id,
+            profile.BusinessName,
+            $"{profile.ContactName.FirstName} {profile.ContactName.LastName}".Trim(),
+            profile.ContactEmail.Address,
+            profile.Phone,
+            profile.Category,
+            profile.Status);
+    }
+
+    private static RestaurantProfileAclResource ToAclResource(RestaurantProfile profile)
+    {
+        return new RestaurantProfileAclResource(
+            profile.Id,
+            profile.BusinessName,
+            profile.Address.District,
+            profile.Status);
     }
 }

@@ -191,14 +191,11 @@ builder.Services.AddScoped<IKitchenOrderCommandService, KitchenOrderCommandServi
 builder.Services.AddScoped<IKitchenOrderQueryService, KitchenOrderQueryService>();
 
 // Supplier Bounded Context
-builder.Services.AddScoped<IClientRepository, ClientRepository>();
-builder.Services.AddScoped<IClientQueryService, ClientQueryService>();
+builder.Services.AddScoped<ISupplierRestaurantRepository, SupplierRestaurantRepository>();
+builder.Services.AddScoped<ISupplierRestaurantQueryService, SupplierRestaurantQueryService>();
 builder.Services.AddScoped<ICatalogItemRepository, CatalogItemRepository>();
 builder.Services.AddScoped<ICatalogItemCommandService, CatalogItemCommandService>();
 builder.Services.AddScoped<ICatalogItemQueryService, CatalogItemQueryService>();
-builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Domain.Repositories.ISupplierRepository, Aurora.SupplyWok.Platform.Spm.Infrastructure.Persistence.EntityFrameworkCore.Repositories.SupplierRepository>();
-builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Application.QueryServices.ISupplierQueryService, Aurora.SupplyWok.Platform.Spm.Application.Internal.QueryServices.SupplierQueryService>();
-builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierContextFacade>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierCatalogContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierCatalogContextFacade>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierOrdersContextFacade>();
 

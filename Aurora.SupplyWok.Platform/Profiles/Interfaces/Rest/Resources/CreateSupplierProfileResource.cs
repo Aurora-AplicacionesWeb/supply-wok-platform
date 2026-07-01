@@ -11,6 +11,8 @@ namespace Aurora.SupplyWok.Platform.Profiles.Interfaces.Rest.Resources;
 /// <param name="City">The city of the supplier's address.</param>
 /// <param name="Country">The country of the supplier's address.</param>
 /// <param name="ContactEmail">The contact email of the supplier.</param>
+/// <param name="Phone">The supplier contact phone.</param>
+/// <param name="Category">The supplier category.</param>
 /// <param name="UserId">The optional Iam user id to link to the supplier profile.</param>
 public record CreateSupplierProfileResource(
     string BusinessName,
@@ -21,4 +23,6 @@ public record CreateSupplierProfileResource(
     string City,
     string Country,
     string ContactEmail,
+    string Phone,
+    string Category,
     int? UserId);

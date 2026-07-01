@@ -1,5 +1,6 @@
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Spm.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Spm.Domain.Model;
 using Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates;
@@ -11,14 +12,14 @@ namespace Aurora.SupplyWok.Platform.Spm.Application.Internal.CommandServices;
 
 public class CatalogItemCommandService(
     ICatalogItemRepository catalogItemRepository,
-    ISupplierRepository supplierRepository,
+    IProfilesContextFacade profilesContextFacade,
     IUnitOfWork unitOfWork) : ICatalogItemCommandService
 {
     public async Task<Result<CatalogItem>> Handle(CreateCatalogItemCommand command, CancellationToken cancellationToken)
     {
         try
         {
-            if (!await supplierRepository.ExistsByIdAsync(command.SupplierId, cancellationToken))
+            if (await profilesContextFacade.GetSupplierProfileById(command.SupplierId, cancellationToken) is null)
                 return Result<CatalogItem>.Failure(SuppliersError.SupplierNotFound, nameof(SuppliersError.SupplierNotFound));
 
             var catalogItem = new CatalogItem(command);
@@ -48,7 +49,7 @@ public class CatalogItemCommandService(
     {
         try
         {
-            if (!await supplierRepository.ExistsByIdAsync(command.SupplierId, cancellationToken))
+            if (await profilesContextFacade.GetSupplierProfileById(command.SupplierId, cancellationToken) is null)
                 return Result<CatalogItem>.Failure(SuppliersError.SupplierNotFound, nameof(SuppliersError.SupplierNotFound));
 
             var catalogItem = await catalogItemRepository.FindByIdAndSupplierIdAsync(command.CatalogItemId, command.SupplierId, cancellationToken);
@@ -82,7 +83,7 @@ public class CatalogItemCommandService(
     {
         try
         {
-            if (!await supplierRepository.ExistsByIdAsync(command.SupplierId, cancellationToken))
+            if (await profilesContextFacade.GetSupplierProfileById(command.SupplierId, cancellationToken) is null)
                 return Result<bool>.Failure(SuppliersError.SupplierNotFound, nameof(SuppliersError.SupplierNotFound));
 
             var catalogItem = await catalogItemRepository.FindByIdAndSupplierIdAsync(command.CatalogItemId, command.SupplierId, cancellationToken);
