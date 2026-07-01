@@ -3,6 +3,9 @@ namespace Aurora.SupplyWok.Platform.Spm.Interfaces.Acl;
 /// <summary>
 /// Facade for external access to supplier identity data.
 /// </summary>
+/// <remarks>
+/// TODO: Should delegate to the Profiles bounded context in a future iteration.
+/// </remarks>
 public interface ISupplierContextFacade
 {
     /// <summary>

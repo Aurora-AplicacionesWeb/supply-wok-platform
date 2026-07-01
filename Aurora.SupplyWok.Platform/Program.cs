@@ -199,7 +199,6 @@ builder.Services.AddScoped<ICatalogItemQueryService, CatalogItemQueryService>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Domain.Repositories.ISupplierRepository, Aurora.SupplyWok.Platform.Spm.Infrastructure.Persistence.EntityFrameworkCore.Repositories.SupplierRepository>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Application.QueryServices.ISupplierQueryService, Aurora.SupplyWok.Platform.Spm.Application.Internal.QueryServices.SupplierQueryService>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierContextFacade>();
-builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierClientsContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierClientsContextFacade>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierCatalogContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierCatalogContextFacade>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierOrdersContextFacade>();
 
