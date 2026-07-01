@@ -34,7 +34,7 @@ public class RestaurantAlertsController(
     {
         var query = new GetAllRestaurantAlertsQuery();
         var alerts = await alertQueryService.Handle(query, cancellationToken);
-        var resources = alerts.Select(Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity);
+        var resources = alerts.Select(a => (AlertRestaurantResource)Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(a));
         return Ok(resources);
     }
 
@@ -56,7 +56,7 @@ public class RestaurantAlertsController(
         if (alert == null || alert is not Domain.Model.Entities.AlertRestaurant)
             return NotFound();
 
-        return Ok(Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(alert));
+        return Ok((AlertRestaurantResource)Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(alert));
     }
 
     /// <summary>
@@ -83,6 +83,6 @@ public class RestaurantAlertsController(
         if (!result.IsSuccess)
             return BadRequest(result.Message);
 
-        return Ok(Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(result.Value!));
+        return Ok((AlertRestaurantResource)Transform.AlertResourceFromEntityAssembler.ToResourceFromEntity(result.Value!));
     }
 }

@@ -1,0 +1,92 @@
+using Aurora.SupplyWok.Platform.Iam.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Iam.Application.Internal.OutboundServices;
+using Aurora.SupplyWok.Platform.Iam.Domain.Model;
+using Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
+using Aurora.SupplyWok.Platform.Iam.Domain.Model.Commands;
+using Aurora.SupplyWok.Platform.Iam.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Shared.Application.Model;
+using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Shared.Resources.Errors;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+
+namespace Aurora.SupplyWok.Platform.Iam.Application.Internal.CommandServices;
+
+/**
+ * <summary>
+ *     The user command service
+ * </summary>
+ * <remarks>
+ *     This class is used to handle user commands
+ * </remarks>
+ */
+public class UserCommandService(
+    IUserRepository userRepository,
+    ITokenService tokenService,
+    IHashingService hashingService,
+    IUnitOfWork unitOfWork,
+    IStringLocalizer<ErrorMessages> localizer) // Inject IStringLocalizer
+    : IUserCommandService
+{
+    private readonly IStringLocalizer<ErrorMessages> _localizer = localizer;
+
+    /**
+     * <summary>
+     *     Handle sign in command
+     * </summary>
+     * <param name="command">The sign in command</param>
+     * <param name="cancellationToken">The cancellation token</param>
+     * <returns>The authenticated user and the JWT token</returns>
+     */
+    public async Task<Result<(User user, string token)>> Handle(SignInCommand command,
+        CancellationToken cancellationToken)
+    {
+        var user = await userRepository.FindByEmailAsync(command.Email, cancellationToken);
+
+        if (user == null || !hashingService.VerifyPassword(command.Password, user.PasswordHash))
+            return Result<(User user, string token)>.Failure(IamError.InvalidCredentials,
+                _localizer[nameof(IamError.InvalidCredentials)]);
+
+        var token = tokenService.GenerateToken(user);
+
+        return Result<(User user, string token)>.Success((user, token));
+    }
+
+    /**
+     * <summary>
+     *     Handle sign up command
+     * </summary>
+     * <param name="command">The sign-up command</param>
+     * <param name="cancellationToken">The cancellation token</param>
+     * <returns>A confirmation message on successful creation.</returns>
+     */
+    public async Task<Result> Handle(SignUpCommand command, CancellationToken cancellationToken)
+    {
+        if (await userRepository.ExistsByEmailAsync(command.Email, cancellationToken))
+            return Result.Failure(IamError.EmailAlreadyTaken,
+                _localizer[nameof(IamError.EmailAlreadyTaken), command.Email]);
+
+        var hashedPassword = hashingService.HashPassword(command.Password);
+        var user = new User(command.Email, hashedPassword);
+        try
+        {
+            await userRepository.AddAsync(user, cancellationToken);
+            await unitOfWork.CompleteAsync(cancellationToken);
+            return Result.Success();
+        }
+        catch (OperationCanceledException)
+        {
+            return Result.Failure(IamError.OperationCancelled, _localizer[nameof(IamError.OperationCancelled)]);
+        }
+        catch (DbUpdateException)
+        {
+            // Log the exception details here if an ILogger is injected
+            return Result.Failure(IamError.DatabaseError, _localizer[nameof(IamError.DatabaseError)]);
+        }
+        catch (Exception)
+        {
+            // Log the exception details here if an ILogger is injected
+            return Result.Failure(IamError.InternalServerError, _localizer[nameof(IamError.InternalServerError)]);
+        }
+    }
+}
