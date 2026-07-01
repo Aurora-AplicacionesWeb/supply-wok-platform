@@ -104,4 +104,12 @@ public class ProfilesContextFacade(
         var supplierProfile = await supplierProfileQueryService.Handle(query, cancellationToken);
         return supplierProfile?.Id ?? 0;
     }
+
+    /// <inheritdoc />
+    public async Task<string?> FetchSupplierProfileNameById(int supplierProfileId, CancellationToken cancellationToken)
+    {
+        var query = new GetSupplierProfileByIdQuery(supplierProfileId);
+        var supplierProfile = await supplierProfileQueryService.Handle(query, cancellationToken);
+        return supplierProfile?.BusinessName;
+    }
 }
