@@ -9,7 +9,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Aurora.SupplyWok.Platform.Migrations
 {
     /// <inheritdoc />
-    public partial class NewInitialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,20 +18,23 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "clients",
+                name: "catalog_items",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    supplier_id = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    district = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
-                    status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    category = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
+                    price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    unit = table.Column<string>(type: "longtext", unicode: false, nullable: false),
+                    delivery_conditions = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_clients", x => x.id);
+                    table.PrimaryKey("p_k_catalog_items", x => x.id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -170,6 +173,8 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     city = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
                     country = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
                     contact_email = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    phone = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    category = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
                     status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     user_id = table.Column<int>(type: "int", nullable: true),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
@@ -182,17 +187,15 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "suppliers",
+                name: "supplier_restaurants",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    uuid = table.Column<Guid>(type: "char(36)", nullable: false),
-                    name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    contact_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    phone = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    category = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    supplier_profile_id = table.Column<int>(type: "int", nullable: false),
+                    restaurant_profile_id = table.Column<int>(type: "int", nullable: false),
                     linked_date = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    status = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     sla = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     response_time = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
@@ -200,7 +203,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_suppliers", x => x.id);
+                    table.PrimaryKey("p_k_supplier_restaurants", x => x.id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -341,62 +344,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "catalog_items",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    supplier_id = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    category = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
-                    price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    unit = table.Column<string>(type: "longtext", unicode: false, nullable: false),
-                    delivery_conditions = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
-                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
-                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("p_k_catalog_items", x => x.id);
-                    table.ForeignKey(
-                        name: "f_k_catalog_items__suppliers_supplier_id",
-                        column: x => x.supplier_id,
-                        principalTable: "suppliers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "supplier_clients",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    supplier_id = table.Column<int>(type: "int", nullable: false),
-                    client_id = table.Column<int>(type: "int", nullable: false),
-                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
-                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("p_k_supplier_clients", x => x.id);
-                    table.ForeignKey(
-                        name: "f_k_supplier_clients_clients_client_id",
-                        column: x => x.client_id,
-                        principalTable: "clients",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "f_k_supplier_clients_suppliers_supplier_id",
-                        column: x => x.supplier_id,
-                        principalTable: "suppliers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "inventory_transactions",
                 columns: table => new
                 {
@@ -524,6 +471,17 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 values: new object[] { 1, new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "{\"labels\":[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\"],\"data\":[42,46,34,31,58,64]}", "{\"labels\":[\"M\",\"T\",\"W\",\"T\",\"F\",\"S\",\"S\"],\"data\":[22,10,46,28,66,18,10]}", "[{\"supplier\":\"Golden Wok\",\"value\":85},{\"supplier\":\"Andes\",\"value\":60},{\"supplier\":\"Orient\",\"value\":45},{\"supplier\":\"Pacific\",\"value\":30}]", null, "{\"labels\":[\"W1\",\"W2\",\"W3\",\"W4\",\"W5\",\"W6\"],\"data\":[62,88,48,110,76,118]}" });
 
             migrationBuilder.InsertData(
+                table: "restaurant_profiles",
+                columns: new[] { "id", "business_name", "created_at", "status", "updated_at", "user_id", "city", "country", "district", "street", "contact_email", "contact_first_name", "contact_last_name" },
+                values: new object[,]
+                {
+                    { 1, "Gran Dragon Chifa", null, "Active", null, null, "Lima", "Peru", "San Miguel", "Av. La Marina 456", "admin@grandragon.pe", "Wei", "Wang" },
+                    { 2, "Jade Express", null, "Active", null, null, "Lima", "Peru", "Miraflores", "Av. Pardo 180", "ops@jadeexpress.pe", "Mei", "Chen" },
+                    { 3, "Pekin Lounge", null, "Active", null, null, "Lima", "Peru", "San Isidro", "Calle Las Begonias 321", "contacto@pekinlounge.pe", "Ana", "Liu" },
+                    { 4, "Ming Garden", null, "Active", null, null, "Lima", "Peru", "Pueblo Libre", "Av. Bolivar 910", "gerencia@minggarden.pe", "Luis", "Wong" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "sensors",
                 columns: new[] { "id", "created_at", "enabled", "last_value", "max_value", "min_value", "name", "sensor_type", "updated_at" },
                 values: new object[,]
@@ -538,13 +496,24 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 values: new object[] { 1, "[{\"period\":\"May\",\"value\":240},{\"period\":\"Jun\",\"value\":260},{\"period\":\"Jul\",\"value\":272},{\"period\":\"Aug\",\"value\":288},{\"period\":\"Sep\",\"value\":304},{\"period\":\"Oct\",\"value\":319}]", "[{\"clientId\":1,\"clientName\":\"Gran Dragon Chifa\",\"value\":72,\"trend\":\"upward\",\"summary\":\"Seafood and greens demand trending higher before weekends.\"},{\"clientId\":2,\"clientName\":\"Jade Express\",\"value\":68,\"trend\":\"stable\",\"summary\":\"Keep standard restock cadence; lunch traffic is stable.\"},{\"clientId\":3,\"clientName\":\"Pekin Lounge\",\"value\":55,\"trend\":\"watch\",\"summary\":\"Demand remains moderate with steady weekly orders.\"},{\"clientId\":4,\"clientName\":\"Ming Garden\",\"value\":49,\"trend\":\"stable\",\"summary\":\"Projected demand is steady with no urgent restock signal.\"}]", new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null });
 
             migrationBuilder.InsertData(
-                table: "suppliers",
-                columns: new[] { "id", "category", "contact_name", "created_at", "email", "linked_date", "name", "phone", "response_time", "sla", "updated_at", "uuid" },
+                table: "supplier_profiles",
+                columns: new[] { "id", "business_name", "category", "created_at", "phone", "status", "updated_at", "user_id", "city", "country", "district", "street", "contact_email", "contact_first_name", "contact_last_name" },
                 values: new object[,]
                 {
-                    { 201, "Grains and pantry", "Mariela Soto", null, "msoto@goldenwok.pe", "2026-04-21", "Golden Wok Produce", "+51 999 111 222", "1.6 H", "98% SLA", null, new Guid("11111111-1111-1111-1111-111111111201") },
-                    { 202, "Cold products", "Luis Cardenas", null, "lcardenas@andescold.pe", "2026-04-20", "Andes Cold Chain", "+51 999 333 444", "2.1 H", "95% SLA", null, new Guid("11111111-1111-1111-1111-111111111202") },
-                    { 203, "Asian sauces and oils", "Zhen Liu", null, "zliu@orientpantry.pe", "2026-04-19", "Orient Pantry Co.", "+51 999 555 666", "2.9 H", "91% SLA", null, new Guid("11111111-1111-1111-1111-111111111203") }
+                    { 201, "Golden Wok Produce", "Grains and pantry", null, "+51 999 111 222", "Active", null, null, "Lima", "Peru", "San Miguel", "Av. Los Olivos 123", "msoto@goldenwok.pe", "Mariela", "Soto" },
+                    { 202, "Andes Cold Chain", "Cold products", null, "+51 999 333 444", "Active", null, null, "Lima", "Peru", "Callao", "Av. Industrial 220", "lcardenas@andescold.pe", "Luis", "Cardenas" },
+                    { 203, "Orient Pantry Co.", "Asian sauces and oils", null, "+51 999 555 666", "Active", null, null, "Lima", "Peru", "La Victoria", "Jr. Comercio 850", "zliu@orientpantry.pe", "Zhen", "Liu" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "supplier_restaurants",
+                columns: new[] { "id", "created_at", "linked_date", "response_time", "restaurant_profile_id", "sla", "status", "supplier_profile_id", "updated_at" },
+                values: new object[,]
+                {
+                    { 1, null, "2026-04-21", "1.6 H", 1, "98% SLA", "Active", 201, null },
+                    { 2, null, "2026-04-20", "2.1 H", 1, "95% SLA", "Active", 202, null },
+                    { 3, null, "2026-04-19", "2.9 H", 2, "91% SLA", "Active", 203, null },
+                    { 4, null, "2026-04-18", "1.8 H", 3, "97% SLA", "Active", 201, null }
                 });
 
             migrationBuilder.InsertData(
@@ -614,20 +583,9 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "i_x_supplier_clients_client_id",
-                table: "supplier_clients",
-                column: "client_id");
-
-            migrationBuilder.CreateIndex(
-                name: "i_x_supplier_clients_supplier_id_client_id",
-                table: "supplier_clients",
-                columns: new[] { "supplier_id", "client_id" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "i_x_suppliers_uuid",
-                table: "suppliers",
-                column: "uuid",
+                name: "ix_supplier_restaurants_supplier_profile_restaurant_profile",
+                table: "supplier_restaurants",
+                columns: new[] { "supplier_profile_id", "restaurant_profile_id" },
                 unique: true);
         }
 
@@ -662,10 +620,10 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 name: "supplier_analytics");
 
             migrationBuilder.DropTable(
-                name: "supplier_clients");
+                name: "supplier_profiles");
 
             migrationBuilder.DropTable(
-                name: "supplier_profiles");
+                name: "supplier_restaurants");
 
             migrationBuilder.DropTable(
                 name: "users");
@@ -684,12 +642,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
             migrationBuilder.DropTable(
                 name: "purchase_orders");
-
-            migrationBuilder.DropTable(
-                name: "clients");
-
-            migrationBuilder.DropTable(
-                name: "suppliers");
 
             migrationBuilder.DropTable(
                 name: "supplies");
