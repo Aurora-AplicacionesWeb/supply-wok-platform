@@ -235,7 +235,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     WHERE sr.supplier_profile_id = seed.supplier_profile_id
                       AND sr.restaurant_profile_id = seed.restaurant_profile_id
                 )
-                ON DUPLICATE KEY UPDATE id = id;
+                ;
                 """);
 
             migrationBuilder.DropTable(
@@ -248,7 +248,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 name: "suppliers");
 
             migrationBuilder.CreateIndex(
-                name: "i_x_supplier_restaurants_supplier_profile_id_restaurant_profile_~",
+                name: "ix_supplier_restaurants_supplier_restaurant",
                 table: "supplier_restaurants",
                 columns: new[] { "supplier_profile_id", "restaurant_profile_id" },
                 unique: true);
