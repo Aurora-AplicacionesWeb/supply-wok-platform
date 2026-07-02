@@ -42,8 +42,8 @@ public interface IProfilesContextFacade
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The id of the created supplier profile, or 0 if the operation failed.</returns>
     Task<int> CreateSupplierProfile(string businessName, string firstName, string lastName, string street,
-        string district, string city, string country, string contactEmail, int? userId,
-        CancellationToken cancellationToken);
+        string district, string city, string country, string contactEmail, string phone, string category,
+        int? userId, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Fetch the id of a restaurant profile by its linked Iam user id
@@ -68,4 +68,19 @@ public interface IProfilesContextFacade
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The business name of the supplier profile if found; otherwise null.</returns>
     Task<string?> FetchSupplierProfileNameById(int supplierProfileId, CancellationToken cancellationToken);
+
+    Task<SupplierProfileAclResource?> GetSupplierProfileById(int supplierProfileId,
+        CancellationToken cancellationToken);
+
+    Task<RestaurantProfileAclResource?> GetRestaurantProfileById(int restaurantProfileId,
+        CancellationToken cancellationToken);
+
+    Task<IEnumerable<SupplierProfileAclResource>> GetSupplierProfilesByIds(IEnumerable<int> supplierProfileIds,
+        CancellationToken cancellationToken);
+
+    Task<IEnumerable<RestaurantProfileAclResource>> GetRestaurantProfilesByIds(IEnumerable<int> restaurantProfileIds,
+        CancellationToken cancellationToken);
+
+    Task<SupplierIdentityAclResource?> GetSupplierIdentityById(int supplierProfileId,
+        CancellationToken cancellationToken);
 }

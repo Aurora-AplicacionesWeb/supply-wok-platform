@@ -31,6 +31,8 @@ public static class SupplierProfileResourceFromEntityAssembler
             supplierProfile.Address.City,
             supplierProfile.Address.Country,
             supplierProfile.ContactEmail.Address,
+            supplierProfile.Phone,
+            supplierProfile.Category,
             supplierProfile.Status,
             supplierProfile.UserId);
     }

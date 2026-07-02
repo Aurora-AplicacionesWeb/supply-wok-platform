@@ -4,9 +4,9 @@ using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Commands;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.Entities;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Model.ValueObjects;
 using Aurora.SupplyWok.Platform.Purchasing.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
 using Aurora.SupplyWok.Platform.Shared.Application.Model;
 using Aurora.SupplyWok.Platform.Shared.Domain.Repositories;
-using Aurora.SupplyWok.Platform.Profiles.Interfaces.Acl;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aurora.SupplyWok.Platform.Purchasing.Application.Internal.CommandServices;
@@ -20,6 +20,7 @@ public class PurchaseOrderCommandService(
     {
         try
         {
+            var supplierIdentity = await profilesContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
             var supplierName = await profilesContextFacade.FetchSupplierProfileNameById(command.SupplierId, cancellationToken);
             var validation = await ValidateOrderData(command.Code, command.RestaurantName, null,
                 command.SupplierId, command.OrderDate, command.EstimatedDate, command.Priority, command.Status ?? "Pending",
@@ -61,6 +62,7 @@ public class PurchaseOrderCommandService(
             if (order is null)
                 return Result<PurchaseOrder>.Failure(PurchaseOrdersError.PurchaseOrderNotFound, nameof(PurchaseOrdersError.PurchaseOrderNotFound));
 
+            var supplierIdentity = await profilesContextFacade.GetSupplierIdentityById(command.SupplierId, cancellationToken);
             var supplierName = await profilesContextFacade.FetchSupplierProfileNameById(command.SupplierId, cancellationToken);
             var validation = await ValidateOrderData(command.Code, command.RestaurantName,
                 command.Id, command.SupplierId, command.OrderDate, command.EstimatedDate, command.Priority, command.Status,

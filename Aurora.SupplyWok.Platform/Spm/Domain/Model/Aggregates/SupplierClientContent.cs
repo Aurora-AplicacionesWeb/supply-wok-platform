@@ -10,5 +10,9 @@ public partial class SupplierRestaurant
     /// </summary>
     public SupplierRestaurant()
     {
+        LinkedDate = string.Empty;
+        Status = string.Empty;
+        Sla = string.Empty;
+        ResponseTime = string.Empty;
     }
 }

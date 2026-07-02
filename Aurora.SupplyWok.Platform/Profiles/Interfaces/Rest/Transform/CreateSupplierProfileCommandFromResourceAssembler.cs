@@ -28,6 +28,8 @@ public static class CreateSupplierProfileCommandFromResourceAssembler
             new PersonName(resource.FirstName, resource.LastName),
             new StreetAddress(resource.Street, resource.District, resource.City, resource.Country),
             new EmailAddress(resource.ContactEmail),
+            resource.Phone,
+            resource.Category,
             resource.UserId);
     }
 }

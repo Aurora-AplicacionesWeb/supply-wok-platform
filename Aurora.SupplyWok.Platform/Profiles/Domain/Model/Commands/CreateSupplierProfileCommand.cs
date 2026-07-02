@@ -17,6 +17,12 @@ namespace Aurora.SupplyWok.Platform.Profiles.Domain.Model.Commands;
 /// <param name="ContactEmail">
 ///     The <see cref="ValueObjects.EmailAddress" /> of the supplier's contact person.
 /// </param>
+/// <param name="Phone">
+///     The supplier contact phone.
+/// </param>
+/// <param name="Category">
+///     The supplier category.
+/// </param>
 /// <param name="UserId">
 ///     Optional placeholder for a future Iam user identifier. Null while Iam is not integrated.
 /// </param>
@@ -24,4 +30,6 @@ public record CreateSupplierProfileCommand(string BusinessName,
     PersonName ContactName,
     StreetAddress Address,
     EmailAddress ContactEmail,
+    string Phone,
+    string Category,
     int? UserId = null);

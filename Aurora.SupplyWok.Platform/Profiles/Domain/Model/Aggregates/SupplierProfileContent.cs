@@ -11,6 +11,8 @@ public partial class SupplierProfile
     public SupplierProfile()
     {
         BusinessName = string.Empty;
+        Phone = string.Empty;
+        Category = string.Empty;
         Status = "Active";
     }
 }
