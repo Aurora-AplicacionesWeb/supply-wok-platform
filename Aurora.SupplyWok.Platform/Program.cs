@@ -146,6 +146,18 @@ builder.Services.AddSwaggerGen(options =>
                 Url = new Uri("https://www.apache.org/licenses/LICENSE-2.0.html")
             }
         });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+        { [new OpenApiSecuritySchemeReference("Bearer", document)] = [] });
+    options.EnableAnnotations();
 });
 
 // Dependency Injection
@@ -264,7 +276,7 @@ app.UseCors("AllowAllPolicy");
 
 app.UseHttpsRedirection();
 
-// app.UseRequestAuthorization();
+app.UseRequestAuthorization();
 
 app.UseAuthorization();
 
