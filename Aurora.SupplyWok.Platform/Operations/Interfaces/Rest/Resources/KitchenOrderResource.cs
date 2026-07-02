@@ -14,5 +14,6 @@ public record KitchenOrderResource(
     DateTime? HourDelivered,
     int PreparationTime,
     double TotalPrice,
-    List<KitchenOrderItemResource> Items
+    List<KitchenOrderItemResource> Items,
+    TableResource? Table = null
 );

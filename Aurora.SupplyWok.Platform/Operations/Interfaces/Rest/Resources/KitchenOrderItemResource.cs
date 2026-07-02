@@ -6,5 +6,10 @@ public record KitchenOrderItemResource(
     string DishName,
     int Quantity,
     double UnitPrice,
-    double SubTotal
+    double SubTotal,
+    string Code,
+    string Description,
+    bool Active,
+    bool Outstanding,
+    int DishCategoryId
 );

@@ -84,13 +84,13 @@ public class KitchenOrdersController(
         return NoContent();
     }
 
-    [HttpPut("{id:int}/status")]
+    [HttpPut("status/{id:int}")]
     [SwaggerOperation("Update Kitchen Order Status", "Updates the status of a kitchen order.", OperationId = "UpdateKitchenOrderStatus")]
     [SwaggerResponse(200, "The kitchen order status was updated successfully.", typeof(KitchenOrderResource))]
     [SwaggerResponse(400, "Invalid request.")]
     public async Task<IActionResult> UpdateKitchenOrderStatus(int id, [FromBody] UpdateKitchenOrderStatusResource resource, CancellationToken cancellationToken)
     {
-        var command = new UpdateKitchenOrderStatusCommand(id, resource.Status);
+        var command = new UpdateKitchenOrderStatusCommand(id, resource.Status, resource.Observations);
         var result = await kitchenOrderCommandService.Handle(command, cancellationToken);
         if (!result.IsSuccess)
             return BadRequest(result.Message);
