@@ -24,7 +24,7 @@ public static class ModelBuilderExtensions
         builder.Entity<SupplierRestaurant>().Property(supplierClient => supplierClient.Sla).IsRequired().HasMaxLength(20);
         builder.Entity<SupplierRestaurant>().Property(supplierClient => supplierClient.ResponseTime).IsRequired().HasMaxLength(20);
         builder.Entity<SupplierRestaurant>()
-            .HasIndex(supplierClient => new { supplierClient.SupplierProfileId, supplierClient.RestaurantProfileId })
+            .HasIndex(supplierClient => new { supplierClient.SupplierProfileId, supplierClient.RestaurantProfileId }).HasDatabaseName("ix_supplier_restaurants_supplier_profile_restaurant_profile")
             .IsUnique();
 
         builder.Entity<CatalogItem>().ToTable("CatalogItems");

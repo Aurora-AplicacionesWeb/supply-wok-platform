@@ -1058,7 +1058,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     b.ToTable("catalog_items", (string)null);
                 });
 
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.RestaurantReference", b =>
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierRestaurant", b =>
                 {
                     b.Property<int>("Id")
@@ -1069,62 +1068,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     b.Property<DateTimeOffset?>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
-
-                    b.Property<string>("District")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("district");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("status");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_clients");
-
-                    b.ToTable("clients", (string)null);
-                });
-
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierReference", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("varchar(80)")
-                        .HasColumnName("category");
-
-                    b.Property<string>("ContactName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("contact_name");
-
-                    b.Property<DateTimeOffset?>("CreatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("email");
 
                     b.Property<string>("LinkedDate")
                         .IsRequired()
@@ -1167,7 +1110,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
                     b.HasIndex("SupplierProfileId", "RestaurantProfileId")
                         .IsUnique()
-                        .HasDatabaseName("i_x_supplier_restaurants_supplier_profile_id_restaurant_profile_~");
+                        .HasDatabaseName("ix_supplier_restaurants_supplier_profile_restaurant_profile");
 
                     b.ToTable("supplier_restaurants", (string)null);
 
@@ -1212,42 +1155,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                             Status = "Active",
                             SupplierProfileId = 201
                         });
-                });
-
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierRestaurant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int")
-                        .HasColumnName("client_id");
-
-                    b.Property<DateTimeOffset?>("CreatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_at");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int")
-                        .HasColumnName("supplier_id");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_supplier_clients");
-
-                    b.HasIndex("ClientId")
-                        .HasDatabaseName("i_x_supplier_clients_client_id");
-
-                    b.HasIndex("SupplierId", "ClientId")
-                        .IsUnique()
-                        .HasDatabaseName("i_x_supplier_clients_supplier_id_client_id");
-
-                    b.ToTable("supplier_clients", (string)null);
                 });
 
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Iot.Domain.Model.Entities.AlertRestaurant", b =>
@@ -1723,33 +1630,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("f_k_purchase_order_items_purchase_orders_purchase_order_id");
-                });
-
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.CatalogItem", b =>
-                {
-                    b.HasOne("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierReference", null)
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("f_k_catalog_items__suppliers_supplier_id");
-                });
-
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierRestaurant", b =>
-                {
-                    b.HasOne("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.RestaurantReference", null)
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("f_k_supplier_clients_clients_client_id");
-
-                    b.HasOne("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierReference", null)
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("f_k_supplier_clients_suppliers_supplier_id");
                 });
 
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Iot.Domain.Model.Entities.AlertRestaurant", b =>
