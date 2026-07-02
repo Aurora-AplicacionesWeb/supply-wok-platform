@@ -9,6 +9,6 @@ public static class AddDishToKitchenOrderCommandFromResourceAssembler
     {
         if (resource == null)
             throw new ArgumentNullException(nameof(resource));
-        return new AddDishToKitchenOrderCommand(kitchenOrderId, resource.DishId, resource.Quantity);
+        return new AddDishToKitchenOrderCommand(kitchenOrderId, resource.Id, resource.Quantity);
     }
 }
