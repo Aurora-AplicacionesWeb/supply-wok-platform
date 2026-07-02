@@ -123,7 +123,7 @@ public class KitchenOrderCommandService(
                     string.Format(localizer[nameof(OperationsError.KitchenOrderNotFound)], command.Id));
             }
 
-            kitchenOrder.UpdateStatus(command.Status);
+            kitchenOrder.UpdateStatus(command.Status, command.Observations);
             kitchenOrderRepository.Update(kitchenOrder);
             await unitOfWork.CompleteAsync(cancellationToken);
             return Result<KitchenOrder>.Success(kitchenOrder);
@@ -167,7 +167,8 @@ public class KitchenOrderCommandService(
                     string.Format(localizer[nameof(OperationsError.DishNotFound)], command.DishId));
             }
 
-            kitchenOrder.AddDish(dish.Id, dish.Name, command.Quantity, dish.Price);
+            kitchenOrder.AddDish(dish.Id, dish.Name, command.Quantity, dish.Price,
+                dish.Code, dish.Description, dish.DishCategoryId, dish.Active, dish.Outstanding);
             await unitOfWork.CompleteAsync(cancellationToken);
             return Result<KitchenOrder>.Success(kitchenOrder);
         }

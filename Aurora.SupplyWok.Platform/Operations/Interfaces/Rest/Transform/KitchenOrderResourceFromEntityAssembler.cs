@@ -27,6 +27,14 @@ public static class KitchenOrderResourceFromEntityAssembler
                 item.DishName,
                 item.Quantity,
                 item.UnitPrice,
-                item.SubTotal)).ToList());
+                item.SubTotal,
+                item.Code,
+                item.Description,
+                item.Active,
+                item.Outstanding,
+                item.DishCategoryId)).ToList(),
+            entity.Table is not null
+                ? TableResourceFromEntityAssembler.ToResourceFromEntity(entity.Table)
+                : null);
     }
 }

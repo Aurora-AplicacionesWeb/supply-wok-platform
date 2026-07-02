@@ -12,6 +12,7 @@ public class KitchenOrderRepository(AppDbContext context)
     public async Task<KitchenOrder?> FindByIdWithItemsAsync(int id, CancellationToken cancellationToken = default)
     {
         return await Context.Set<KitchenOrder>()
+            .Include(ko => ko.Table)
             .Include(ko => ko.Items)
             .FirstOrDefaultAsync(ko => ko.Id == id, cancellationToken);
     }
@@ -19,6 +20,7 @@ public class KitchenOrderRepository(AppDbContext context)
     public async Task<IEnumerable<KitchenOrder>> ListWithItemsAsync(CancellationToken cancellationToken = default)
     {
         return await Context.Set<KitchenOrder>()
+            .Include(ko => ko.Table)
             .Include(ko => ko.Items)
             .ToListAsync(cancellationToken);
     }
