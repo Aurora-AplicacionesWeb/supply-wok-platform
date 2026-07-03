@@ -24,6 +24,6 @@ public static class SignUpCommandFromResourceAssembler
         if (resource == null)
             throw new ArgumentNullException(nameof(resource),
                 "SignUpResource cannot be null when converting to command.");
-        return new SignUpCommand(resource.Email, resource.Password);
+        return new SignUpCommand(resource.Email, resource.Password, resource.Role);
     }
 }

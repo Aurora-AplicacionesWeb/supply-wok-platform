@@ -10,9 +10,9 @@ namespace Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
  *     This class is used to represent a user
  * </remarks>
  */
-public partial class User(string email, string passwordHash)
+public partial class User(string email, string passwordHash, string role = "restaurant")
 {
-    public User() : this(string.Empty, string.Empty)
+    public User() : this(string.Empty, string.Empty, "restaurant")
     {
     }
 
@@ -20,6 +20,8 @@ public partial class User(string email, string passwordHash)
     public string Email { get; private set; } = email;
 
     [JsonIgnore] public string PasswordHash { get; private set; } = passwordHash;
+
+    public string Role { get; private set; } = role;
 
     /**
      * <summary>
