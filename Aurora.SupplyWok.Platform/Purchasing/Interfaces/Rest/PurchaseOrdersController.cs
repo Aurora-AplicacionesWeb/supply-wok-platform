@@ -71,7 +71,7 @@ public class PurchaseOrdersController(
         return Ok(Transform.PurchaseOrderResourceFromEntityAssembler.ToResourceFromEntity(result.Value!));
     }
 
-    [HttpPut("{purchaseOrderId:int}/status")]
+    [HttpPatch("{purchaseOrderId:int}")]
     [SwaggerOperation("Update Purchase Order Status", "Updates the status of an existing purchase order.", OperationId = "UpdatePurchaseOrderStatus")]
     [SwaggerResponse(200, "The purchase order status was updated successfully.", typeof(PurchaseOrderResource))]
     [SwaggerResponse(400, "Invalid request.")]
