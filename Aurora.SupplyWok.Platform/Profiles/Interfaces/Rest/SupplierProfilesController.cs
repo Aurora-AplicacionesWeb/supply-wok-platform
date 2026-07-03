@@ -82,7 +82,10 @@ public class SupplierProfilesController(
     /// <param name="userId">The Iam user id to search for.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The supplier profile if found.</returns>
-    [HttpGet("by-user/{userId:int}")]
+    
+    //[HttpGet("by-user/{userId:int}")]
+    [HttpGet("~/api/v1/users/{userId:int}/supplier-profiles")]
+        
     [SwaggerOperation("Get Supplier Profile by User Id", "Gets a supplier profile by its linked Iam user id.", OperationId = "GetSupplierProfileByUserId")]
     [SwaggerResponse(200, "The supplier profile was found and returned.", typeof(SupplierProfileResource))]
     [SwaggerResponse(404, "The supplier profile was not found.")]

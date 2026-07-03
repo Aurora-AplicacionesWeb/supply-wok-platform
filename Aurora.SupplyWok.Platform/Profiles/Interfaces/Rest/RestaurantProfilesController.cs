@@ -82,7 +82,9 @@ public class RestaurantProfilesController(
     /// <param name="userId">The Iam user id to search for.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The restaurant profile if found.</returns>
-    [HttpGet("by-user/{userId:int}")]
+    
+    //[HttpGet("by-user/{userId:int}")]
+    [HttpGet("~/api/v1/users/{userId:int}/restaurant-profiles")]
     [SwaggerOperation("Get Restaurant Profile by User Id", "Gets a restaurant profile by its linked Iam user id.", OperationId = "GetRestaurantProfileByUserId")]
     [SwaggerResponse(200, "The restaurant profile was found and returned.", typeof(RestaurantProfileResource))]
     [SwaggerResponse(404, "The restaurant profile was not found.")]
