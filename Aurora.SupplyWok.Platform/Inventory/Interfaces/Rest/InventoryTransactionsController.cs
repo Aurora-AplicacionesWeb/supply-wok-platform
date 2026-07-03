@@ -64,7 +64,8 @@ public class InventoryTransactionsController(
         return Ok(Transform.InventoryTransactionResourceFromEntityAssembler.ToResourceFromEntity(transaction));
     }
 
-    [HttpGet("by-supply/{supplyId:int}")]
+    //[HttpGet("supplies/{supplyId:int}/inventory-transactions")]
+    [HttpGet("~/api/v1/supplies/{supplyId:int}/inventory-transactions")]
     [SwaggerOperation("Get Inventory Transactions by Supply Id", "Gets inventory transactions by supply identifier.", OperationId = "GetInventoryTransactionsBySupplyId")]
     [SwaggerResponse(200, "Inventory transactions retrieved successfully.", typeof(IEnumerable<InventoryTransactionResource>))]
     public async Task<IActionResult> GetInventoryTransactionsBySupplyId(int supplyId, CancellationToken cancellationToken)
