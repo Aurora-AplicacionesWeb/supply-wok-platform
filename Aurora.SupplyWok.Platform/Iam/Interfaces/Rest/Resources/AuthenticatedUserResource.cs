@@ -1,3 +1,3 @@
 namespace Aurora.SupplyWok.Platform.Iam.Interfaces.Rest.Resources;
 
-public record AuthenticatedUserResource(int Id, string Email, string Token);
+public record AuthenticatedUserResource(int Id, string Email, string Token, string Role);
