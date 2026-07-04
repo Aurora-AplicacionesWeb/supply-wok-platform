@@ -67,6 +67,14 @@ public partial class SupplierProfile
         Category = category.Trim();
     }
 
+    public void UpdateBusinessName(string businessName)
+    {
+        if (string.IsNullOrWhiteSpace(businessName))
+            throw new ArgumentException("Business name cannot be empty.", nameof(businessName));
+
+        BusinessName = businessName.Trim();
+    }
+
     public void UpdateAddress(StreetAddress address) => Address = address;
     public void Deactivate() => Status = "Inactive";
     public void Activate() => Status = "Active";

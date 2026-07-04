@@ -21,4 +21,9 @@ public interface ISupplierProfileCommandService
     ///     or the corresponding error otherwise
     /// </returns>
     Task<Result<SupplierProfile>> Handle(CreateSupplierProfileCommand command, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Handle the update of an existing supplier profile
+    /// </summary>
+    Task<Result<SupplierProfile>> Handle(UpdateSupplierProfileCommand command, CancellationToken cancellationToken);
 }

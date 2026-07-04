@@ -56,4 +56,40 @@ public class SupplierProfileCommandService(
             return Result<SupplierProfile>.Failure(ProfilesError.InternalServerError, ex.Message);
         }
     }
+
+    /// <inheritdoc />
+    public async Task<Result<SupplierProfile>> Handle(UpdateSupplierProfileCommand command, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var supplierProfile = await supplierProfileRepository.FindByIdAsync(command.Id, cancellationToken);
+            if (supplierProfile is null)
+                return Result<SupplierProfile>.Failure(ProfilesError.SupplierProfileNotFound, "Supplier profile not found.");
+
+            supplierProfile.UpdateBusinessName(command.BusinessName);
+            supplierProfile.UpdateContactInfo(command.ContactName, command.ContactEmail, command.Phone);
+            supplierProfile.UpdateAddress(command.Address);
+            supplierProfile.UpdateCategory(command.Category);
+
+            supplierProfileRepository.Update(supplierProfile);
+            await unitOfWork.CompleteAsync(cancellationToken);
+            return Result<SupplierProfile>.Success(supplierProfile);
+        }
+        catch (ArgumentException ex)
+        {
+            return Result<SupplierProfile>.Failure(ProfilesError.InvalidData, ex.Message);
+        }
+        catch (OperationCanceledException)
+        {
+            return Result<SupplierProfile>.Failure(ProfilesError.OperationCancelled, nameof(ProfilesError.OperationCancelled));
+        }
+        catch (DbUpdateException)
+        {
+            return Result<SupplierProfile>.Failure(ProfilesError.DatabaseError, nameof(ProfilesError.DatabaseError));
+        }
+        catch (Exception ex)
+        {
+            return Result<SupplierProfile>.Failure(ProfilesError.InternalServerError, ex.Message);
+        }
+    }
 }
