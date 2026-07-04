@@ -98,6 +98,28 @@ public class RestaurantProfilesController(
     }
 
     /// <summary>
+    ///     Update an existing restaurant profile
+    /// </summary>
+    /// <param name="restaurantProfileId">The id of the restaurant profile to update.</param>
+    /// <param name="resource">The updated data for the restaurant profile.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The updated restaurant profile.</returns>
+    [HttpPut("{restaurantProfileId:int}")]
+    [SwaggerOperation("Update Restaurant Profile", "Updates an existing restaurant profile.", OperationId = "UpdateRestaurantProfile")]
+    [SwaggerResponse(200, "The restaurant profile was updated successfully.", typeof(RestaurantProfileResource))]
+    [SwaggerResponse(400, "Invalid request.")]
+    [SwaggerResponse(404, "The restaurant profile was not found.")]
+    public async Task<IActionResult> UpdateRestaurantProfile(int restaurantProfileId, [FromBody] UpdateRestaurantProfileResource resource, CancellationToken cancellationToken)
+    {
+        var command = Transform.UpdateRestaurantProfileCommandFromResourceAssembler.ToCommandFromResource(restaurantProfileId, resource);
+        var result = await restaurantProfileCommandService.Handle(command, cancellationToken);
+
+        if (!result.IsSuccess) return ToFailureResponse(result.Error, result.Message);
+
+        return Ok(Transform.RestaurantProfileResourceFromEntityAssembler.ToResourceFromEntity(result.Value!));
+    }
+
+    /// <summary>
     ///     Translate a <see cref="ProfilesError" /> into the corresponding HTTP failure response
     /// </summary>
     /// <param name="error">The error returned by the command service, if any.</param>

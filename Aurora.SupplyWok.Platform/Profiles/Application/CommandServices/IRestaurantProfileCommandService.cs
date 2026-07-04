@@ -21,4 +21,9 @@ public interface IRestaurantProfileCommandService
     ///     or the corresponding error otherwise
     /// </returns>
     Task<Result<RestaurantProfile>> Handle(CreateRestaurantProfileCommand command, CancellationToken cancellationToken);
+
+    /// <summary>
+    ///     Handle the update of an existing restaurant profile
+    /// </summary>
+    Task<Result<RestaurantProfile>> Handle(UpdateRestaurantProfileCommand command, CancellationToken cancellationToken);
 }

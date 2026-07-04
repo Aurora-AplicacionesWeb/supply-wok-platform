@@ -56,4 +56,39 @@ public class RestaurantProfileCommandService(
             return Result<RestaurantProfile>.Failure(ProfilesError.InternalServerError, ex.Message);
         }
     }
+
+    /// <inheritdoc />
+    public async Task<Result<RestaurantProfile>> Handle(UpdateRestaurantProfileCommand command, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var restaurantProfile = await restaurantProfileRepository.FindByIdAsync(command.Id, cancellationToken);
+            if (restaurantProfile is null)
+                return Result<RestaurantProfile>.Failure(ProfilesError.RestaurantProfileNotFound, "Restaurant profile not found.");
+
+            restaurantProfile.UpdateBusinessName(command.BusinessName);
+            restaurantProfile.UpdateContactInfo(command.ContactName, command.ContactEmail);
+            restaurantProfile.UpdateAddress(command.Address);
+
+            restaurantProfileRepository.Update(restaurantProfile);
+            await unitOfWork.CompleteAsync(cancellationToken);
+            return Result<RestaurantProfile>.Success(restaurantProfile);
+        }
+        catch (ArgumentException ex)
+        {
+            return Result<RestaurantProfile>.Failure(ProfilesError.InvalidData, ex.Message);
+        }
+        catch (OperationCanceledException)
+        {
+            return Result<RestaurantProfile>.Failure(ProfilesError.OperationCancelled, nameof(ProfilesError.OperationCancelled));
+        }
+        catch (DbUpdateException)
+        {
+            return Result<RestaurantProfile>.Failure(ProfilesError.DatabaseError, nameof(ProfilesError.DatabaseError));
+        }
+        catch (Exception ex)
+        {
+            return Result<RestaurantProfile>.Failure(ProfilesError.InternalServerError, ex.Message);
+        }
+    }
 }
