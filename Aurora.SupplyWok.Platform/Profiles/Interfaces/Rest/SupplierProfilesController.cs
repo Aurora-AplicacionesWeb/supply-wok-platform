@@ -99,6 +99,28 @@ public class SupplierProfilesController(
     }
 
     /// <summary>
+    ///     Update an existing supplier profile
+    /// </summary>
+    /// <param name="supplierProfileId">The id of the supplier profile to update.</param>
+    /// <param name="resource">The updated data for the supplier profile.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The updated supplier profile.</returns>
+    [HttpPut("{supplierProfileId:int}")]
+    [SwaggerOperation("Update Supplier Profile", "Updates an existing supplier profile.", OperationId = "UpdateSupplierProfile")]
+    [SwaggerResponse(200, "The supplier profile was updated successfully.", typeof(SupplierProfileResource))]
+    [SwaggerResponse(400, "Invalid request.")]
+    [SwaggerResponse(404, "The supplier profile was not found.")]
+    public async Task<IActionResult> UpdateSupplierProfile(int supplierProfileId, [FromBody] UpdateSupplierProfileResource resource, CancellationToken cancellationToken)
+    {
+        var command = Transform.UpdateSupplierProfileCommandFromResourceAssembler.ToCommandFromResource(supplierProfileId, resource);
+        var result = await supplierProfileCommandService.Handle(command, cancellationToken);
+
+        if (!result.IsSuccess) return ToFailureResponse(result.Error, result.Message);
+
+        return Ok(Transform.SupplierProfileResourceFromEntityAssembler.ToResourceFromEntity(result.Value!));
+    }
+
+    /// <summary>
     ///     Translate a <see cref="ProfilesError" /> into the corresponding HTTP failure response
     /// </summary>
     /// <param name="error">The error returned by the command service, if any.</param>
