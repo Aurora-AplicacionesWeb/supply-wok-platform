@@ -58,7 +58,7 @@
         <Folder Include="Spm\Infrastructure\" />
         <Folder Include="Spm\Interfaces\" />
         <Folder Include="Spm\Resources\" />
-        
+
     </ItemGroup>
 
 </Project>

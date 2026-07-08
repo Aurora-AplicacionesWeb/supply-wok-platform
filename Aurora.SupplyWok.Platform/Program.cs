@@ -34,6 +34,8 @@ using Aurora.SupplyWok.Platform.Operations.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Operations.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Operations.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Operations.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Operations.Interfaces.Acl;
+using Aurora.SupplyWok.Platform.Operations.Application.Acl;
 using Aurora.SupplyWok.Platform.Spm.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Spm.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Spm.Application.CommandServices;
@@ -239,6 +241,8 @@ builder.Services.AddScoped<IDishCategoryQueryService, DishCategoryQueryService>(
 builder.Services.AddScoped<IKitchenOrderRepository, KitchenOrderRepository>();
 builder.Services.AddScoped<IKitchenOrderCommandService, KitchenOrderCommandService>();
 builder.Services.AddScoped<IKitchenOrderQueryService, KitchenOrderQueryService>();
+// Operations ACL — consumed by Analytics to compute weekly consumption
+builder.Services.AddScoped<IOperationsContextFacade, OperationsContextFacade>();
 
 // Supplier Bounded Context
 builder.Services.AddScoped<ISupplierRestaurantRepository, SupplierRestaurantRepository>();
@@ -268,7 +272,6 @@ builder.Services.AddScoped<ISupplierProfileQueryService, SupplierProfileQuerySer
 builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
 // Analytics Bounded Context
-builder.Services.AddScoped<IRestaurantAnalyticsRepository, RestaurantAnalyticsRepository>();
 builder.Services.AddScoped<ISupplierAnalyticsRepository, SupplierAnalyticsRepository>();
 builder.Services.AddScoped<IRestaurantAnalyticsQueryService, RestaurantAnalyticsQueryService>();
 builder.Services.AddScoped<ISupplierAnalyticsQueryService, SupplierAnalyticsQueryService>();

@@ -9,6 +9,18 @@ public class SupplierAnalyticsQueryService(ISupplierAnalyticsRepository reposito
 {
     public async Task<IEnumerable<SupplierAnalytics>> Handle(GetAllSupplierAnalyticsQuery query, CancellationToken cancellationToken)
     {
-        return await repository.ListAsync(cancellationToken);
+        var results = await repository.ListAsync(cancellationToken);
+
+        if (query.ClientId.HasValue)
+        {
+            results = results
+                .Select(sa => new SupplierAnalytics(
+                    sa.Aggregate,
+                    sa.Clients.Where(c => c.ClientId == query.ClientId.Value).ToList()
+                ))
+                .ToList();
+        }
+
+        return results;
     }
 }

@@ -16,12 +16,21 @@ public class SupplierAnalyticsController(ISupplierAnalyticsQueryService querySer
 {
     [HttpGet]
     [SwaggerOperation("Get Supplier Analytics", "Retrieves supplier report data.", OperationId = "GetSupplierAnalytics")]
-    [SwaggerResponse(200, "Supplier analytics retrieved successfully.", typeof(IEnumerable<SupplierAnalyticsResource>))]
-    public async Task<IActionResult> GetSupplierAnalytics(CancellationToken cancellationToken)
+    [SwaggerResponse(200, "Supplier analytics retrieved successfully.", typeof(SupplierAnalyticsResource))]
+    [SwaggerResponse(204, "No supplier analytics data found.")]
+    public async Task<IActionResult> GetSupplierAnalytics(
+        [FromQuery] int? clientId = null,
+        [FromQuery] int? productId = null,
+        CancellationToken cancellationToken = default)
     {
-        var query = new GetAllSupplierAnalyticsQuery();
+        var query = new GetAllSupplierAnalyticsQuery(clientId, productId);
         var result = await queryService.Handle(query, cancellationToken);
-        var resources = result.Select(SupplierAnalyticsResourceFromEntityAssembler.ToResourceFromEntity);
-        return Ok(resources);
+        var entity = result.FirstOrDefault();
+
+        if (entity == null || !entity.Aggregate.Any() && !entity.Clients.Any())
+            return NoContent();
+
+        var resource = SupplierAnalyticsResourceFromEntityAssembler.ToResourceFromEntity(entity);
+        return Ok(resource);
     }
 }
