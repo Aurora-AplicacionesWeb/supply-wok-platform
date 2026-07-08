@@ -51,7 +51,7 @@ public class SubscriptionWebhookService(
             {
                 "checkout.session.completed" => await HandleCheckoutSessionCompletedAsync(eventId, stripeObject,
                     cancellationToken),
-                "invoice.paid" or "invoice.payment_succeeded" or "invoice_payment.paid"
+                "invoice.paid" or "invoice.payment_succeeded"
                     => await HandleInvoicePaidAsync(eventId, stripeObject, cancellationToken),
                 "customer.subscription.updated" => await HandleSubscriptionSyncAsync(eventId, stripeObject,
                     cancellationToken),
