@@ -148,7 +148,8 @@ public class SubscriptionRegistrationCommandService(
             {
                 var existingSubscription = await subscriptionRepository.FindByStripeSubscriptionIdAsync(
                     command.StripeSubscriptionId, cancellationToken);
-                if (existingSubscription is not null)
+                var userSubscription = await subscriptionRepository.FindByUserIdAsync(existingUserId, cancellationToken);
+                if (existingSubscription is not null || userSubscription is not null)
                 {
                     pendingRegistration.MarkProvisioned(command.StripeCustomerId, command.StripeSubscriptionId);
                     await processedWebhookEventRepository.AddAsync(
@@ -158,8 +159,29 @@ public class SubscriptionRegistrationCommandService(
                     return Result.Success();
                 }
 
-                return Result.Failure(SubscriptionsError.DuplicateEmail,
-                    "A provisioned user already exists with the same email.");
+                var recoveredProfileId = await EnsureProfileExistsAsync(pendingRegistration, existingUserId, cancellationToken);
+                if (recoveredProfileId <= 0)
+                    return Result.Failure(SubscriptionsError.ProvisioningFailed,
+                        "Existing user could not be linked to a profile for subscription provisioning.");
+
+                var recoveredSubscription = new Subscription(
+                    existingUserId,
+                    pendingRegistration.Role,
+                    pendingRegistration.PlanCode,
+                    ParseSubscriptionStatus(command.StripeSubscriptionStatus),
+                    command.StripeCustomerId,
+                    command.StripeSubscriptionId,
+                    command.StripePriceId,
+                    command.CurrentPeriodStart,
+                    command.CurrentPeriodEnd);
+
+                await subscriptionRepository.AddAsync(recoveredSubscription, cancellationToken);
+                pendingRegistration.MarkProvisioned(command.StripeCustomerId, command.StripeSubscriptionId);
+                await processedWebhookEventRepository.AddAsync(
+                    new ProcessedWebhookEvent(command.StripeEventId, "invoice.paid"), cancellationToken);
+                await unitOfWork.CompleteAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                return Result.Success();
             }
 
             var userId = await iamContextFacade.CreateUser(
@@ -312,8 +334,79 @@ public class SubscriptionRegistrationCommandService(
         var failedRegistration = await pendingRegistrationRepository.FindByPublicIdAsync(publicId, cancellationToken);
         if (failedRegistration is null) return;
 
+        if (await TryPromoteToProvisionedAsync(failedRegistration, cancellationToken)) return;
+
         failedRegistration.MarkFailed();
         await unitOfWork.CompleteAsync(cancellationToken);
+    }
+
+    private async Task<int> EnsureProfileExistsAsync(PendingRegistration pendingRegistration, int userId,
+        CancellationToken cancellationToken)
+    {
+        if (pendingRegistration.Role == "supplier")
+        {
+            var supplierProfileId =
+                await profilesContextFacade.FetchSupplierProfileIdByUserId(userId, cancellationToken);
+            if (supplierProfileId > 0) return supplierProfileId;
+
+            return await profilesContextFacade.CreateSupplierProfile(
+                pendingRegistration.BusinessName,
+                pendingRegistration.FirstName,
+                pendingRegistration.LastName,
+                pendingRegistration.Street,
+                pendingRegistration.District,
+                pendingRegistration.City,
+                pendingRegistration.Country,
+                pendingRegistration.ContactEmail,
+                pendingRegistration.Phone ?? string.Empty,
+                pendingRegistration.Category ?? string.Empty,
+                userId,
+                cancellationToken);
+        }
+
+        var restaurantProfileId =
+            await profilesContextFacade.FetchRestaurantProfileIdByUserId(userId, cancellationToken);
+        if (restaurantProfileId > 0) return restaurantProfileId;
+
+        return await profilesContextFacade.CreateRestaurantProfile(
+            pendingRegistration.BusinessName,
+            pendingRegistration.FirstName,
+            pendingRegistration.LastName,
+            pendingRegistration.Street,
+            pendingRegistration.District,
+            pendingRegistration.City,
+            pendingRegistration.Country,
+            pendingRegistration.ContactEmail,
+            userId,
+            cancellationToken);
+    }
+
+    private async Task<bool> TryPromoteToProvisionedAsync(PendingRegistration pendingRegistration,
+        CancellationToken cancellationToken)
+    {
+        if (pendingRegistration.Status == EPendingRegistrationStatus.Provisioned) return true;
+
+        var existingUserId = await iamContextFacade.FetchUserIdByEmail(pendingRegistration.Email, cancellationToken);
+        if (existingUserId <= 0) return false;
+
+        var existingProfileId = pendingRegistration.Role == "supplier"
+            ? await profilesContextFacade.FetchSupplierProfileIdByUserId(existingUserId, cancellationToken)
+            : await profilesContextFacade.FetchRestaurantProfileIdByUserId(existingUserId, cancellationToken);
+        if (existingProfileId <= 0) return false;
+
+        Subscription? existingSubscription = null;
+        if (!string.IsNullOrWhiteSpace(pendingRegistration.StripeSubscriptionId))
+            existingSubscription = await subscriptionRepository.FindByStripeSubscriptionIdAsync(
+                pendingRegistration.StripeSubscriptionId, cancellationToken);
+
+        existingSubscription ??= await subscriptionRepository.FindByUserIdAsync(existingUserId, cancellationToken);
+        if (existingSubscription is null) return false;
+
+        pendingRegistration.MarkProvisioned(
+            pendingRegistration.StripeCustomerId ?? existingSubscription.StripeCustomerId,
+            pendingRegistration.StripeSubscriptionId ?? existingSubscription.StripeSubscriptionId);
+        await unitOfWork.CompleteAsync(cancellationToken);
+        return true;
     }
 
     private static (SubscriptionsError Error, string Message)? Validate(StartSubscriptionRegistrationCommand command)

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Aurora.SupplyWok.Platform.Iam.Application.Internal.OutboundServices;
 using Aurora.SupplyWok.Platform.Iam.Domain.Model.Aggregates;
@@ -30,8 +31,7 @@ public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
      */
     public string GenerateToken(User user)
     {
-        var secret = _tokenSettings.Secret;
-        var key = Encoding.ASCII.GetBytes(secret);
+        var key = BuildSigningKeyBytes();
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
@@ -64,7 +64,7 @@ public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
             return null;
         // Otherwise, perform validation
         var tokenHandler = new JsonWebTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_tokenSettings.Secret);
+        var key = BuildSigningKeyBytes();
         try
         {
             var tokenValidationResult = await tokenHandler.ValidateTokenAsync(token, new TokenValidationParameters
@@ -86,5 +86,13 @@ public class TokenService(IOptions<TokenSettings> tokenSettings) : ITokenService
             Console.WriteLine(e);
             return null;
         }
+    }
+
+    private byte[] BuildSigningKeyBytes()
+    {
+        if (string.IsNullOrWhiteSpace(_tokenSettings.Secret))
+            throw new InvalidOperationException("TokenSettings.Secret is not configured.");
+
+        return SHA256.HashData(Encoding.UTF8.GetBytes(_tokenSettings.Secret));
     }
 }

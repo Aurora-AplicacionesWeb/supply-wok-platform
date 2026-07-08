@@ -248,9 +248,6 @@ builder.Services.AddScoped<ICatalogItemCommandService, CatalogItemCommandService
 builder.Services.AddScoped<ICatalogItemQueryService, CatalogItemQueryService>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierCatalogContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierCatalogContextFacade>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierOrdersContextFacade>();
-builder.Services.AddScoped<ISupplierSettingsRepository, SupplierSettingsRepository>();
-builder.Services.AddScoped<ISupplierSettingsCommandService, SupplierSettingsCommandService>();
-builder.Services.AddScoped<ISupplierSettingsQueryService, SupplierSettingsQueryService>();
 
 // Inventory Bounded Context
 builder.Services.AddScoped<ISupplyRepository, SupplyRepository>();
