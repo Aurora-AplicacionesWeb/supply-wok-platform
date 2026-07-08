@@ -55,6 +55,57 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "pending_registrations",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    public_id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    email = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    password_hash = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    role = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    plan_code = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    status = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    stripe_checkout_session_id = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: true),
+                    stripe_customer_id = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: true),
+                    stripe_subscription_id = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: true),
+                    business_name = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    first_name = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
+                    last_name = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
+                    street = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    district = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    city = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    country = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    contact_email = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    phone = table.Column<string>(type: "varchar(40)", maxLength: 40, nullable: true),
+                    category = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: true),
+                    expires_at = table.Column<DateTimeOffset>(type: "datetime", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_pending_registrations", x => x.id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "processed_webhook_events",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    stripe_event_id = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false),
+                    event_type = table.Column<string>(type: "varchar(80)", maxLength: 80, nullable: false),
+                    processed_at = table.Column<DateTimeOffset>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_processed_webhook_events", x => x.id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "purchase_orders",
                 columns: table => new
                 {
@@ -83,10 +134,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    inventory_trend = table.Column<string>(type: "longtext", nullable: false),
                     weekly_consumption = table.Column<string>(type: "longtext", nullable: false),
-                    temperature_fluctuations = table.Column<string>(type: "longtext", nullable: false),
-                    top_suppliers_orders = table.Column<string>(type: "longtext", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
@@ -139,6 +187,30 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("p_k_sensors", x => x.id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "subscriptions",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    user_id = table.Column<int>(type: "int", nullable: false),
+                    role = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    plan_code = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    status = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    stripe_customer_id = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false),
+                    stripe_subscription_id = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false),
+                    stripe_price_id = table.Column<string>(type: "varchar(120)", maxLength: 120, nullable: false),
+                    current_period_start = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    current_period_end = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_subscriptions", x => x.id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -208,6 +280,28 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "supplier_settings",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    supplier_profile_id = table.Column<int>(type: "int", nullable: false),
+                    supplier_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    support_contact = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
+                    notify_email = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    notify_sms = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    service_zones = table.Column<string>(type: "longtext", nullable: false),
+                    contacts = table.Column<string>(type: "longtext", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_supplier_settings", x => x.id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "supplies",
                 columns: table => new
                 {
@@ -255,6 +349,7 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     email = table.Column<string>(type: "longtext", nullable: false),
                     password_hash = table.Column<string>(type: "longtext", nullable: false),
+                    role = table.Column<string>(type: "longtext", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
@@ -467,8 +562,8 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
             migrationBuilder.InsertData(
                 table: "restaurant_analytics",
-                columns: new[] { "id", "created_at", "inventory_trend", "temperature_fluctuations", "top_suppliers_orders", "updated_at", "weekly_consumption" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "{\"labels\":[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\"],\"data\":[42,46,34,31,58,64]}", "{\"labels\":[\"M\",\"T\",\"W\",\"T\",\"F\",\"S\",\"S\"],\"data\":[22,10,46,28,66,18,10]}", "[{\"supplier\":\"Golden Wok\",\"value\":85},{\"supplier\":\"Andes\",\"value\":60},{\"supplier\":\"Orient\",\"value\":45},{\"supplier\":\"Pacific\",\"value\":30}]", null, "{\"labels\":[\"W1\",\"W2\",\"W3\",\"W4\",\"W5\",\"W6\"],\"data\":[62,88,48,110,76,118]}" });
+                columns: new[] { "id", "created_at", "updated_at", "weekly_consumption" },
+                values: new object[] { 1, new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "{\"labels\":[\"W1\",\"W2\",\"W3\",\"W4\",\"W5\",\"W6\"],\"data\":[62,88,48,110,76,118]}" });
 
             migrationBuilder.InsertData(
                 table: "restaurant_profiles",
@@ -514,6 +609,16 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     { 2, null, "2026-04-20", "2.1 H", 1, "95% SLA", "Active", 202, null },
                     { 3, null, "2026-04-19", "2.9 H", 2, "91% SLA", "Active", 203, null },
                     { 4, null, "2026-04-18", "1.8 H", 3, "97% SLA", "Active", 201, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "supplier_settings",
+                columns: new[] { "id", "contacts", "created_at", "notify_email", "notify_sms", "service_zones", "supplier_name", "supplier_profile_id", "support_contact", "updated_at" },
+                values: new object[,]
+                {
+                    { 1, "[{\"name\":\"Mariela Soto\",\"state\":\"online\"}]", null, true, true, "[\"San Miguel\"]", "Golden Wok Produce", 201, "soporte@goldenwok.pe", null },
+                    { 2, "[]", null, true, false, "[]", "Andes Cold Chain", 202, "soporte@andescold.pe", null },
+                    { 3, "[]", null, true, true, "[]", "Orient Pantry Co.", 203, "soporte@orientpantry.pe", null }
                 });
 
             migrationBuilder.InsertData(
@@ -572,6 +677,34 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 column: "table_id");
 
             migrationBuilder.CreateIndex(
+                name: "i_x_pending_registrations_email",
+                table: "pending_registrations",
+                column: "email");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_pending_registrations_public_id",
+                table: "pending_registrations",
+                column: "public_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_pending_registrations_stripe_checkout_session_id",
+                table: "pending_registrations",
+                column: "stripe_checkout_session_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_pending_registrations_stripe_subscription_id",
+                table: "pending_registrations",
+                column: "stripe_subscription_id");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_processed_webhook_events_stripe_event_id",
+                table: "processed_webhook_events",
+                column: "stripe_event_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "i_x_purchase_order_items_purchase_order_id",
                 table: "purchase_order_items",
                 column: "purchase_order_id");
@@ -583,9 +716,27 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "i_x_subscriptions_stripe_subscription_id",
+                table: "subscriptions",
+                column: "stripe_subscription_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_subscriptions_user_id",
+                table: "subscriptions",
+                column: "user_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_supplier_restaurants_supplier_profile_restaurant_profile",
                 table: "supplier_restaurants",
                 columns: new[] { "supplier_profile_id", "restaurant_profile_id" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_supplier_settings_supplier_profile_id",
+                table: "supplier_settings",
+                column: "supplier_profile_id",
                 unique: true);
         }
 
@@ -608,6 +759,12 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 name: "kitchen_order_items");
 
             migrationBuilder.DropTable(
+                name: "pending_registrations");
+
+            migrationBuilder.DropTable(
+                name: "processed_webhook_events");
+
+            migrationBuilder.DropTable(
                 name: "purchase_order_items");
 
             migrationBuilder.DropTable(
@@ -617,6 +774,9 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 name: "restaurant_profiles");
 
             migrationBuilder.DropTable(
+                name: "subscriptions");
+
+            migrationBuilder.DropTable(
                 name: "supplier_analytics");
 
             migrationBuilder.DropTable(
@@ -624,6 +784,9 @@ namespace Aurora.SupplyWok.Platform.Migrations
 
             migrationBuilder.DropTable(
                 name: "supplier_restaurants");
+
+            migrationBuilder.DropTable(
+                name: "supplier_settings");
 
             migrationBuilder.DropTable(
                 name: "users");

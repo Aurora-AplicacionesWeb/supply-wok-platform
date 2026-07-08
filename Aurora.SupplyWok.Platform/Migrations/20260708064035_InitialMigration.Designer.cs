@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aurora.SupplyWok.Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260702010632_InitialMigration")]
+    [Migration("20260708064035_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -33,21 +33,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("InventoryTrend")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("inventory_trend");
-
-                    b.Property<string>("TemperatureFluctuations")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("temperature_fluctuations");
-
-                    b.Property<string>("TopSuppliersOrders")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("top_suppliers_orders");
-
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at");
@@ -67,9 +52,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            InventoryTrend = "{\"labels\":[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\"],\"data\":[42,46,34,31,58,64]}",
-                            TemperatureFluctuations = "{\"labels\":[\"M\",\"T\",\"W\",\"T\",\"F\",\"S\",\"S\"],\"data\":[22,10,46,28,66,18,10]}",
-                            TopSuppliersOrders = "[{\"supplier\":\"Golden Wok\",\"value\":85},{\"supplier\":\"Andes\",\"value\":60},{\"supplier\":\"Orient\",\"value\":45},{\"supplier\":\"Pacific\",\"value\":30}]",
                             WeeklyConsumption = "{\"labels\":[\"W1\",\"W2\",\"W3\",\"W4\",\"W5\",\"W6\"],\"data\":[62,88,48,110,76,118]}"
                         });
                 });
@@ -134,6 +116,11 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("password_hash");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("role");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetime")
@@ -1158,6 +1145,356 @@ namespace Aurora.SupplyWok.Platform.Migrations
                             Status = "Active",
                             SupplierProfileId = 201
                         });
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Contacts")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("contacts");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("NotifyEmail")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("notify_email");
+
+                    b.Property<bool>("NotifySms")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("notify_sms");
+
+                    b.Property<string>("ServiceZones")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("service_zones");
+
+                    b.Property<string>("SupplierName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("supplier_name");
+
+                    b.Property<int>("SupplierProfileId")
+                        .HasColumnType("int")
+                        .HasColumnName("supplier_profile_id");
+
+                    b.Property<string>("SupportContact")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("support_contact");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_supplier_settings");
+
+                    b.HasIndex("SupplierProfileId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_supplier_settings_supplier_profile_id");
+
+                    b.ToTable("supplier_settings", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Contacts = "[{\"name\":\"Mariela Soto\",\"state\":\"online\"}]",
+                            NotifyEmail = true,
+                            NotifySms = true,
+                            ServiceZones = "[\"San Miguel\"]",
+                            SupplierName = "Golden Wok Produce",
+                            SupplierProfileId = 201,
+                            SupportContact = "soporte@goldenwok.pe"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Contacts = "[]",
+                            NotifyEmail = true,
+                            NotifySms = false,
+                            ServiceZones = "[]",
+                            SupplierName = "Andes Cold Chain",
+                            SupplierProfileId = 202,
+                            SupportContact = "soporte@andescold.pe"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Contacts = "[]",
+                            NotifyEmail = true,
+                            NotifySms = true,
+                            ServiceZones = "[]",
+                            SupplierName = "Orient Pantry Co.",
+                            SupplierProfileId = 203,
+                            SupportContact = "soporte@orientpantry.pe"
+                        });
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Subscriptions.Domain.Model.Aggregates.PendingRegistration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("BusinessName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("business_name");
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("category");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("city");
+
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("contact_email");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("country");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("district");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("email");
+
+                    b.Property<DateTimeOffset>("ExpiresAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("expires_at");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("first_name");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("last_name");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("password_hash");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(40)
+                        .HasColumnType("varchar(40)")
+                        .HasColumnName("phone");
+
+                    b.Property<string>("PlanCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("plan_code");
+
+                    b.Property<Guid>("PublicId")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("public_id");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("role");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("street");
+
+                    b.Property<string>("StripeCheckoutSessionId")
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("stripe_checkout_session_id");
+
+                    b.Property<string>("StripeCustomerId")
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("stripe_customer_id");
+
+                    b.Property<string>("StripeSubscriptionId")
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("stripe_subscription_id");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_pending_registrations");
+
+                    b.HasIndex("Email")
+                        .HasDatabaseName("i_x_pending_registrations_email");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_pending_registrations_public_id");
+
+                    b.HasIndex("StripeCheckoutSessionId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_pending_registrations_stripe_checkout_session_id");
+
+                    b.HasIndex("StripeSubscriptionId")
+                        .HasDatabaseName("i_x_pending_registrations_stripe_subscription_id");
+
+                    b.ToTable("pending_registrations", (string)null);
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Subscriptions.Domain.Model.Aggregates.ProcessedWebhookEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)")
+                        .HasColumnName("event_type");
+
+                    b.Property<DateTimeOffset>("ProcessedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("processed_at");
+
+                    b.Property<string>("StripeEventId")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("stripe_event_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_processed_webhook_events");
+
+                    b.HasIndex("StripeEventId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_processed_webhook_events_stripe_event_id");
+
+                    b.ToTable("processed_webhook_events", (string)null);
+                });
+
+            modelBuilder.Entity("Aurora.SupplyWok.Platform.Subscriptions.Domain.Model.Aggregates.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTimeOffset?>("CurrentPeriodEnd")
+                        .HasColumnType("datetime")
+                        .HasColumnName("current_period_end");
+
+                    b.Property<DateTimeOffset?>("CurrentPeriodStart")
+                        .HasColumnType("datetime")
+                        .HasColumnName("current_period_start");
+
+                    b.Property<string>("PlanCode")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("plan_code");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("role");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("status");
+
+                    b.Property<string>("StripeCustomerId")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("stripe_customer_id");
+
+                    b.Property<string>("StripePriceId")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("stripe_price_id");
+
+                    b.Property<string>("StripeSubscriptionId")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("stripe_subscription_id");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_subscriptions");
+
+                    b.HasIndex("StripeSubscriptionId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_subscriptions_stripe_subscription_id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_subscriptions_user_id");
+
+                    b.ToTable("subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("Aurora.SupplyWok.Platform.Iot.Domain.Model.Entities.AlertRestaurant", b =>

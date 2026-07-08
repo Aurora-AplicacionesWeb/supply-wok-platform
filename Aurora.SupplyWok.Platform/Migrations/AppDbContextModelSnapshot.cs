@@ -30,21 +30,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("InventoryTrend")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("inventory_trend");
-
-                    b.Property<string>("TemperatureFluctuations")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("temperature_fluctuations");
-
-                    b.Property<string>("TopSuppliersOrders")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("top_suppliers_orders");
-
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at");
@@ -64,9 +49,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            InventoryTrend = "{\"labels\":[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\"],\"data\":[42,46,34,31,58,64]}",
-                            TemperatureFluctuations = "{\"labels\":[\"M\",\"T\",\"W\",\"T\",\"F\",\"S\",\"S\"],\"data\":[22,10,46,28,66,18,10]}",
-                            TopSuppliersOrders = "[{\"supplier\":\"Golden Wok\",\"value\":85},{\"supplier\":\"Andes\",\"value\":60},{\"supplier\":\"Orient\",\"value\":45},{\"supplier\":\"Pacific\",\"value\":30}]",
                             WeeklyConsumption = "{\"labels\":[\"W1\",\"W2\",\"W3\",\"W4\",\"W5\",\"W6\"],\"data\":[62,88,48,110,76,118]}"
                         });
                 });
