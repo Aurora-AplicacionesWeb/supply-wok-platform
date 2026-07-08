@@ -5,6 +5,7 @@ public enum SuppliersError
     None,
     SupplierNotFound,
     CatalogItemNotFound,
+    SupplierSettingsNotFound,
     InvalidData,
     OperationCancelled,
     DatabaseError,

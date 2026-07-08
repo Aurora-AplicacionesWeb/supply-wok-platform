@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +39,75 @@ public static class ModelBuilderExtensions
         builder.Entity<CatalogItem>().Property(catalogItem => catalogItem.DeliveryConditions).IsRequired().HasMaxLength(250);
         builder.Entity<CatalogItem>().HasIndex(catalogItem => catalogItem.SupplierId);
 
+        ConfigureSupplierSettings(builder);
         SeedSupplierRestaurants(builder);
+    }
+
+    private static void ConfigureSupplierSettings(ModelBuilder builder)
+    {
+        builder.Entity<SupplierSettings>().ToTable("SupplierSettings");
+        builder.Entity<SupplierSettings>().HasKey(settings => settings.Id);
+        builder.Entity<SupplierSettings>().Property(settings => settings.Id).ValueGeneratedOnAdd();
+        builder.Entity<SupplierSettings>().Property(settings => settings.SupplierProfileId).IsRequired();
+        builder.Entity<SupplierSettings>().HasIndex(settings => settings.SupplierProfileId).HasDatabaseName("ix_supplier_settings_supplier_profile_id").IsUnique();
+        builder.Entity<SupplierSettings>().Property(settings => settings.SupplierName).IsRequired().HasMaxLength(100);
+        builder.Entity<SupplierSettings>().Property(settings => settings.SupportContact).IsRequired().HasMaxLength(150);
+        builder.Entity<SupplierSettings>().Property(settings => settings.NotifyEmail).IsRequired();
+        builder.Entity<SupplierSettings>().Property(settings => settings.NotifySms).IsRequired();
+        builder.Entity<SupplierSettings>().Property(settings => settings.ServiceZones).IsRequired().HasColumnType("longtext");
+        builder.Entity<SupplierSettings>().Property(settings => settings.Contacts).IsRequired().HasColumnType("longtext");
+
+        SeedSupplierSettings(builder);
+    }
+
+    private static void SeedSupplierSettings(ModelBuilder builder)
+    {
+        var zones = JsonSerializer.Serialize(new[] { "San Miguel" });
+        var contacts = JsonSerializer.Serialize(new[]
+        {
+            new { name = "Mariela Soto", state = "online" }
+        });
+
+        builder.Entity<SupplierSettings>().HasData(
+            new
+            {
+                Id = 1,
+                SupplierProfileId = 201,
+                SupplierName = "Golden Wok Produce",
+                SupportContact = "soporte@goldenwok.pe",
+                NotifyEmail = true,
+                NotifySms = true,
+                ServiceZones = zones,
+                Contacts = contacts,
+                CreatedAt = (DateTimeOffset?)null,
+                UpdatedAt = (DateTimeOffset?)null
+            },
+            new
+            {
+                Id = 2,
+                SupplierProfileId = 202,
+                SupplierName = "Andes Cold Chain",
+                SupportContact = "soporte@andescold.pe",
+                NotifyEmail = true,
+                NotifySms = false,
+                ServiceZones = "[]",
+                Contacts = "[]",
+                CreatedAt = (DateTimeOffset?)null,
+                UpdatedAt = (DateTimeOffset?)null
+            },
+            new
+            {
+                Id = 3,
+                SupplierProfileId = 203,
+                SupplierName = "Orient Pantry Co.",
+                SupportContact = "soporte@orientpantry.pe",
+                NotifyEmail = true,
+                NotifySms = true,
+                ServiceZones = "[]",
+                Contacts = "[]",
+                CreatedAt = (DateTimeOffset?)null,
+                UpdatedAt = (DateTimeOffset?)null
+            });
     }
 
     private static void SeedSupplierRestaurants(ModelBuilder builder)
