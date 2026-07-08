@@ -3,6 +3,7 @@ using System;
 using Aurora.SupplyWok.Platform.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aurora.SupplyWok.Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260707232724_AddSubscriptionsBoundedContext")]
+    partial class AddSubscriptionsBoundedContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1159,100 +1162,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                             Sla = "97% SLA",
                             Status = "Active",
                             SupplierProfileId = 201
-                        });
-                });
-
-            modelBuilder.Entity("Aurora.SupplyWok.Platform.Spm.Domain.Model.Aggregates.SupplierSettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Contacts")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("contacts");
-
-                    b.Property<DateTimeOffset?>("CreatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_at");
-
-                    b.Property<bool>("NotifyEmail")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("notify_email");
-
-                    b.Property<bool>("NotifySms")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("notify_sms");
-
-                    b.Property<string>("ServiceZones")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("service_zones");
-
-                    b.Property<string>("SupplierName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("supplier_name");
-
-                    b.Property<int>("SupplierProfileId")
-                        .HasColumnType("int")
-                        .HasColumnName("supplier_profile_id");
-
-                    b.Property<string>("SupportContact")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)")
-                        .HasColumnName("support_contact");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_supplier_settings");
-
-                    b.HasIndex("SupplierProfileId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_supplier_settings_supplier_profile_id");
-
-                    b.ToTable("supplier_settings", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Contacts = "[{\"name\":\"Mariela Soto\",\"state\":\"online\"}]",
-                            NotifyEmail = true,
-                            NotifySms = true,
-                            ServiceZones = "[\"San Miguel\"]",
-                            SupplierName = "Golden Wok Produce",
-                            SupplierProfileId = 201,
-                            SupportContact = "soporte@goldenwok.pe"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Contacts = "[]",
-                            NotifyEmail = true,
-                            NotifySms = false,
-                            ServiceZones = "[]",
-                            SupplierName = "Andes Cold Chain",
-                            SupplierProfileId = 202,
-                            SupportContact = "soporte@andescold.pe"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Contacts = "[]",
-                            NotifyEmail = true,
-                            NotifySms = true,
-                            ServiceZones = "[]",
-                            SupplierName = "Orient Pantry Co.",
-                            SupplierProfileId = 203,
-                            SupportContact = "soporte@orientpantry.pe"
                         });
                 });
 
