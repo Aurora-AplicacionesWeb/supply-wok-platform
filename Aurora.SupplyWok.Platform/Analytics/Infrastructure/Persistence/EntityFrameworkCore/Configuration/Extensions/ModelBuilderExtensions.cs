@@ -20,53 +20,20 @@ public static class ModelBuilderExtensions
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
-            entity.Property(e => e.InventoryTrend)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, JsonSerializerOptions),
-                    v => JsonSerializer.Deserialize<TrendData>(v, JsonSerializerOptions) ?? new TrendData())
-                .HasColumnType("longtext");
-
             entity.Property(e => e.WeeklyConsumption)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, JsonSerializerOptions),
                     v => JsonSerializer.Deserialize<TrendData>(v, JsonSerializerOptions) ?? new TrendData())
                 .HasColumnType("longtext");
 
-            entity.Property(e => e.TemperatureFluctuations)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, JsonSerializerOptions),
-                    v => JsonSerializer.Deserialize<TrendData>(v, JsonSerializerOptions) ?? new TrendData())
-                .HasColumnType("longtext");
-
-            entity.Property(e => e.TopSuppliersOrders)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, JsonSerializerOptions),
-                    v => JsonSerializer.Deserialize<List<TopSupplierOrder>>(v, JsonSerializerOptions) ?? new List<TopSupplierOrder>())
-                .HasColumnType("longtext");
-
             // Seed Data
             entity.HasData(new
             {
                 Id = 1,
-                InventoryTrend = new TrendData(
-                    new List<string> { "Jan", "Feb", "Mar", "Apr", "May", "Jun" },
-                    new List<int> { 42, 46, 34, 31, 58, 64 }
-                ),
                 WeeklyConsumption = new TrendData(
                     new List<string> { "W1", "W2", "W3", "W4", "W5", "W6" },
                     new List<int> { 62, 88, 48, 110, 76, 118 }
                 ),
-                TemperatureFluctuations = new TrendData(
-                    new List<string> { "M", "T", "W", "T", "F", "S", "S" },
-                    new List<int> { 22, 10, 46, 28, 66, 18, 10 }
-                ),
-                TopSuppliersOrders = (ICollection<TopSupplierOrder>)new List<TopSupplierOrder>
-                {
-                    new("Golden Wok", 85),
-                    new("Andes", 60),
-                    new("Orient", 45),
-                    new("Pacific", 30)
-                },
                 CreatedAt = new DateTimeOffset(2026, 6, 20, 0, 0, 0, TimeSpan.Zero),
                 UpdatedAt = (DateTimeOffset?)null
             });

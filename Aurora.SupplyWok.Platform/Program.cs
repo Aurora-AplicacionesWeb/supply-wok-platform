@@ -34,6 +34,8 @@ using Aurora.SupplyWok.Platform.Operations.Application.CommandServices;
 using Aurora.SupplyWok.Platform.Operations.Application.Internal.CommandServices;
 using Aurora.SupplyWok.Platform.Operations.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Operations.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Operations.Interfaces.Acl;
+using Aurora.SupplyWok.Platform.Operations.Application.Acl;
 using Aurora.SupplyWok.Platform.Spm.Application.Internal.QueryServices;
 using Aurora.SupplyWok.Platform.Spm.Application.QueryServices;
 using Aurora.SupplyWok.Platform.Spm.Application.CommandServices;
@@ -75,6 +77,25 @@ using Aurora.SupplyWok.Platform.Iam.Infrastructure.Tokens.Jwt.Configuration;
 using Aurora.SupplyWok.Platform.Iam.Infrastructure.Tokens.Jwt.Services;
 using Aurora.SupplyWok.Platform.Iam.Infrastructure.Pipeline.Middleware.Extensions;
 using Aurora.SupplyWok.Platform.Iam.Interfaces.Acl;
+using Aurora.SupplyWok.Platform.Subscriptions.Application.CommandServices;
+using Aurora.SupplyWok.Platform.Subscriptions.Application.Internal.CommandServices;
+using Aurora.SupplyWok.Platform.Subscriptions.Application.Internal.OutboundServices;
+using Aurora.SupplyWok.Platform.Subscriptions.Application.Internal.QueryServices;
+using Aurora.SupplyWok.Platform.Subscriptions.Application.QueryServices;
+using Aurora.SupplyWok.Platform.Subscriptions.Domain.Repositories;
+using Aurora.SupplyWok.Platform.Subscriptions.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Aurora.SupplyWok.Platform.Subscriptions.Infrastructure.Stripe.Configuration;
+using Aurora.SupplyWok.Platform.Subscriptions.Infrastructure.Stripe.Services;
+using Aurora.SupplyWok.Platform.Shared.Infrastructure.Configuration;
+
+var currentDirectory = Directory.GetCurrentDirectory();
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+DotEnvLoader.Load(
+    [
+        currentDirectory,
+        Path.Combine(currentDirectory, "Aurora.SupplyWok.Platform")
+    ],
+    environmentName);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,6 +145,25 @@ builder.Services.AddSingleton<IStringLocalizer<ErrorMessages>, StringLocalizer<E
 builder.Services.AddSingleton<IStringLocalizer<CommonMessages>, StringLocalizer<CommonMessages>>();
 builder.Services.AddSingleton<IStringLocalizer<InventoryMessages>, StringLocalizer<InventoryMessages>>();
 builder.Services.AddSingleton<ProblemDetailsFactory>();
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+builder.Services.Configure<FrontendUrlsSettings>(builder.Configuration.GetSection("Frontend"));
+builder.Services.PostConfigure<TokenSettings>(options =>
+{
+    options.Secret = Environment.ExpandEnvironmentVariables(options.Secret);
+});
+builder.Services.PostConfigure<StripeSettings>(options =>
+{
+    options.SecretKey = Environment.ExpandEnvironmentVariables(options.SecretKey);
+    options.WebhookSecret = Environment.ExpandEnvironmentVariables(options.WebhookSecret);
+    options.Prices.PremiumMonthly = Environment.ExpandEnvironmentVariables(options.Prices.PremiumMonthly);
+    options.Prices.EnterpriseMonthly = Environment.ExpandEnvironmentVariables(options.Prices.EnterpriseMonthly);
+});
+builder.Services.PostConfigure<FrontendUrlsSettings>(options =>
+{
+    options.BaseUrl = Environment.ExpandEnvironmentVariables(options.BaseUrl);
+    options.RegisterPath = Environment.ExpandEnvironmentVariables(options.RegisterPath);
+    options.RegisterCompletePath = Environment.ExpandEnvironmentVariables(options.RegisterCompletePath);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -201,6 +241,8 @@ builder.Services.AddScoped<IDishCategoryQueryService, DishCategoryQueryService>(
 builder.Services.AddScoped<IKitchenOrderRepository, KitchenOrderRepository>();
 builder.Services.AddScoped<IKitchenOrderCommandService, KitchenOrderCommandService>();
 builder.Services.AddScoped<IKitchenOrderQueryService, KitchenOrderQueryService>();
+// Operations ACL — consumed by Analytics to compute weekly consumption
+builder.Services.AddScoped<IOperationsContextFacade, OperationsContextFacade>();
 
 // Supplier Bounded Context
 builder.Services.AddScoped<ISupplierRestaurantRepository, SupplierRestaurantRepository>();
@@ -210,9 +252,6 @@ builder.Services.AddScoped<ICatalogItemCommandService, CatalogItemCommandService
 builder.Services.AddScoped<ICatalogItemQueryService, CatalogItemQueryService>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierCatalogContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierCatalogContextFacade>();
 builder.Services.AddScoped<Aurora.SupplyWok.Platform.Spm.Interfaces.Acl.ISupplierOrdersContextFacade, Aurora.SupplyWok.Platform.Spm.Application.Acl.SupplierOrdersContextFacade>();
-builder.Services.AddScoped<ISupplierSettingsRepository, SupplierSettingsRepository>();
-builder.Services.AddScoped<ISupplierSettingsCommandService, SupplierSettingsCommandService>();
-builder.Services.AddScoped<ISupplierSettingsQueryService, SupplierSettingsQueryService>();
 
 // Inventory Bounded Context
 builder.Services.AddScoped<ISupplyRepository, SupplyRepository>();
@@ -233,10 +272,18 @@ builder.Services.AddScoped<ISupplierProfileQueryService, SupplierProfileQuerySer
 builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
 // Analytics Bounded Context
-builder.Services.AddScoped<IRestaurantAnalyticsRepository, RestaurantAnalyticsRepository>();
 builder.Services.AddScoped<ISupplierAnalyticsRepository, SupplierAnalyticsRepository>();
 builder.Services.AddScoped<IRestaurantAnalyticsQueryService, RestaurantAnalyticsQueryService>();
 builder.Services.AddScoped<ISupplierAnalyticsQueryService, SupplierAnalyticsQueryService>();
+
+// Subscriptions Bounded Context
+builder.Services.AddScoped<IPendingRegistrationRepository, PendingRegistrationRepository>();
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddScoped<IProcessedWebhookEventRepository, ProcessedWebhookEventRepository>();
+builder.Services.AddScoped<ISubscriptionRegistrationCommandService, SubscriptionRegistrationCommandService>();
+builder.Services.AddScoped<ISubscriptionRegistrationQueryService, SubscriptionRegistrationQueryService>();
+builder.Services.AddScoped<ISubscriptionWebhookService, SubscriptionWebhookService>();
+builder.Services.AddHttpClient<IStripeCheckoutService, StripeCheckoutService>();
 
 // Mediator Configuration
 

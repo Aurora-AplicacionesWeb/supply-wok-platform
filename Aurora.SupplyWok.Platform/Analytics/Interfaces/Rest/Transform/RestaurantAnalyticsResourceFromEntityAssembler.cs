@@ -7,11 +7,6 @@ public static class RestaurantAnalyticsResourceFromEntityAssembler
 {
     public static RestaurantAnalyticsResource ToResourceFromEntity(RestaurantAnalytics entity)
     {
-        return new RestaurantAnalyticsResource(
-            entity.InventoryTrend,
-            entity.WeeklyConsumption,
-            entity.TopSuppliersOrders,
-            entity.TemperatureFluctuations
-        );
+        return new RestaurantAnalyticsResource(entity.WeeklyConsumption);
     }
 }
