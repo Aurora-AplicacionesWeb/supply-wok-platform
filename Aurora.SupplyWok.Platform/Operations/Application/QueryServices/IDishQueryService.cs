@@ -6,4 +6,5 @@ namespace Aurora.SupplyWok.Platform.Operations.Application.QueryServices;
 public interface IDishQueryService
 {
     Task<IEnumerable<Dish>> Handle(GetAllDishesQuery query, CancellationToken cancellationToken);
+    Task<Dish?> Handle(GetDishByIdQuery query, CancellationToken cancellationToken);
 }

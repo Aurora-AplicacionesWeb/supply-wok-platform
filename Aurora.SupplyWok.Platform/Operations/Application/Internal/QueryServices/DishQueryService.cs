@@ -11,4 +11,9 @@ public class DishQueryService(IDishRepository dishRepository) : IDishQueryServic
     {
         return await dishRepository.ListWithCategoryAsync(cancellationToken);
     }
+
+    public async Task<Dish?> Handle(GetDishByIdQuery query, CancellationToken cancellationToken)
+    {
+        return await dishRepository.FindByIdAsync(query.DishId, cancellationToken);
+    }
 }
