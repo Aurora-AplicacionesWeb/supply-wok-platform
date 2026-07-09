@@ -1,0 +1,170 @@
+@startuml Aurora.SupplyWok.Platform Class Diagram - Operations, IAM, Profiles, Shared Bounded Contexts
+
+    title 
+        Aurora.SupplyWok.Platform 
+        Class Diagram
+        Operations, IAM, Profiles, Shared Bounded Contexts
+    end title
+    
+    package "Operations Bounded Context" as Operations {
+        package "Domain" as Domain {
+            class KitchenOrder <<Aggregate>> {
+                +KitchenOrder(int tableId, string status)
+                +Id: int
+                +TableId: int
+                +Status: string
+                +Items: ICollection<KitchenOrderItem>
+                +CreatedDate: DateTimeOffset?
+                +UpdatedDate: DateTimeOffset?
+            }
+    
+            class Table <<Aggregate>> {
+                +Table(string number, int capacity, string status)
+                +Id: int
+                +Number: string
+                +Capacity: int
+                +Status: string
+            }
+    
+            class DishCategory <<Entity>> {
+                +DishCategory(string name)
+                +Id: int
+                +Name: string
+            }
+    
+            class Dish <<Entity>> {
+                +Dish(string name, string description, decimal price, int categoryId)
+                +Id: int
+                +Name: string
+                +Description: string
+                +Price: decimal
+                +CategoryId: int
+                +Category: DishCategory?
+            }
+
+            class KitchenOrderItem <<Entity>> {
+                +KitchenOrderItem(int dishId, int quantity, decimal unitPrice)
+                +Id: int
+                +DishId: int
+                +Quantity: int
+                +UnitPrice: decimal
+                +Dish: Dish?
+            }
+        }
+    }
+    
+    package "IAM Bounded Context" as Iam {
+        package "Domain" as IamDomain {
+            class User <<Aggregate>> {
+                +User(string username, string passwordHash)
+                +Id: int
+                +Username: string
+                +PasswordHash: string
+                +UpdateUsername(string username): User
+                +UpdatePasswordHash(string passwordHash): User
+            }
+    
+            interface IUserCommandService {
+                +Handle(SignInCommand command, CancellationToken cancellationToken): Task<Result<(User user, string token)>>
+                +Handle(SignUpCommand command, CancellationToken cancellationToken): Task<Result>
+            }
+    
+            interface IUserQueryService {
+                +Handle(GetUserByIdQuery query, CancellationToken cancellationToken): Task<User?>
+                +Handle(GetAllUsersQuery query, CancellationToken cancellationToken): Task<IEnumerable<User>>
+                +Handle(GetUserByUsernameQuery query, CancellationToken cancellationToken): Task<User?>
+            }
+        }
+    }
+    
+    package "Profiles Bounded Context" as Profiles {
+        package "Domain" as ProfilesDomain {
+            class RestaurantProfile <<Aggregate>> {
+                +RestaurantProfile(string businessName, PersonName contactName, StreetAddress address, EmailAddress contactEmail)
+                +Id: int
+                +BusinessName: string
+                +ContactName: PersonName
+                +Address: StreetAddress
+                +ContactEmail: EmailAddress
+                +UserId: int?
+                +CreatedDate: DateTimeOffset?
+                +UpdatedDate: DateTimeOffset?
+            }
+
+            class SupplierProfile <<Aggregate>> {
+                +SupplierProfile(string businessName, PersonName contactName, StreetAddress address, EmailAddress contactEmail, string phone, string category)
+                +Id: int
+                +BusinessName: string
+                +ContactName: PersonName
+                +Address: StreetAddress
+                +ContactEmail: EmailAddress
+                +Phone: string
+                +Category: string
+                +UserId: int?
+                +CreatedDate: DateTimeOffset?
+                +UpdatedDate: DateTimeOffset?
+            }
+    
+            class PersonName <<ValueObject>> {
+                +PersonName(string firstName, string lastName)
+                +FirstName: string
+                +LastName: string
+                +FullName: string
+            }
+    
+            class EmailAddress <<ValueObject>> {
+                +Address: string
+            }
+    
+            class StreetAddress <<ValueObject>> {
+                +StreetAddress(string street, string district, string city, string country)
+                +Street: string
+                +District: string
+                +City: string
+                +Country: string
+            }
+        }
+    }
+    
+    package "Shared Bounded Context" as Shared {
+        package "Domain" as SharedDomain {
+            interface IBaseRepository<TEntity> {
+                +AddAsync(TEntity entity, CancellationToken cancellationToken): Task
+                +FindByIdAsync(int id, CancellationToken cancellationToken): Task<TEntity?>
+                +Update(TEntity entity): void
+                +Remove(TEntity entity): void
+                +ListAsync(CancellationToken cancellationToken): Task<IEnumerable<TEntity>>
+            }
+    
+            interface IUnitOfWork {
+                +CompleteAsync(CancellationToken cancellationToken): Task
+            }
+    
+            class Result<T> {
+                +IsSuccess: bool
+                +IsFailure: bool
+                +Value: T?
+                +Message: string
+                +Error: Enum?
+                +Success(T value): Result<T>
+                +Failure(Enum error, string message): Result<T>
+            }
+        }
+    }
+    
+    ' Relationships within Operations
+    Dish --> DishCategory : association (belongs to)
+    KitchenOrder *-- KitchenOrderItem : composition (has many)
+    KitchenOrderItem --> Dish : association (references)
+    KitchenOrder --> Table : association (belongs to)
+
+    ' Profiles Values
+    RestaurantProfile *-- PersonName : owns
+    RestaurantProfile *-- StreetAddress : owns
+    RestaurantProfile *-- EmailAddress : owns
+
+    SupplierProfile *-- PersonName : owns
+    SupplierProfile *-- StreetAddress : owns
+    SupplierProfile *-- EmailAddress : owns
+
+@enduml

@@ -65,7 +65,7 @@ public class RestaurantAlertsController(
     /// <param name="alertId">The alert identifier.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The acknowledged restaurant alert.</returns>
-    [HttpPost("{alertId:int}/acknowledge")]
+    [HttpPatch("{alertId:int}")]
     [SwaggerOperation("Acknowledge Restaurant Alert", "Acknowledges a restaurant alert by setting its status to Acknowledged.", OperationId = "AcknowledgeRestaurantAlert")]
     [SwaggerResponse(200, "The alert was acknowledged successfully.", typeof(AlertRestaurantResource))]
     [SwaggerResponse(400, "Invalid request.")]

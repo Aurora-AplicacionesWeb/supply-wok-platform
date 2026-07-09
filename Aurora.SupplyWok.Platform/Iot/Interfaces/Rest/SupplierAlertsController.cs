@@ -63,7 +63,7 @@ public class SupplierAlertsController(
     /// <param name="alertId">The alert identifier.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The acknowledged supplier alert.</returns>
-    [HttpPost("{alertId:int}/acknowledge")]
+    [HttpPatch("{alertId:int}")]
     [SwaggerOperation("Acknowledge Supplier Alert", "Acknowledges a supplier alert by setting its status to Acknowledged.", OperationId = "AcknowledgeSupplierAlert")]
     [SwaggerResponse(200, "The alert was acknowledged successfully.", typeof(AlertSupplierResource))]
     [SwaggerResponse(400, "Invalid request.")]

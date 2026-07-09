@@ -129,22 +129,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "restaurant_analytics",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    weekly_consumption = table.Column<string>(type: "longtext", nullable: false),
-                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
-                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("p_k_restaurant_analytics", x => x.id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "restaurant_profiles",
                 columns: table => new
                 {
@@ -215,23 +199,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "supplier_analytics",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    aggregate = table.Column<string>(type: "longtext", nullable: false),
-                    clients = table.Column<string>(type: "longtext", nullable: false),
-                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
-                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("p_k_supplier_analytics", x => x.id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "supplier_profiles",
                 columns: table => new
                 {
@@ -276,28 +243,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("p_k_supplier_restaurants", x => x.id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "supplier_settings",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    supplier_profile_id = table.Column<int>(type: "int", nullable: false),
-                    supplier_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    support_contact = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false),
-                    notify_email = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    notify_sms = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    service_zones = table.Column<string>(type: "longtext", nullable: false),
-                    contacts = table.Column<string>(type: "longtext", nullable: false),
-                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
-                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("p_k_supplier_settings", x => x.id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -561,11 +506,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "restaurant_analytics",
-                columns: new[] { "id", "created_at", "updated_at", "weekly_consumption" },
-                values: new object[] { 1, new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "{\"labels\":[\"W1\",\"W2\",\"W3\",\"W4\",\"W5\",\"W6\"],\"data\":[62,88,48,110,76,118]}" });
-
-            migrationBuilder.InsertData(
                 table: "restaurant_profiles",
                 columns: new[] { "id", "business_name", "created_at", "status", "updated_at", "user_id", "city", "country", "district", "street", "contact_email", "contact_first_name", "contact_last_name" },
                 values: new object[,]
@@ -586,11 +526,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "supplier_analytics",
-                columns: new[] { "id", "aggregate", "clients", "created_at", "updated_at" },
-                values: new object[] { 1, "[{\"period\":\"May\",\"value\":240},{\"period\":\"Jun\",\"value\":260},{\"period\":\"Jul\",\"value\":272},{\"period\":\"Aug\",\"value\":288},{\"period\":\"Sep\",\"value\":304},{\"period\":\"Oct\",\"value\":319}]", "[{\"clientId\":1,\"clientName\":\"Gran Dragon Chifa\",\"value\":72,\"trend\":\"upward\",\"summary\":\"Seafood and greens demand trending higher before weekends.\"},{\"clientId\":2,\"clientName\":\"Jade Express\",\"value\":68,\"trend\":\"stable\",\"summary\":\"Keep standard restock cadence; lunch traffic is stable.\"},{\"clientId\":3,\"clientName\":\"Pekin Lounge\",\"value\":55,\"trend\":\"watch\",\"summary\":\"Demand remains moderate with steady weekly orders.\"},{\"clientId\":4,\"clientName\":\"Ming Garden\",\"value\":49,\"trend\":\"stable\",\"summary\":\"Projected demand is steady with no urgent restock signal.\"}]", new DateTimeOffset(new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null });
-
-            migrationBuilder.InsertData(
                 table: "supplier_profiles",
                 columns: new[] { "id", "business_name", "category", "created_at", "phone", "status", "updated_at", "user_id", "city", "country", "district", "street", "contact_email", "contact_first_name", "contact_last_name" },
                 values: new object[,]
@@ -609,16 +544,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                     { 2, null, "2026-04-20", "2.1 H", 1, "95% SLA", "Active", 202, null },
                     { 3, null, "2026-04-19", "2.9 H", 2, "91% SLA", "Active", 203, null },
                     { 4, null, "2026-04-18", "1.8 H", 3, "97% SLA", "Active", 201, null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "supplier_settings",
-                columns: new[] { "id", "contacts", "created_at", "notify_email", "notify_sms", "service_zones", "supplier_name", "supplier_profile_id", "support_contact", "updated_at" },
-                values: new object[,]
-                {
-                    { 1, "[{\"name\":\"Mariela Soto\",\"state\":\"online\"}]", null, true, true, "[\"San Miguel\"]", "Golden Wok Produce", 201, "soporte@goldenwok.pe", null },
-                    { 2, "[]", null, true, false, "[]", "Andes Cold Chain", 202, "soporte@andescold.pe", null },
-                    { 3, "[]", null, true, true, "[]", "Orient Pantry Co.", 203, "soporte@orientpantry.pe", null }
                 });
 
             migrationBuilder.InsertData(
@@ -732,12 +657,6 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 table: "supplier_restaurants",
                 columns: new[] { "supplier_profile_id", "restaurant_profile_id" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_supplier_settings_supplier_profile_id",
-                table: "supplier_settings",
-                column: "supplier_profile_id",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -768,25 +687,16 @@ namespace Aurora.SupplyWok.Platform.Migrations
                 name: "purchase_order_items");
 
             migrationBuilder.DropTable(
-                name: "restaurant_analytics");
-
-            migrationBuilder.DropTable(
                 name: "restaurant_profiles");
 
             migrationBuilder.DropTable(
                 name: "subscriptions");
 
             migrationBuilder.DropTable(
-                name: "supplier_analytics");
-
-            migrationBuilder.DropTable(
                 name: "supplier_profiles");
 
             migrationBuilder.DropTable(
                 name: "supplier_restaurants");
-
-            migrationBuilder.DropTable(
-                name: "supplier_settings");
 
             migrationBuilder.DropTable(
                 name: "users");
