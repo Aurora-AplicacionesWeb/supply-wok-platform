@@ -44,7 +44,6 @@
         <Folder Include="Inventory\Resources\" />
         <Folder Include="Iot\Domain\Model\Entities\" />
         <Folder Include="Iot\Domain\Model\Events\" />
-        <Folder Include="Operations\Domain\Model\Errors\" />
         <Folder Include="Operations\Resources\" />
         <Folder Include="Profiles\Application\" />
         <Folder Include="Profiles\Infrastructure\" />
