@@ -104,6 +104,7 @@ builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(options => options.Conventions.Add(new KebabCaseRouteNamingConvention()))
     .AddDataAnnotationsLocalization()
     .AddJsonOptions(options =>

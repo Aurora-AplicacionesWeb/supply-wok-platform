@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using Aurora.SupplyWok.Platform.Subscriptions.Application.Internal.OutboundServices;
 using Aurora.SupplyWok.Platform.Subscriptions.Infrastructure.Stripe.Configuration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
@@ -10,10 +11,12 @@ namespace Aurora.SupplyWok.Platform.Subscriptions.Infrastructure.Stripe.Services
 public class StripeCheckoutService(
     HttpClient httpClient,
     IOptions<StripeSettings> stripeOptions,
-    IOptions<FrontendUrlsSettings> frontendOptions) : IStripeCheckoutService
+    IOptions<FrontendUrlsSettings> frontendOptions,
+    IHttpContextAccessor httpContextAccessor) : IStripeCheckoutService
 {
     private readonly StripeSettings _stripeSettings = stripeOptions.Value;
     private readonly FrontendUrlsSettings _frontendSettings = frontendOptions.Value;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
     public async Task<(bool IsSuccess, string? SessionId, string? CheckoutUrl, string? ErrorMessage)>
         CreateSubscriptionCheckoutSessionAsync(
@@ -112,14 +115,54 @@ public class StripeCheckoutService(
 
     private string BuildSuccessUrl(Guid pendingRegistrationPublicId)
     {
-        var path = _frontendSettings.RegisterCompletePath.Trim();
-        var baseUrl = _frontendSettings.BaseUrl.TrimEnd('/');
+        var path = NormalizePath(_frontendSettings.RegisterCompletePath, "/register/complete");
+        var baseUrl = ResolveFrontendBaseUrl();
         return QueryHelpers.AddQueryString($"{baseUrl}{path}", "registration", pendingRegistrationPublicId.ToString());
     }
 
     private string BuildCancelUrl()
     {
-        return $"{_frontendSettings.BaseUrl.TrimEnd('/')}{_frontendSettings.RegisterPath.Trim()}";
+        return $"{ResolveFrontendBaseUrl()}{NormalizePath(_frontendSettings.RegisterPath, "/register")}";
+    }
+
+    private string ResolveFrontendBaseUrl()
+    {
+        var configuredBaseUrl = _frontendSettings.BaseUrl?.Trim();
+        if (IsAbsoluteHttpUrl(configuredBaseUrl) && !IsLocalhostUrl(configuredBaseUrl!))
+            return configuredBaseUrl!.TrimEnd('/');
+
+        var originHeader = _httpContextAccessor.HttpContext?.Request.Headers.Origin.FirstOrDefault();
+        if (IsAbsoluteHttpUrl(originHeader)) return originHeader!.TrimEnd('/');
+
+        var refererHeader = _httpContextAccessor.HttpContext?.Request.Headers.Referer.FirstOrDefault();
+        if (Uri.TryCreate(refererHeader, UriKind.Absolute, out var refererUri) &&
+            (refererUri.Scheme == Uri.UriSchemeHttp || refererUri.Scheme == Uri.UriSchemeHttps))
+            return $"{refererUri.Scheme}://{refererUri.Authority}";
+
+        if (IsAbsoluteHttpUrl(configuredBaseUrl))
+            return configuredBaseUrl!.TrimEnd('/');
+
+        throw new InvalidOperationException(
+            "Frontend base URL is not configured with a valid absolute URL and could not be inferred from the request.");
+    }
+
+    private static string NormalizePath(string? path, string fallback)
+    {
+        var normalized = string.IsNullOrWhiteSpace(path) ? fallback : path.Trim();
+        return normalized.StartsWith('/') ? normalized : $"/{normalized}";
+    }
+
+    private static bool IsAbsoluteHttpUrl(string? value)
+    {
+        return Uri.TryCreate(value, UriKind.Absolute, out var uri) &&
+               (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+
+    private static bool IsLocalhostUrl(string value)
+    {
+        return Uri.TryCreate(value, UriKind.Absolute, out var uri) &&
+               (string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(uri.Host, "127.0.0.1", StringComparison.OrdinalIgnoreCase));
     }
 
     private static string? TryGetNestedString(JsonElement root, string firstProperty, string secondProperty, int index,
