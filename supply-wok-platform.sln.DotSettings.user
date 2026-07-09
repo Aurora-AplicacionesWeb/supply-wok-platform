@@ -2,6 +2,7 @@
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Aurora_002ESupplyWok_002EPlatform_002FInventory_002FResources_002FInventoryMessages/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Aurora_002ESupplyWok_002EPlatform_002FIot_002FResources_002FSensorsMessages/@EntryIndexedValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Aurora_002ESupplyWok_002EPlatform_002FOperations_002FResources_002FOperationsMessages/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Aurora_002ESupplyWok_002EPlatform_002FOperations_002FResources_002FOperationsMessages/@EntryIndexRemoved">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Aurora_002ESupplyWok_002EPlatform_002FPurchasing_002FResources_002FPurchaseOrdersMessages/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Aurora_002ESupplyWok_002EPlatform_002FShared_002FResources_002FErrors_002FErrorMessages/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Miscellaneous_0020Files_002FQusosad/@EntryIndexedValue">False</s:Boolean>

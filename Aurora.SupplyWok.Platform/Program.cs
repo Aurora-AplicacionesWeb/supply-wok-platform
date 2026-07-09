@@ -236,6 +236,7 @@ builder.Services.AddScoped<ITableCommandService, TableCommandService>();
 builder.Services.AddScoped<ITableQueryService, TableQueryService>();
 builder.Services.AddScoped<IDishRepository, DishRepository>();
 builder.Services.AddScoped<IDishCategoryRepository, DishCategoryRepository>();
+builder.Services.AddScoped<IDishCommandService, DishCommandService>();
 builder.Services.AddScoped<IDishQueryService, DishQueryService>();
 builder.Services.AddScoped<IDishCategoryQueryService, DishCategoryQueryService>();
 builder.Services.AddScoped<IKitchenOrderRepository, KitchenOrderRepository>();
