@@ -17,7 +17,8 @@ public class RestaurantAnalyticsController(IRestaurantAnalyticsQueryService quer
     [HttpGet]
     [SwaggerOperation("Get Restaurant Analytics", "Retrieves restaurant report data.", OperationId = "GetRestaurantAnalytics")]
     [SwaggerResponse(200, "Restaurant analytics retrieved successfully.", typeof(RestaurantReportsResponse))]
-    public async Task<IActionResult> GetRestaurantAnalytics(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetRestaurantAnalytics(
+        CancellationToken cancellationToken = default)
     {
         var query = new GetAllRestaurantAnalyticsQuery();
         var result = await queryService.Handle(query, cancellationToken);

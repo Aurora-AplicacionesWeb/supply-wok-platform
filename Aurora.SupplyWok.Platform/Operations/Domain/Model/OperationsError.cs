@@ -5,9 +5,7 @@ public enum OperationsError
     None,
     TableNotFound,
     DishNotFound,
-    DishCategoryNotFound,
     KitchenOrderNotFound,
-    KitchenOrderItemNotFound,
     OperationCancelled,
     DatabaseError,
     InternalServerError
