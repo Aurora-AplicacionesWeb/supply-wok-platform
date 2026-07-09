@@ -5,5 +5,5 @@
 /// </summary>
 public interface IOperationsContextFacade
 {
-    Task<WeeklyConsumptionDto> GetWeeklyConsumptionAsync(int weeks = 6, CancellationToken cancellationToken = default);
+    Task<WeeklyConsumptionDto> GetWeeklyConsumptionAsync(CancellationToken cancellationToken = default);
 }

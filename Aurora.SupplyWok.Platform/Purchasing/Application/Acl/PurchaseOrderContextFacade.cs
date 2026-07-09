@@ -33,6 +33,13 @@ public class PurchaseOrderContextFacade(
     }
 
     /// <inheritdoc />
+    public async Task<IEnumerable<PurchaseOrderAclResource>> GetAllPurchaseOrders(CancellationToken cancellationToken)
+    {
+        var orders = await purchaseOrderQueryService.Handle(new GetAllPurchaseOrdersQuery(), cancellationToken);
+        return orders.Select(ToAclResource);
+    }
+
+    /// <inheritdoc />
     public async Task<IEnumerable<PurchaseOrderAclResource>> GetPurchaseOrdersBySupplierId(int supplierId, CancellationToken cancellationToken)
     {
         var orders = await purchaseOrderQueryService.Handle(new GetPurchaseOrdersBySupplierIdQuery(supplierId), cancellationToken);

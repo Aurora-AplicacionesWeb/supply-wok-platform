@@ -8,11 +8,11 @@ namespace Aurora.SupplyWok.Platform.Operations.Application.Acl;
 public class OperationsContextFacade(
     IKitchenOrderRepository kitchenOrderRepository) : IOperationsContextFacade
 {
-    public async Task<WeeklyConsumptionDto> GetWeeklyConsumptionAsync(int weeks = 6, CancellationToken cancellationToken = default)
+    public async Task<WeeklyConsumptionDto> GetWeeklyConsumptionAsync(CancellationToken cancellationToken = default)
     {
         var orders = await kitchenOrderRepository.ListWithItemsAsync(cancellationToken);
 
-        var cutoff = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-7 * weeks));
+        var cutoff = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-7 * 6));
 
         var weeklyGroups = orders
             .Where(o => o.Status != EKitchenOrderStatus.Cancelled && o.DateCreated >= cutoff)
